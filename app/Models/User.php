@@ -28,8 +28,25 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Eloquent relationship: User has-many TaskLists.
+     *
+     */
     public function taskLists()
     {
         return $this->hasMany(TaskList::class);
+    }
+
+    /**
+     * Get the TaskList that the User most-recently loaded.
+     *
+     */
+    public function getCurrentList()
+    {
+        $lists = $this->taskLists;
+
+        $lastLoaded = $lists->sortBy('last_time_loaded')->last();
+
+        return $lastLoaded;
     }
 }

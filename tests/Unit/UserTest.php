@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\TaskList;
-use Carbon\Carbon;
 
 class UserTest extends TestCase
 {
@@ -43,6 +42,7 @@ class UserTest extends TestCase
             'user_id' => Auth::id(),
             'name' => 'list1'
         ]);
+
         $list2 = TaskList::create([
             'user_id' => Auth::id(),
             'name' => 'list2'
@@ -73,22 +73,25 @@ class UserTest extends TestCase
             'user_id' => Auth::id(),
             'name' => 'list1'
         ]);
+        
         $list2 = TaskList::create([
             'user_id' => Auth::id(),
             'name' => 'list2'
         ]);
 
-        $list1->last_time_loaded = (Carbon::today())->toDateTimeString();
-        // $list1->last_time_loaded = (new DateTime('today'))->format('Y-m-d H:i:s');
+        $list1->last_time_loaded = (\Carbon\Carbon::today())->toDateTimeString();
+        // Alternative using DateTime instead of Cabon:
+        // $list1->last_time_loaded = (new \DateTime('today'))->format('Y-m-d H:i:s');
         $list1->save();
 
-        $list2->last_time_loaded = (Carbon::yesterday())->toDateTimeString();
-        // $list2->last_time_loaded = (new DateTime('yesterday'))->format('Y-m-d H:i:s');
+        $list2->last_time_loaded = (\Carbon\Carbon::yesterday())->toDateTimeString();
+        // Alternative using DateTime instead of Cabon:
+        // $list2->last_time_loaded = (new \DateTime('yesterday'))->format('Y-m-d H:i:s');
         $list2->save();
 
         $currentList = $user->getCurrentList();
 
-        $this->assertEquals($currentList, $list1);
+        $this->assertEquals($currentList->id, $list1->id);
 
         Auth::logout();
         $list1->delete();
