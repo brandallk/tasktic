@@ -10,7 +10,7 @@ use \App\Models\TaskList;
 
 class UserTest extends TestCase
 {
-    public function testThatAUserCanLogin()
+    public function testThatUserCanLogin()
     {
         $user = User::create([
             'name' => 'testuser',
@@ -27,7 +27,7 @@ class UserTest extends TestCase
         $user->delete();
     }
 
-    public function testThatYouCanGetTheUsersLists()
+    public function testThatUserCanGetItsLists()
     {
         $user = User::create([
             'name' => 'testuser',
@@ -47,6 +47,7 @@ class UserTest extends TestCase
 
         $lists = $user->taskLists;
 
+        $this->assertCount(2, $lists);
         $this->assertEquals($lists, TaskList::where('user_id', Auth::id())->get());
 
         Auth::logout();
