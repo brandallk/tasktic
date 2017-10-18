@@ -73,7 +73,7 @@ class UserTest extends TestCase
             'user_id' => Auth::id(),
             'name' => 'list1'
         ]);
-        
+
         $list2 = TaskList::create([
             'user_id' => Auth::id(),
             'name' => 'list2'
@@ -92,6 +92,29 @@ class UserTest extends TestCase
         $currentList = $user->getCurrentList();
 
         $this->assertEquals($currentList->id, $list1->id);
+
+        Auth::logout();
+        $list1->delete();
+        $list2->delete();
+        $user->delete();
+    }
+
+    /** @test */
+    public function Users_current_list_is_the_Default_List_if_User_has_no_other_lists()
+    {
+        $userDetails = [
+            'name' => 'testuser',
+            'email' => 'testuser@example.com',
+            'password' => bcrypt('password')
+        ];
+        $user = \App\Http\Controllers\Auth\RegisterController->create($userDetails);
+        Auth::login($user);
+
+        $defaultList = $user->TaskLists->whereIn('saved', false);
+
+        $currentList = $user->getCurrentList();
+
+        $this->assertEquals($defaultList->id, $currentList->id);
 
         Auth::logout();
         $list1->delete();
