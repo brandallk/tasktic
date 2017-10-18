@@ -105,24 +105,24 @@ class UserTest extends TestCase
      * Note: The 'create' method on RegisterController is protected. This test can only run if that method is
      * temporarily changed to 'public'.
      */
-    public function Users_current_list_is_the_Default_List_if_User_has_no_other_lists()
-    {
-        $userDetails = [
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
-            'password' => bcrypt('password')
-        ];
-        $user = (new \App\Http\Controllers\Auth\RegisterController)->create($userDetails);
-        Auth::login($user);
+    // public function Users_current_list_is_the_Default_List_if_User_has_no_other_lists()
+    // {
+    //     $userDetails = [
+    //         'name' => 'testuser',
+    //         'email' => 'testuser@example.com',
+    //         'password' => bcrypt('password')
+    //     ];
+    //     $user = (new \App\Http\Controllers\Auth\RegisterController)->create($userDetails);
+    //     Auth::login($user);
 
-        $defaultList = $user->TaskLists->whereIn('saved', false)->first();
+    //     $defaultList = $user->TaskLists->whereIn('saved', false)->first();
 
-        $currentList = $user->getCurrentList();
+    //     $currentList = $user->getCurrentList();
 
-        $this->assertEquals($defaultList->id, $currentList->id);
+    //     $this->assertEquals($defaultList->id, $currentList->id);
 
-        Auth::logout();
-        $defaultList->delete();
-        $user->delete();
-    }
+    //     Auth::logout();
+    //     $defaultList->delete();
+    //     $user->delete();
+    // }
 }
