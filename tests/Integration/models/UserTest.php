@@ -27,8 +27,6 @@ class UserTest extends TestCase
 
     public function tearDown()
     {
-        Auth::logout();
-
         Artisan::call('migrate:reset');
 
         parent::tearDown();

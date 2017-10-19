@@ -44,12 +44,27 @@ class UserActionsTest extends TestCase
         $this->assertTrue(Auth::check());
         $this->assertEquals(Auth::id(), $user->id);
         $this->assertEquals(Auth::user()->name, 'newuser');
-
-        Auth::logout();
     }
 
     /** @test */
-    public function newly_registered_User_gets_a_default_list()
+    public function a_new_User_gets_default_visitor_role()
+    {
+        $userDetails = [
+            'name' => 'newuser',
+            'email' => 'newuser@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password'
+        ];
+        
+        $response = $this->post('/register', $userDetails);
+
+        $user = User::where('name', 'newuser')->first();
+
+        $this->assertEquals('visitor', $user->role);
+    }
+
+    /** @test */
+    public function a_new_User_gets_a_default_list()
     {
         $userDetails = [
             'name' => 'newuser',
@@ -68,7 +83,5 @@ class UserActionsTest extends TestCase
         $currentList = $user->getCurrentList();
 
         $this->assertEquals($defaultList->id, $currentList->id);
-
-        Auth::logout();
     }
 }
