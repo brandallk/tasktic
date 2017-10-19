@@ -45,15 +45,8 @@ class UserTest extends TestCase
     /** @test */
     public function User_can_get_its_lists()
     {
-        $list1 = TaskList::create([
-            'user_id' => Auth::id(),
-            'name' => 'list1'
-        ]);
-
-        $list2 = TaskList::create([
-            'user_id' => Auth::id(),
-            'name' => 'list2'
-        ]);
+        $list1 = factory(TaskList::class)->create(['user_id' => Auth::id()]);
+        $list2 = factory(TaskList::class)->create(['user_id' => Auth::id()]);
 
         $lists = $this->user->taskLists;
 
@@ -64,28 +57,18 @@ class UserTest extends TestCase
     /** @test */
     public function User_can_get_its_most_recently_loaded_list()
     {
-        $list1 = TaskList::create([
-            'user_id' => Auth::id(),
-            'name' => 'list1'
-        ]);
+        $mostRecentList = factory(TaskList::class)->create(['user_id' => Auth::id()]);
+        $mostRecentList->last_time_loaded = (\Carbon\Carbon::today())->toDateTimeString();
+        $mostRecentList->save();
 
-        $list2 = TaskList::create([
-            'user_id' => Auth::id(),
-            'name' => 'list2'
-        ]);
+        $anotherList = factory(TaskList::class)->create(['user_id' => Auth::id()]);
+        $anotherList->last_time_loaded = (\Carbon\Carbon::yesterday())->toDateTimeString();
+        $anotherList->save();
 
-        $list1->last_time_loaded = (\Carbon\Carbon::today())->toDateTimeString();
-        // Alternative using DateTime instead of Cabon:
+        // Note: A less-pretty alternative to creating the DateTimes using Cabon:
         // $list1->last_time_loaded = (new \DateTime('today'))->format('Y-m-d H:i:s');
-        $list1->save();
-
-        $list2->last_time_loaded = (\Carbon\Carbon::yesterday())->toDateTimeString();
-        // Alternative using DateTime instead of Cabon:
         // $list2->last_time_loaded = (new \DateTime('yesterday'))->format('Y-m-d H:i:s');
-        $list2->save();
 
-        $currentList = $this->user->getCurrentList();
-
-        $this->assertEquals($currentList->id, $list1->id);
+        $this->assertEquals($this->user->getCurrentList(), $mostRecentList->id);
     }
 }
