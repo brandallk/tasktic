@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Integration\models;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +9,7 @@ use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\TaskList;
 
-class UserModelTest extends TestCase
+class UserTest extends TestCase
 {
     use RefreshDatabase;
 
