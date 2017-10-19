@@ -12,34 +12,37 @@ class UserModelTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function User_can_login()
+    protected $user;
+
+    public function setUp()
     {
-        $user = User::create([
+        parent::setUp();
+
+        $this->user = User::create([
             'name' => 'testuser',
             'email' => 'testuser@example.com',
             'password' => bcrypt('password')
         ]);
-        Auth::login($user);
+        Auth::login($this->user);
+    }
 
-        $this->assertTrue(Auth::check());
-        $this->assertEquals(Auth::user(), $user);
-        $this->assertEquals(Auth::user()->name, 'testuser');
-
+    public function tearDown()
+    {
         Auth::logout();
-        // $user->delete();
+        parent::tearDown();
+    }
+
+    /** @test */
+    public function User_can_login()
+    {
+        $this->assertTrue(Auth::check());
+        $this->assertEquals(Auth::user(), $this->user);
+        $this->assertEquals(Auth::user()->name, 'testuser');
     }
 
     /** @test */
     public function User_can_get_its_lists()
     {
-        $user = User::create([
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
-            'password' => bcrypt('password')
-        ]);
-        Auth::login($user);
-
         $list1 = TaskList::create([
             'user_id' => Auth::id(),
             'name' => 'list1'
@@ -50,27 +53,15 @@ class UserModelTest extends TestCase
             'name' => 'list2'
         ]);
 
-        $lists = $user->taskLists;
+        $lists = $this->user->taskLists;
 
         $this->assertCount(2, $lists);
         $this->assertEquals($lists, TaskList::where('user_id', Auth::id())->get());
-
-        Auth::logout();
-        // $list1->delete();
-        // $list2->delete();
-        // $user->delete();
     }
 
     /** @test */
     public function User_can_get_its_most_recently_loaded_list()
     {
-        $user = User::create([
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
-            'password' => bcrypt('password')
-        ]);
-        Auth::login($user);
-
         $list1 = TaskList::create([
             'user_id' => Auth::id(),
             'name' => 'list1'
@@ -91,13 +82,8 @@ class UserModelTest extends TestCase
         // $list2->last_time_loaded = (new \DateTime('yesterday'))->format('Y-m-d H:i:s');
         $list2->save();
 
-        $currentList = $user->getCurrentList();
+        $currentList = $this->user->getCurrentList();
 
         $this->assertEquals($currentList->id, $list1->id);
-
-        Auth::logout();
-        // $list1->delete();
-        // $list2->delete();
-        // $user->delete();
     }
 }
