@@ -18,17 +18,14 @@ class UserModelTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::create([
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
-            'password' => bcrypt('password')
-        ]);
+        $this->user = factory(User::class)->create(['name' => 'testuser']);
         Auth::login($this->user);
     }
 
     public function tearDown()
     {
         Auth::logout();
+        
         parent::tearDown();
     }
 

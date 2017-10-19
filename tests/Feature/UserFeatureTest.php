@@ -31,7 +31,6 @@ class UserFeatureTest extends TestCase
         $this->assertEquals(Auth::user()->name, 'testuser');
 
         Auth::logout();
-        // $user->delete();
     }
 
     /** @test */
@@ -55,7 +54,5 @@ class UserFeatureTest extends TestCase
         $this->assertEquals($defaultList->id, $currentList->id);
 
         Auth::logout();
-        // $defaultList->delete();
-        // $user->delete();
     }
 }
