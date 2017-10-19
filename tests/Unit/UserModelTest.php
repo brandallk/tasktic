@@ -8,8 +8,10 @@ use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\TaskList;
 
-class UserTest extends TestCase
+class UserModelTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function User_can_login()
     {
@@ -25,29 +27,7 @@ class UserTest extends TestCase
         $this->assertEquals(Auth::user()->name, 'testuser');
 
         Auth::logout();
-        $user->delete();
-    }
-
-    /** @test */
-    public function User_can_register()
-    {
-        $userDetails = [
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password'
-        ];
-        
-        $response = $this->post('/register', $userDetails);
-
-        $user = User::where('name', 'testuser')->first();
-
-        $this->assertTrue(Auth::check());
-        $this->assertEquals(Auth::id(), $user->id);
-        $this->assertEquals(Auth::user()->name, 'testuser');
-
-        Auth::logout();
-        $user->delete();
+        // $user->delete();
     }
 
     /** @test */
@@ -76,9 +56,9 @@ class UserTest extends TestCase
         $this->assertEquals($lists, TaskList::where('user_id', Auth::id())->get());
 
         Auth::logout();
-        $list1->delete();
-        $list2->delete();
-        $user->delete();
+        // $list1->delete();
+        // $list2->delete();
+        // $user->delete();
     }
 
     /** @test */
@@ -116,33 +96,8 @@ class UserTest extends TestCase
         $this->assertEquals($currentList->id, $list1->id);
 
         Auth::logout();
-        $list1->delete();
-        $list2->delete();
-        $user->delete();
-    }
-
-    /** @test */
-    public function Users_current_list_is_the_Default_List_if_User_has_no_other_lists()
-    {
-        $userDetails = [
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password'
-        ];
-        
-        $response = $this->post('/register', $userDetails);
-
-        $user = User::where('name', 'testuser')->first();
-
-        $defaultList = $user->TaskLists->whereIn('saved', false)->first();
-
-        $currentList = $user->getCurrentList();
-
-        $this->assertEquals($defaultList->id, $currentList->id);
-
-        Auth::logout();
-        $defaultList->delete();
-        $user->delete();
+        // $list1->delete();
+        // $list2->delete();
+        // $user->delete();
     }
 }
