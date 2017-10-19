@@ -45,4 +45,17 @@ class UserTest extends TestCase
 
         $this->assertEquals('admin', $user->role);
     }
+
+    /** @test */
+    public function a_User_can_add_and_access_TaskLists()
+    {
+        $user = factory(User::class)->create();
+
+        $newList = factory(TaskList::class)->create(['user_id' => $user->id, 'name' => 'New List']);
+        $user->taskLists()->save($newList);
+
+        $usersNewList = $user->taskLists->where('name', 'New List')->first();
+
+        $this->assertEquals($usersNewList->id, $newList->id);
+    }
 }
