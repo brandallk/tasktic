@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\TaskList;
@@ -18,6 +19,8 @@ class UserModelTest extends TestCase
     {
         parent::setUp();
 
+        Artisan::call('migrate');
+
         $this->user = factory(User::class)->create(['name' => 'testuser']);
         Auth::login($this->user);
     }
@@ -25,7 +28,9 @@ class UserModelTest extends TestCase
     public function tearDown()
     {
         Auth::logout();
-        
+
+        Artisan::call('migrate:reset');
+
         parent::tearDown();
     }
 
