@@ -9,7 +9,7 @@ use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\TaskList;
 
-class UserFeatureTest extends TestCase
+class UserActionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -31,37 +31,38 @@ class UserFeatureTest extends TestCase
     public function User_can_register()
     {
         $userDetails = [
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
+            'name' => 'newuser',
+            'email' => 'newuser@example.com',
             'password' => 'password',
             'password_confirmation' => 'password'
         ];
         
         $response = $this->post('/register', $userDetails);
 
-        $user = User::where('name', 'testuser')->first();
+        $user = User::where('name', 'newuser')->first();
 
         $this->assertTrue(Auth::check());
         $this->assertEquals(Auth::id(), $user->id);
-        $this->assertEquals(Auth::user()->name, 'testuser');
+        $this->assertEquals(Auth::user()->name, 'newuser');
 
         Auth::logout();
     }
 
     /** @test */
-    public function Users_current_list_is_the_Default_List_if_User_has_no_other_lists()
+    public function newly_registered_User_gets_a_default_list()
     {
         $userDetails = [
-            'name' => 'testuser',
-            'email' => 'testuser@example.com',
+            'name' => 'newuser',
+            'email' => 'newuser@example.com',
             'password' => 'password',
             'password_confirmation' => 'password'
         ];
         
         $response = $this->post('/register', $userDetails);
 
-        $user = User::where('name', 'testuser')->first();
+        $user = User::where('name', 'newuser')->first();
 
+        // A User's default TaskList is the only one that can have saved=false
         $defaultList = $user->TaskLists->whereIn('saved', false)->first();
 
         $currentList = $user->getCurrentList();
