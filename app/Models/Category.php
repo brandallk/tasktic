@@ -23,17 +23,17 @@ class Category extends Model
         return $this->hasMany(Subcategory::class);
     }
 
-    public function newDefaultCategory(TaskList $list)
+    public static function newDefaultCategory(TaskList $list)
     {
         // Create a new Category with 'name' == null
-        $defaultCategory = $this->newCategory($list, null);
+        $defaultCategory = self::newCategory($list, null);
 
-        (new Subcategory)->newDefaultSubcategory($defaultCategory);
+        Subcategory::newDefaultSubcategory($defaultCategory);
 
         return $defaultCategory;
     }
 
-    public function newCategory(TaskList $list, string $name)
+    public static function newCategory(TaskList $list, string $name)
     {
         $uniqueID = uniqid();
 
@@ -59,14 +59,14 @@ class Category extends Model
         return $category;
     }
 
-    public function deleteCategory(Category $category)
+    public static function deleteCategory(Category $category)
     {
         $taskList = $category->taskList;
 
         $category->delete();
 
         foreach ($category->subcategories as $subcategory) {
-            (new Subcategory)->deleteSubcategory($subcategory);
+            Subcategory::deleteSubcategory($subcategory);
         }
 
         $taskList->deleteListElement($category->list_element_id);

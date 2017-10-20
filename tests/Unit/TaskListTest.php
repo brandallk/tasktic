@@ -88,13 +88,37 @@ class TaskListTest extends TestCase
     // }
 
     // /** @test */
-    // public function a_TaskList_can_add_and_access_list_elements()
+    // public function a_TaskList_can_add_list_elements()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_TaskList_can_access_list_elements()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_TaskList_can_be_updated()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function an_unsaved_TaskList_can_get_an_updated_default_name()
     // {
         
     // }
 
     // /** @test */
     // public function a_list_element_can_be_deleted()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_TaskList_can_be_deleted()
     // {
         
     // }
