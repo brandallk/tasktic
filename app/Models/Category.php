@@ -33,7 +33,8 @@ class Category extends Model
         return $defaultCategory;
     }
 
-    public static function newCategory(TaskList $list, string $name)
+    /** @param $name  is either a string or null */
+    public static function newCategory(TaskList $list, $name)
     {
         $uniqueID = uniqid();
 

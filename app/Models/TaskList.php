@@ -10,7 +10,7 @@ use App\Models\Category;
 class TaskList extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'saved'
+        'user_id', 'name', 'saved', 'autodelete'
     ];
 
     private $elements = [];
@@ -40,6 +40,7 @@ class TaskList extends Model
             'user_id' => $user->id,
             'name' => $name,
             'saved' => $saved,
+            'autodelete' => true,
         ]);
 
         $list->user()->associate($user);
@@ -50,7 +51,8 @@ class TaskList extends Model
         return $list;
     }
 
-    public function addListElement(string $type, string $name, string $uniqueID)
+    /** @param $name  is either a string or null */
+    public function addListElement(string $type, $name, string $uniqueID)
     {
         $listElement = [
             'type' => $type,
