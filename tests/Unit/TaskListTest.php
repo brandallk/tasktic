@@ -36,7 +36,8 @@ class TaskListTest extends TestCase
     {
         $list = factory(TaskList::class)->create();
 
-        $newCategory = factory(Category::class)->create(['task_list_id' => $list->id, 'name' => 'New Category']);
+        // $newCategory = factory(Category::class)->create(['task_list_id' => $list->id, 'name' => 'New Category']);
+        $newCategory = Category::create(['task_list_id' => $list->id, 'name' => 'New Category']);
         $list->categories()->save($newCategory);
 
         $listsNewCategory = $list->categories->where('name', 'New Category')->first();

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use \App\Models\TaskList;
+use App\Models\TaskList;
 
 class User extends Authenticatable
 {
