@@ -33,16 +33,26 @@ class TaskListTest extends TestCase
     }
 
     /** @test */
-    public function a_TaskList_can_add_and_access_Categories()
+    public function a_TaskList_can_add_Categories()
     {
         $list = factory(TaskList::class)->create();
 
         $newCategory = Category::newCategory($list, 'New Category');
-        // $list->categories()->save($newCategory);
 
-        $listsNewCategory = $list->categories->where('name', 'New Category')->first();
+        $this->assertDatabaseHas('categories', ['task_list_id' => $list->id, 'name' => 'New Category']);
+    }
 
-        $this->assertEquals($newCategory->id, $listsNewCategory->id);
+    /** @test */
+    public function a_TaskList_can_access_its_Categories()
+    {
+        $list = factory(TaskList::class)->create();
+
+        $newCategory = Category::newCategory($list, 'New Category');
+
+        $this->assertEquals(
+            $newCategory->id,
+            $list->categories->where('name', 'New Category')->first()->id
+        );
     }
 
     // /** @test */
