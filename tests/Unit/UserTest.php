@@ -45,7 +45,7 @@ class UserTest extends TestCase
 
         $usersNewList = $user->taskLists->where('name', 'New List')->first();
 
-        $this->assertEquals($usersNewList->id, $newList->id);
+        $this->assertEquals($newList->id, $usersNewList->id);
     }
 
     /** 

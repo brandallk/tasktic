@@ -31,11 +31,18 @@ class TaskListTest extends TestCase
         $this->assertEquals('New List', $list->name);
     }
 
-    // /** @test */
-    // public function a_TaskList_can_add_and_access_list_Categories()
-    // {
-        
-    // }
+    /** @test */
+    public function a_TaskList_can_add_and_access_Categories()
+    {
+        $list = factory(TaskList::class)->create();
+
+        $newCategory = factory(Category::class)->create(['task_list_id' => $list->id, 'name' => 'New Category']);
+        $list->categories()->save($newCategory);
+
+        $listsNewCategory = $list->categories->where('name', 'New Category')->first();
+
+        $this-assertEquals($newCategory->id, $listsNewCategory->id);
+    }
 
     // /** @test */
     // public function a_new_TaskList_gets_true_autodelete_status_by_default()
