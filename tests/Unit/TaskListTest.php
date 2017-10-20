@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\TaskList;
+use App\Models\Category;
 
 class TaskListTest extends TestCase
 {
@@ -36,13 +37,12 @@ class TaskListTest extends TestCase
     {
         $list = factory(TaskList::class)->create();
 
-        // $newCategory = factory(Category::class)->create(['task_list_id' => $list->id, 'name' => 'New Category']);
-        $newCategory = Category::create(['task_list_id' => $list->id, 'name' => 'New Category']);
-        $list->categories()->save($newCategory);
+        $newCategory = Category::newCategory($list, 'New Category');
+        // $list->categories()->save($newCategory);
 
         $listsNewCategory = $list->categories->where('name', 'New Category')->first();
 
-        $this-assertEquals($newCategory->id, $listsNewCategory->id);
+        $this->assertEquals($newCategory->id, $listsNewCategory->id);
     }
 
     // /** @test */
