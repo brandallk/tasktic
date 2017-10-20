@@ -85,19 +85,21 @@ class TaskListTest extends TestCase
         
     // }
 
-    // /** @test */
-    // public function a_new_custom_TaskList_gets_true_saved_status()
-    // {
+    /** @test */
+    public function a_new_custom_TaskList_gets_true_saved_status()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
         
-    // }
+        $this->assertEquals(true, $list->saved);
+    }
 
     /** @test */
     public function a_new_TaskList_gets_true_autodelete_status_by_default()
     {
         $user = factory(User::class)->create();
-        //given a new tasklist
         $list = TaskList::newTaskList($user, 'New List');
-        //then it's 'autodelete' column == true
+        
         $this->assertEquals(true, $list->autodelete);
     }
 
