@@ -4,28 +4,12 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
-use \App\Models\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use \App\Models\TaskList;
 
 class UserRegistration extends TestCase
 {
     use RefreshDatabase;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        Artisan::call('migrate');        
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('migrate:reset');
-
-        parent::tearDown();
-    }
 
     protected function registerNewUser()
     {
@@ -52,7 +36,7 @@ class UserRegistration extends TestCase
     }
 
     /** @test */
-    public function a_new_User_gets_default_visitor_role()
+    public function a_new_User_gets_visitor_role_by_default()
     {
         $user = $this->registerNewUser();
 
@@ -60,11 +44,11 @@ class UserRegistration extends TestCase
     }
 
     /** @test */
-    public function a_new_User_gets_a_default_list()
+    public function a_new_User_gets_a_default_TaskList()
     {
         $user = $this->registerNewUser();
 
-        // A User's default TaskList is the only one that can have saved=false
+        // A User's default TaskList is the only one that can have 'saved' == false
         $defaultList = $user->TaskLists->whereIn('saved', false)->first();
 
         $currentList = $user->getCurrentList();

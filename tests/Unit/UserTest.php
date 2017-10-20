@@ -4,28 +4,12 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
-use \App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use \App\Models\TaskList;
+use App\Models\User;
+use App\Models\TaskList;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        Artisan::call('migrate');        
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('migrate:reset');
-
-        parent::tearDown();
-    }
 
     /** @test */
     public function a_User_has_a_name_and_email()
