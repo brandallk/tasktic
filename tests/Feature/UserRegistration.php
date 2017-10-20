@@ -9,7 +9,7 @@ use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\TaskList;
 
-class UserActionsTest extends TestCase
+class UserRegistration extends TestCase
 {
     use RefreshDatabase;
 
@@ -17,7 +17,7 @@ class UserActionsTest extends TestCase
     {
         parent::setUp();
 
-        Artisan::call('migrate');
+        Artisan::call('migrate');        
     }
 
     public function tearDown()
@@ -27,8 +27,7 @@ class UserActionsTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
-    public function User_can_register()
+    protected function registerNewUser()
     {
         $userDetails = [
             'name' => 'newuser',
@@ -39,7 +38,13 @@ class UserActionsTest extends TestCase
         
         $response = $this->post('/register', $userDetails);
 
-        $user = User::where('name', 'newuser')->first();
+        return User::where('name', 'newuser')->first();
+    }
+
+    /** @test */
+    public function a_User_can_register()
+    {
+        $user = $this->registerNewUser();
 
         $this->assertTrue(Auth::check());
         $this->assertEquals(Auth::id(), $user->id);
@@ -49,16 +54,7 @@ class UserActionsTest extends TestCase
     /** @test */
     public function a_new_User_gets_default_visitor_role()
     {
-        $userDetails = [
-            'name' => 'newuser',
-            'email' => 'newuser@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password'
-        ];
-        
-        $response = $this->post('/register', $userDetails);
-
-        $user = User::where('name', 'newuser')->first();
+        $user = $this->registerNewUser();
 
         $this->assertEquals('visitor', $user->role);
     }
@@ -66,16 +62,7 @@ class UserActionsTest extends TestCase
     /** @test */
     public function a_new_User_gets_a_default_list()
     {
-        $userDetails = [
-            'name' => 'newuser',
-            'email' => 'newuser@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password'
-        ];
-        
-        $response = $this->post('/register', $userDetails);
-
-        $user = User::where('name', 'newuser')->first();
+        $user = $this->registerNewUser();
 
         // A User's default TaskList is the only one that can have saved=false
         $defaultList = $user->TaskLists->whereIn('saved', false)->first();
