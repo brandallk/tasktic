@@ -151,13 +151,28 @@ class TaskListTest extends TestCase
         ]);
     }
 
-    // /** @test */
-    // public function an_unsaved_TaskList_can_get_an_updated_default_name()
-    // {
-    //     //given 
-    //     //when
-    //     //then
-    // }
+    /** @test */
+    public function an_unsaved_TaskList_can_get_an_updated_default_name_derived_from_the_current_date()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'Unsaved');
+        
+        $list->saved = false;
+        $list->save();
+
+        $list->setDefaultName($list);
+
+        $today = \Carbon\Carbon::today();
+        $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
+        
+        $this->assertEquals($newDefaultName, $list->name);
+    }
+
+    /** @test */
+    public function a_saved_TaskList_cannot_get_an_updated_default_name_derived_from_the_current_date()
+    {
+        //
+    }
 
     // /** @test */
     // public function a_TaskList_can_add_list_elements()
