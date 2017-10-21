@@ -203,7 +203,6 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_list_element_can_be_deleted()
     {
-        //given a listElement exists
         $list = factory(TaskList::class)->create();
         
         $category = Category::create([
@@ -212,17 +211,21 @@ class TaskListTest extends TestCase
             'list_element_id' => uniqid()
         ]);
         $list->addListElement('category', $category->name, $category->list_element_id);
-        //when list->deleteListElement is called
+        
         $list->deleteListElement($category->list_element_id);
-        //then list->elements no longer contains the listElement
+        
         $this->assertCount(0, $list->elements);
     }
 
-    // /** @test */
-    // public function a_new_TaskList_has_a_last_time_loaded_prop_that_is_null_by_default()
-    // {
+    /** @test */
+    public function a_new_TaskList_has_a_last_time_loaded_prop_that_is_null_by_default()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
         
-    // }
+        $this->assertDatabaseHas('task_lists', ['name' => 'New List', 'last_time_loaded' => null]);
+        $this->assertEquals(null, $list->last_time_loaded);
+    }
 
     // /** @test */
     // public function a_TaskLists_last_time_loaded_prop_can_be_updated()
