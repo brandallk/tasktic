@@ -43,8 +43,8 @@ class TaskListTest extends TestCase
     public function a_TaskList_belongs_to_a_User()
     {
         $user = factory(User::class)->create(['name' => 'testuser']);
+        $list = TaskList::newTaskList($user, 'New List');
 
-        $list = factory(TaskList::class)->create(['user_id' => $user->id]);
         $list->user()->associate($user);
         $list->save();
 
@@ -54,7 +54,8 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_TaskList_has_a_name()
     {
-        $list = factory(TaskList::class)->create(['name' => 'New List']);
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
 
         $this->assertEquals('New List', $list->name);
     }
@@ -62,7 +63,8 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_TaskList_can_add_Categories()
     {
-        $list = factory(TaskList::class)->create();
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
 
         $newCategory = Category::newCategory($list, 'New Category');
 
@@ -72,7 +74,8 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_TaskList_can_access_its_Categories()
     {
-        $list = factory(TaskList::class)->create();
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
 
         $newCategory = Category::newCategory($list, 'New Category');
 

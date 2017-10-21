@@ -64,11 +64,12 @@ class Category extends Model
     {
         $list = $category->taskList;
 
-        $category->delete();
-
         foreach ($category->subcategories as $subcategory) {
             Subcategory::deleteSubcategory($subcategory);
         }
+
+        // Note: important that the Category is deleted AFTER its child Subcategories are deleted
+        $category->delete();
 
         $list->deleteListElement($category->list_element_id);
     }

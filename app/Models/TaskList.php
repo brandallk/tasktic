@@ -95,6 +95,7 @@ class TaskList extends Model
             Category::deleteCategory($category);
         }
 
+        // Note: important that the TaskList is deleted AFTER its child Categories are deleted
         $list->delete();
     }
 
