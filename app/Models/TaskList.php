@@ -13,7 +13,7 @@ class TaskList extends Model
         'user_id', 'name', 'saved', 'autodelete'
     ];
 
-    private $elements = [];
+    public $elements = [];
 
     public function user()
     {
@@ -80,11 +80,6 @@ class TaskList extends Model
         }
 
         return false;
-    }
-
-    public function getListElements()
-    {
-        return $this->elements;
     }
 
     public function deleteListElement(string $listElementID)

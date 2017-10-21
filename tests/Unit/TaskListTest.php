@@ -184,11 +184,21 @@ class TaskListTest extends TestCase
         $this->assertEquals('Saved', $list->name);
     }
 
-    // /** @test */
-    // public function a_TaskList_can_add_list_elements()
-    // {
+    /** @test */
+    public function a_TaskList_can_add_list_elements()
+    {
+        $list = factory(TaskList::class)->create();
         
-    // }
+        $category = Category::create([
+            'task_list_id' => $list->id,
+            'name' => 'New Category',
+            'list_element_id' => uniqid()
+        ]);
+        $list->addListElement('category', $category->name, $category->list_element_id);
+        
+        $this->assertCount(1, $list->elements);
+        $this->assertEquals('New Category', $list->elements[$category->list_element_id]['name']);
+    }
 
     // /** @test */
     // public function a_TaskList_can_access_list_elements()
@@ -198,6 +208,18 @@ class TaskListTest extends TestCase
 
     // /** @test */
     // public function a_list_element_can_be_deleted()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_new_TaskList_has_a_last_time_loaded_prop_that_is_null_by_default()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_TaskLists_last_time_loaded_prop_can_be_updated()
     // {
         
     // }
