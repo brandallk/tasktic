@@ -125,11 +125,15 @@ class TaskListTest extends TestCase
         $this->assertEquals($todayFormatted, $list->name);
     }
 
-    // /** @test */
-    // public function a_new_default_TaskList_gets_false_saved_status()
-    // {
-        
-    // }
+    /** @test */
+    public function a_new_default_TaskList_gets_false_saved_status()
+    {
+        //given a new default tasklist
+        $user = factory(User::class)->create();
+        $list = TaskList::newDefaultTaskList($user);
+        //then its tasklist->saved == false
+        $this->assertFalse($list->saved);
+    }
 
     // /** @test */
     // public function a_new_default_TaskList_has_a_Category_and_Subcategory_with_null_name()
