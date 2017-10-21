@@ -185,7 +185,7 @@ class TaskListTest extends TestCase
     }
 
     /** @test */
-    public function a_TaskList_can_add_list_elements()
+    public function a_TaskList_can_add_and_access_list_elements()
     {
         $list = factory(TaskList::class)->create();
         
@@ -200,17 +200,23 @@ class TaskListTest extends TestCase
         $this->assertEquals('New Category', $list->elements[$category->list_element_id]['name']);
     }
 
-    // /** @test */
-    // public function a_TaskList_can_access_list_elements()
-    // {
+    /** @test */
+    public function a_list_element_can_be_deleted()
+    {
+        //given a listElement exists
+        $list = factory(TaskList::class)->create();
         
-    // }
-
-    // /** @test */
-    // public function a_list_element_can_be_deleted()
-    // {
-        
-    // }
+        $category = Category::create([
+            'task_list_id' => $list->id,
+            'name' => 'New Category',
+            'list_element_id' => uniqid()
+        ]);
+        $list->addListElement('category', $category->name, $category->list_element_id);
+        //when list->deleteListElement is called
+        $list->deleteListElement($category->list_element_id);
+        //then list->elements no longer contains the listElement
+        $this->assertCount(0, $list->elements);
+    }
 
     // /** @test */
     // public function a_new_TaskList_has_a_last_time_loaded_prop_that_is_null_by_default()
