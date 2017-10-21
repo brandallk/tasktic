@@ -82,11 +82,17 @@ class TaskListTest extends TestCase
         );
     }
 
-    // /** @test */
-    // public function a_TaskList_can_be_updated()
-    // {
-        
-    // }
+    /** @test */
+    public function a_TaskList_can_be_updated()
+    {
+        //given a tasklist exists
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'Original Name');
+        //when the name is updated by calling the update method
+        $list->updateTaskList($list, 'New Name');
+        //then the tasklist's new name should be the update name
+        $this->assertEquals('New Name', $list->name);
+    }
 
     // /** @test */
     // public function an_unsaved_TaskList_can_get_an_updated_default_name()
