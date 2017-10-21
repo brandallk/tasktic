@@ -104,10 +104,22 @@ class TaskListTest extends TestCase
         $this->assertDatabaseMissing('task_lists', ['id' => $list->id, 'name' => 'List Name']);
     }
 
+    /** @test */
+    public function a_default_TaskList_can_be_created()
+    {
+        //given a new default tasklist
+        $user = factory(User::class)->create();
+        $list = TaskList::newDefaultTaskList($user);
+        //then its id should appear in the db
+        $this->assertDatabaseHas('task_lists', ['id' => $list->id]);
+    }
+
     // /** @test */
-    // public function a_default_TaskList_can_be_created()
+    // public function a_new_default_TaskList_name_should_be_a_formatted_version_of_the_current_date()
     // {
-    //     //
+    //     //given a new default tasklist
+    //     //when
+    //     //then its name should be the same as (a formatted version of) the current date
     // }
 
     // /** @test */
