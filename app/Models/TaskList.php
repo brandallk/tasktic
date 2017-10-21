@@ -97,4 +97,14 @@ class TaskList extends Model
 
         $list->delete();
     }
+
+    public function updateLastTimeLoaded(TaskList $list)
+    {
+        $now = (\Carbon\Carbon::now())->toDateTimeString();
+
+        $list->last_time_loaded = $now;
+        $list->save();
+
+        return $list;
+    }
 }
