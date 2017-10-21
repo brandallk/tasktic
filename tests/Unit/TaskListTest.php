@@ -171,7 +171,17 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_saved_TaskList_cannot_get_an_updated_default_name_derived_from_the_current_date()
     {
-        //
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'Saved');
+
+        $list->setDefaultName($list);
+
+        $today = \Carbon\Carbon::today();
+        $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
+        
+        $this->assertTrue($list->saved);
+        $this->assertFalse($newDefaultName == $list->name);
+        $this->assertEquals('Saved', $list->name);
     }
 
     // /** @test */
