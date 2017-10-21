@@ -52,11 +52,22 @@ class Subcategory extends Model
 
     public function updateSubcategory(Subcategory $subcategory, string $name)
     {
-        //
+        $subcategory->name = $name;
+        $subcategory->save();
+
+        return $subcategory;
     }
 
     public static function deleteSubcategory(Subcategory $subcategory)
     {
-        //
+        $list = $subcategory->category->taskList;
+
+        $subcategory->delete();
+
+        foreach ($subcategory->tasks as $task) {
+            Task::deleteTask($task);
+        }
+
+        $list->deleteListElement($subcategory->list_element_id);
     }
 }

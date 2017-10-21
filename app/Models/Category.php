@@ -62,7 +62,7 @@ class Category extends Model
 
     public static function deleteCategory(Category $category)
     {
-        $taskList = $category->taskList;
+        $list = $category->taskList;
 
         $category->delete();
 
@@ -70,6 +70,6 @@ class Category extends Model
             Subcategory::deleteSubcategory($subcategory);
         }
 
-        $taskList->deleteListElement($category->list_element_id);
+        $list->deleteListElement($category->list_element_id);
     }
 }
