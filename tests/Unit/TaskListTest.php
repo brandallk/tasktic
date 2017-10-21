@@ -107,34 +107,23 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_default_TaskList_can_be_created()
     {
-        //given a new default tasklist
         $user = factory(User::class)->create();
         $list = TaskList::newDefaultTaskList($user);
-        //then its id should appear in the db
+        
         $this->assertDatabaseHas('task_lists', ['id' => $list->id]);
     }
 
-    // /** @test */
-    // public function a_new_default_TaskList_name_should_be_a_formatted_version_of_the_current_date()
-    // {
-    //     //given a new default tasklist
-    //     //when
-    //     //then its name should be the same as (a formatted version of) the current date
-    // }
-
-    // /** @test */
-    // public function an_unsaved_TaskList_can_get_an_updated_default_name()
-    // {
-    //     //given 
-    //     //when
-    //     //then
-    // }
-
-    // /** @test */
-    // public function a_new_default_TaskList_is_named_after_the_current_date()
-    // {
+    /** @test */
+    public function a_new_default_TaskList_is_named_after_the_current_date()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newDefaultTaskList($user);
         
-    // }
+        $today = \Carbon\Carbon::today();
+        $todayFormatted = $today->format('l\, F jS'); // format like Friday, October 20th
+
+        $this->assertEquals($todayFormatted, $list->name);
+    }
 
     // /** @test */
     // public function a_new_default_TaskList_gets_false_saved_status()
@@ -143,9 +132,17 @@ class TaskListTest extends TestCase
     // }
 
     // /** @test */
-    // public function a_new_default_TaskList_has_a_Category_named_none()
+    // public function a_new_default_TaskList_has_a_Category_and_Subcategory_with_null_name()
     // {
         
+    // }
+
+    // /** @test */
+    // public function an_unsaved_TaskList_can_get_an_updated_default_name()
+    // {
+    //     //given 
+    //     //when
+    //     //then
     // }
 
     // /** @test */
