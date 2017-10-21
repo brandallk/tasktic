@@ -13,6 +13,33 @@ class TaskListTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function a_TaskList_can_be_created()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        
+        $this->assertDatabaseHas('task_lists', ['id' => $list->id, 'name' => 'New List']);
+    }
+
+    /** @test */
+    public function a_new_TaskList_gets_true_saved_status()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        
+        $this->assertEquals(true, $list->saved);
+    }
+
+    /** @test */
+    public function a_new_TaskList_gets_true_autodelete_status_by_default()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        
+        $this->assertEquals(true, $list->autodelete);
+    }
+
+    /** @test */
     public function a_TaskList_belongs_to_a_User()
     {
         $user = factory(User::class)->create(['name' => 'testuser']);
@@ -56,9 +83,27 @@ class TaskListTest extends TestCase
     }
 
     // /** @test */
-    // public function a_default_TaskList_can_be_created()
+    // public function a_TaskList_can_be_updated()
     // {
         
+    // }
+
+    // /** @test */
+    // public function an_unsaved_TaskList_can_get_an_updated_default_name()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_TaskList_can_be_deleted()
+    // {
+        
+    // }
+
+    // /** @test */
+    // public function a_default_TaskList_can_be_created()
+    // {
+    //     //
     // }
 
     // /** @test */
@@ -80,30 +125,6 @@ class TaskListTest extends TestCase
     // }
 
     // /** @test */
-    // public function a_custom_TaskList_can_be_created()
-    // {
-        
-    // }
-
-    /** @test */
-    public function a_new_custom_TaskList_gets_true_saved_status()
-    {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        
-        $this->assertEquals(true, $list->saved);
-    }
-
-    /** @test */
-    public function a_new_TaskList_gets_true_autodelete_status_by_default()
-    {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        
-        $this->assertEquals(true, $list->autodelete);
-    }
-
-    // /** @test */
     // public function a_TaskList_can_add_list_elements()
     // {
         
@@ -116,25 +137,7 @@ class TaskListTest extends TestCase
     // }
 
     // /** @test */
-    // public function a_TaskList_can_be_updated()
-    // {
-        
-    // }
-
-    // /** @test */
-    // public function an_unsaved_TaskList_can_get_an_updated_default_name()
-    // {
-        
-    // }
-
-    // /** @test */
     // public function a_list_element_can_be_deleted()
-    // {
-        
-    // }
-
-    // /** @test */
-    // public function a_TaskList_can_be_deleted()
     // {
         
     // }
