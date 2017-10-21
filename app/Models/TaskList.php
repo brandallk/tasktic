@@ -87,7 +87,7 @@ class TaskList extends Model
         return $this->elements;
     }
 
-    public function deleteListElement(int $listElementID)
+    public function deleteListElement(string $listElementID)
     {
         if (array_key_exists($listElementID, $this->elements)) {
             unset($this->elements[$listElementID]);
