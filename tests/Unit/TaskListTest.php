@@ -128,18 +128,28 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_new_default_TaskList_gets_false_saved_status()
     {
-        //given a new default tasklist
         $user = factory(User::class)->create();
         $list = TaskList::newDefaultTaskList($user);
-        //then its tasklist->saved == false
+        
         $this->assertFalse($list->saved);
     }
 
-    // /** @test */
-    // public function a_new_default_TaskList_has_a_Category_and_Subcategory_with_null_name()
-    // {
+    /** @test */
+    public function a_new_default_TaskList_has_a_Category_and_Subcategory_with_null_name()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newDefaultTaskList($user);
         
-    // }
+        $this->assertDatabaseHas('categories', [
+            'task_list_id' => $list->id,
+            'name' => null
+        ]);
+        
+        $this->assertDatabaseHas('subcategories', [
+            'category_id' => $list->categories()->first()->id,
+            'name' => null
+        ]);
+    }
 
     // /** @test */
     // public function an_unsaved_TaskList_can_get_an_updated_default_name()

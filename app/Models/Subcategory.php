@@ -15,23 +15,39 @@ class Subcategory extends Model
 
     public function category()
     {
-        //
+        return $this->belongsTo(Category::class);
     }
 
     public function tasks()
     {
-        //
+        return $this->hasMany(Task::class);
     }
 
     public static function newDefaultSubcategory(Category $category)
     {
-        //
+        // Create a new Subcategory with 'name' == null
+        $defaultSubcategory = self::newSubcategory($category, null);
+
+        return $defaultSubcategory;
     }
 
     /** @param $name  is either a string or null */
     public static function newSubcategory(Category $category, $name)
     {
-        //
+        $uniqueID = uniqid();
+
+        $subcategory = self::create([
+            'category_id' => $category->id,
+            'name' => $name,
+            'list_element_id' => $uniqueID,
+        ]);
+
+        $subcategory->category()->associate($category);
+        $subcategory->save();
+
+        $category->taskList->addListElement('subcategory', $name, $uniqueID);
+
+        return $subcategory;
     }
 
     public function updateSubcategory(Subcategory $subcategory, string $name)
