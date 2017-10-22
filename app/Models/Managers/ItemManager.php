@@ -35,11 +35,11 @@ class ItemManager
         return $itemType::newItem($task, $content);
     }
 
-    public static function deleteItem(string $type, int $uniqueID)
+    public static function deleteItem(string $type, int $uniqueID, Task $task)
     {
         $itemType = self::item($type);
 
         $item = $itemType::where('list_element_id', $uniqueID)->first();
-        $itemType::deleteItem($item);
+        $itemType::deleteItem($item, $task);
     }
 }

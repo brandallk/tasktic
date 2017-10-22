@@ -13,5 +13,5 @@ interface Item
 
     public function updateItem(Item $item, string $content);
 
-    public static function deleteItem(Item $item);
+    public static function deleteItem(Item $item, Task $task);
 }
