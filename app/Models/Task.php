@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ListElement;
 use App\Models\Subcategory;
 use App\Models\Task;
-use App\Models\Interfaces\Item;
+use App\Models\Interfaces\iItem;
 use App\Models\DeadlineItem;
 use App\Models\DetailItem;
 use App\Models\LinkItem;
@@ -39,7 +40,7 @@ class Task extends Model
         return $this->hasMany(LinkItem::class);
     }
 
-    public function addItem(Item $item)
+    public function addItem(iItem $item)
     {
         $this->items[] = [
             'type' => $item->type,
@@ -47,7 +48,7 @@ class Task extends Model
         ];
     }
 
-    public function removeItem(Item $item)
+    public function removeItem(iItem $item)
     {
         $itemDescription = [
             'type' => $item->type,
@@ -60,12 +61,12 @@ class Task extends Model
         }
     }
 
-    public function newTask(Subcategory $subcategory, string $name, string $deadline = null)
+    public static function newTask(Subcategory $subcategory, string $name, string $deadline = null)
     {
         $uniqueID = uniqid();
 
         $task = self::create([
-            'subcategory_id' => $subcategory->id,
+            'subcategory_id' => $subcategory->id, // shouldn't need this if I associate with $subcategory below
             'name' => $name,
             'list_element_id' => $uniqueID,
             'deadline' => $deadline
@@ -79,7 +80,7 @@ class Task extends Model
         }
 
         $list = $subcategory->category->taskList;
-        $list->addListElement('task', $name, $uniqueID);
+        ListElement::addListElement($list, 'task', $name, $uniqueID);
 
         return $task;
     }
@@ -110,7 +111,7 @@ class Task extends Model
     public static function deleteTask(Task $task)
     {
         $list = $task->subcategory->category->taskList;
-        $taskID = $task->list_element_id;
+        $uniqueID = $task->list_element_id;
 
         foreach ($task->items as $item) {
             ItemManager::deleteItem($item->type, $item->uniqueID, $task);
@@ -119,6 +120,6 @@ class Task extends Model
         // Note: important that the Task is deleted AFTER its child Items are deleted
         $task->delete();
 
-        $list->deleteListElement($taskID);
+        ListElement::deleteListElement($list, $uniqueID);
     }
 }

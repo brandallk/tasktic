@@ -15,20 +15,21 @@ class ItemManager
 
         switch ($type) {
             case 'deadline':
-                $itemType = 'DeadlineItem';
+                $itemType = DeadlineItem::class;
                 break;
             case 'detail':
-                $itemType = 'DetailItem';
+                $itemType = DetailItem::class;
                 break;
             case 'link':
-                $itemType = 'LinkItem';
+                $itemType = LinkItem::class;
                 break;
         }
 
         return $itemType;
     }
 
-    public static function newItem(string $type, string $content, Task $task)
+    /** @param $content  is either DateTime, string, or text */
+    public static function newItem(string $type, $content, Task $task)
     {
         $itemType = self::item($type);
 

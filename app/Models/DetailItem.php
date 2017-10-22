@@ -8,7 +8,7 @@ use App\Models\Interfaces\iItem;
 class DetailItem extends Item
 {
     protected $fillable = [
-        'task_id', 'list_element_id', 'type', 'content'
+        'task_id', 'list_element_id', 'type', 'detail'
     ];
 
     public function updateTask(iItem $item, string $content)

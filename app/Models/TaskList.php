@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\TaskList;
+use App\Models\ListElement;
 use App\Models\Category;
 
 class TaskList extends Model
@@ -12,8 +13,6 @@ class TaskList extends Model
     protected $fillable = [
         'user_id', 'name', 'saved', 'autodelete'
     ];
-
-    public $elements = []; // make this a hasOne Eloquent relationship & add a migration for 'list_elements' table with 'id', 'task_list_id', 'unique_id', 'type', and 'name'. Create a class ListElement with $fillables, taskList(), etc.
 
     public function user()
     {
@@ -23,6 +22,11 @@ class TaskList extends Model
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+
+    public function listElements()
+    {
+        return $this->hasMany(ListElement::class);
     }
 
     public static function newDefaultTaskList(User $user)
@@ -51,18 +55,6 @@ class TaskList extends Model
         return $list;
     }
 
-    /** @param $name  is either a string or null */
-    public function addListElement(string $type, $name, string $uniqueID)
-    {
-        // Remake this as ListElement::addListElement(TaskList $list, string $type, $name, string $uniqueID). Pull in the TaskList and add columns 'unique_id', 'type', and 'name' to TaskList->elements
-        $listElement = [
-            'type' => $type,
-            'name' => $name,
-        ];
-
-        $this->elements[$uniqueID] = $listElement;
-    }
-
     public function updateTaskList(TaskList $list, string $name)
     {
         $list->name = $name;
@@ -81,14 +73,6 @@ class TaskList extends Model
         }
 
         return false;
-    }
-
-    public function deleteListElement(string $listElementID)
-    {
-        // Remake this as ListElement::deleteListElement(TaskList $list, string $uniqueID)
-        if (array_key_exists($listElementID, $this->elements)) {
-            unset($this->elements[$listElementID]);
-        }
     }
 
     public static function deleteTaskList(TaskList $list)

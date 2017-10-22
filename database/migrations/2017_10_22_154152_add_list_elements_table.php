@@ -18,7 +18,7 @@ class AddListElementsTable extends Migration
             $table->integer('task_list_id')->unsigned();
             $table->string('unique_id');
             $table->string('type');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

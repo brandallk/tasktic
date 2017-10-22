@@ -9,7 +9,8 @@ interface iItem
 {
     public function task();
 
-    public static function newItem(Task $task, string $type, string $content);
+    /** @param $content  is either DateTime, string, or text */
+    public static function newItem(Task $task, string $type, $content);
 
     public function updateItem(iItem $item, string $content);
 

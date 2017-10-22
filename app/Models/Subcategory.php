@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ListElement;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Task;
@@ -37,7 +38,7 @@ class Subcategory extends Model
         $uniqueID = uniqid();
 
         $subcategory = self::create([
-            'category_id' => $category->id,
+            'category_id' => $category->id, // shouldn't need this if I associate with $category below
             'name' => $name,
             'list_element_id' => $uniqueID,
         ]);
@@ -45,7 +46,8 @@ class Subcategory extends Model
         $subcategory->category()->associate($category);
         $subcategory->save();
 
-        $category->taskList->addListElement('subcategory', $name, $uniqueID);
+        $list = $category->taskList;
+        ListElement::addListElement($list, 'subcategory', $name, $uniqueID);
 
         return $subcategory;
     }
@@ -61,7 +63,7 @@ class Subcategory extends Model
     public static function deleteSubcategory(Subcategory $subcategory)
     {
         $list = $subcategory->category->taskList;
-        $subcategoryID = $subcategory->list_element_id;
+        $uniqueID = $subcategory->list_element_id;
 
         foreach ($subcategory->tasks as $task) {
             Task::deleteTask($task);
@@ -70,6 +72,6 @@ class Subcategory extends Model
         // Note: important that the Subcategory is deleted AFTER its child Tasks are deleted
         $subcategory->delete();
 
-        $list->deleteListElement($subcategoryID);
+        ListElement::deleteListElement($list, $uniqueID);
     }
 }
