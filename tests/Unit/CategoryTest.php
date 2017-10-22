@@ -21,15 +21,20 @@ class CategoryTest extends TestCase
         $category = Category::newCategory($list, 'New Category');
         
         $this->assertDatabaseHas('categories', ['id' => $category->id, 'name' => 'New Category']);
+        $this->assertInstanceOf(Category::class, $category);
     }
 
-    // /** @test */
-    // public function a_Category_has_a_name_and_list_element_id()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_Category_has_a_name_and_list_element_id()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category'); 
+        
+        $this->assertEquals('New Category', $category->name);
+        $this->assertFalse($category->list_element_id == null);
+        $this->assertInternalType('string', $category->list_element_id);
+    }
 
     // /** @test */
     // public function a_Category_belongs_to_a_TaskList()
