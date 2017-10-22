@@ -78,7 +78,8 @@ class Task extends Model
             ItemManager::newItem('deadline', $deadline, $task);
         }
 
-        $subcategory->category->taskList->addListElement('task', $name, $uniqueID);
+        $list = $subcategory->category->taskList;
+        $list->addListElement('task', $name, $uniqueID);
 
         return $task;
     }
@@ -91,9 +92,6 @@ class Task extends Model
         }
 
         if (!is_null($deadline)) {
-            $task->deadline = $deadline;
-            $task->save();
-
             $item = $task->deadlineItem;
             $item->updateItem($item, $deadline);
         }
