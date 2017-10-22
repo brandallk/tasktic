@@ -13,7 +13,7 @@ class TaskList extends Model
         'user_id', 'name', 'saved', 'autodelete'
     ];
 
-    public $elements = [];
+    public $elements = []; // make this a hasOne Eloquent relationship & add a migration for 'list_elements' table with 'id', 'task_list_id', 'unique_id', 'type', and 'name'. Create a class ListElement with $fillables, taskList(), etc.
 
     public function user()
     {
@@ -54,6 +54,7 @@ class TaskList extends Model
     /** @param $name  is either a string or null */
     public function addListElement(string $type, $name, string $uniqueID)
     {
+        // Remake this as ListElement::addListElement(TaskList $list, string $type, $name, string $uniqueID). Pull in the TaskList and add columns 'unique_id', 'type', and 'name' to TaskList->elements
         $listElement = [
             'type' => $type,
             'name' => $name,
@@ -84,6 +85,7 @@ class TaskList extends Model
 
     public function deleteListElement(string $listElementID)
     {
+        // Remake this as ListElement::deleteListElement(TaskList $list, string $uniqueID)
         if (array_key_exists($listElementID, $this->elements)) {
             unset($this->elements[$listElementID]);
         }

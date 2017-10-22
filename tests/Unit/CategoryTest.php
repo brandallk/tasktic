@@ -46,13 +46,18 @@ class CategoryTest extends TestCase
         $this->assertEquals('New List', $category->taskList->name);
     }
 
-    // /** @test */
-    // public function a_new_Category_is_added_to_its_TaskList_elements_array()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_new_Category_is_added_to_its_TaskList_elements_array()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category'); 
+        
+        $this->assertContains(
+            ['type' => 'category', 'name' => 'New Category'],
+            $list->elements
+        );
+    }
 
     // /** @test */
     // public function a_Category_can_add_a_Subcategory()
