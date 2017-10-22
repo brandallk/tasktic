@@ -7,12 +7,12 @@ use App\Models\Task;
 use App\Models\Interfaces\Item;
 use App\Models\Traits\Deletable;
 
-class DeadlineItem extends Model implements Item
+class DetailItem extends Model implements Item
 {
     use Deletable;
 
     protected $fillable = [
-        'task_id', 'list_element_id', 'type', 'deadline'
+        'task_id', 'list_element_id', 'type', 'content'
     ];
 
     public function task()
@@ -20,7 +20,7 @@ class DeadlineItem extends Model implements Item
         return $this->belongsTo(Task::class);
     }
 
-    public static function newItem(Task $task, string $deadline)
+    public static function newItem(Task $task, string $content)
     {
         $uniqueID = uniqid();
 
@@ -28,7 +28,7 @@ class DeadlineItem extends Model implements Item
             'task_id' => $task->id,
             'list_element_id' => $uniqueID,
             'type' => 'deadline',
-            'deadline' => $deadline
+            'content' => $content
         ]);
 
         $item->task()->associate($task);
@@ -37,18 +37,15 @@ class DeadlineItem extends Model implements Item
         $task->addItem($item);
 
         $list = $task->subcategory->category->taskList;
-        $list->addListElement('deadlineItem', $deadline, $uniqueID);
+        $list->addListElement('detailItem', $content, $uniqueID);
 
         return $item;
     }
 
-    public function updateItem(Item $item, string $deadline)
+    public function updateItem(Item $item, string $content)
     {
-        $item->deadline = $deadline;
+        $item->content = $content;
         $item->save();
-
-        $item->task->deadline = $deadline;
-        $item->task->save();
 
         return $item;
     }
