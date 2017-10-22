@@ -17,7 +17,7 @@ class Task extends Model
         'subcategory_id', 'name', 'list_element_id'
     ];
 
-    public items = [];
+    public $items = [];
 
     public function subcategory()
     {
@@ -26,7 +26,7 @@ class Task extends Model
 
     public function deadlineItem()
     {
-        return->hasOne(DeadlineItem::class);
+        return $this->hasOne(DeadlineItem::class);
     }
 
     public function detailItems()
