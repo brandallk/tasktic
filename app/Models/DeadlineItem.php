@@ -2,54 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Task;
-use App\Models\Interfaces\Item;
-use App\Models\Traits\Deletable;
+use App\Models\Item;
+use App\Models\Interfaces\iItem;
 
-class DeadlineItem extends Model implements Item
+class DeadlineItem extends Item
 {
-    use Deletable;
-
     protected $fillable = [
         'task_id', 'list_element_id', 'type', 'deadline'
     ];
 
-    public function task()
+    public function updateTask(iItem $item, string $content)
     {
-        return $this->belongsTo(Task::class);
-    }
+        $task = $item->task;
+        $task->deadline = $content;
+        $task->save();
 
-    public static function newItem(Task $task, string $content)
-    {
-        $uniqueID = uniqid();
-
-        $item = self::create([
-            'task_id' => $task->id,
-            'list_element_id' => $uniqueID,
-            'type' => 'deadline',
-            'deadline' => $content
-        ]);
-
-        $item->task()->associate($task);
-        $item->save();
-
-        $task->addItem($item);
-
-        $list = $task->subcategory->category->taskList;
-        $list->addListElement('deadlineItem', $content, $uniqueID);
-
-        return $item;
-    }
-
-    public function updateItem(Item $item, string $content)
-    {
-        $item->deadline = $content;
-        $item->save();
-
-        $item->task->deadline = $content;
-        $item->task->save();
-
-        return $item;
+        return $task;
     }
 }
