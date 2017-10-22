@@ -36,13 +36,15 @@ class CategoryTest extends TestCase
         $this->assertInternalType('string', $category->list_element_id);
     }
 
-    // /** @test */
-    // public function a_Category_belongs_to_a_TaskList()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_Category_belongs_to_a_TaskList()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        
+        $this->assertEquals('New List', $category->taskList->name);
+    }
 
     // /** @test */
     // public function a_new_Category_is_added_to_its_TaskList_elements_array()

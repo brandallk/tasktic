@@ -45,9 +45,6 @@ class TaskListTest extends TestCase
         $user = factory(User::class)->create(['name' => 'testuser']);
         $list = TaskList::newTaskList($user, 'New List');
 
-        $list->user()->associate($user);
-        $list->save();
-
         $this->assertEquals('testuser', $list->user->name);
     }
 
