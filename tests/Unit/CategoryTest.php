@@ -115,13 +115,15 @@ class CategoryTest extends TestCase
         $this->assertDatabaseMissing('categories', ['id' => $category->id, 'name' => 'Category Name']);
     }
 
-    // /** @test */
-    // public function a_default_Category_can_be_created()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_default_Category_can_be_created()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newDefaultCategory($list);
+        
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
+    }
 
     // /** @test */
     // public function a_default_Category_is_named_null()
