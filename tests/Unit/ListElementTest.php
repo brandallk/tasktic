@@ -44,11 +44,15 @@ class ListElementTest extends TestCase
         $this->assertEquals('List Name', $listElement->taskList->name);
     }
 
-    // /** @test */
-    // public function a_List_Element_can_be_deleted()
-    // {
-    //     // given 
-    //     // when 
-    //     // then 
-    // }
+    /** @test */
+    public function a_List_Element_can_be_deleted()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $listElement = ListElement::addListElement($list, 'task', 'Task Name', 'dnor794#dnu8v');
+
+        ListElement::deleteListElement($list, 'dnor794#dnu8v');
+        
+        $this->assertDatabaseMissing('list_elements', ['id' => $listElement->id, 'name' => 'Task Name']);
+    }
 }
