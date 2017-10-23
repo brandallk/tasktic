@@ -91,13 +91,17 @@ class CategoryTest extends TestCase
         );
     }
 
-    // /** @test */
-    // public function a_Category_can_be_updated()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_Category_can_be_updated()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        
+        $category->updateCategory($category, 'New Name');
+        
+        $this->assertEquals('New Name', $category->name);
+    }
 
     // /** @test */
     // public function a_Category_can_be_deleted()
