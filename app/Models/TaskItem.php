@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
 use App\Models\Interfaces\iItem;
 
+// Contains a current record of all the corresponding Task's DeadlineItems, DetailItems, and LinkItems
 class TaskItem extends Model
 { 
     protected $fillable = [

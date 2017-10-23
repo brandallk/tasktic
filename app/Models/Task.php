@@ -44,27 +44,6 @@ class Task extends Model
         return $this->hasMany(TaskItem::class);
     }
 
-    // public function addItem(iItem $item)
-    // {
-    //     $this->items[] = [
-    //         'type' => $item->type,
-    //         'uniqueID' => $item->list_item_id
-    //     ];
-    // }
-
-    // public function removeItem(iItem $item)
-    // {
-    //     $itemDescription = [
-    //         'type' => $item->type,
-    //         'uniqueID' => $item->list_item_id
-    //     ];
-
-    //     if (in_array($itemDescription, $this->items)) {
-    //         $key = array_search($itemDescription, $this->items);
-    //         array_splice($this->items, $key, 1);
-    //     }
-    // }
-
     public static function newTask(Subcategory $subcategory, string $name, string $deadline = null)
     {
         $uniqueID = uniqid();

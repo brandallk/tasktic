@@ -7,6 +7,10 @@ use App\Models\User;
 use App\Models\TaskList;
 use App\Models\Category;
 
+/* Contains a current record of all the corresponding TaskList's Categories, Subcategories, Tasks, and task Items.
+ * Each such ListElement is distinguished from the others belonging to the TaskList via a unique random-string id,
+ * its 'unique_id', which is also stored on each individual Category, Subcategory, Task, and iItem model as its
+ * 'list_element_id'. */
 class ListElement extends Model
 {
     protected $fillable = [
