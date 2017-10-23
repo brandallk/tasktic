@@ -135,11 +135,14 @@ class CategoryTest extends TestCase
         $this->assertEquals(null, $category->name);
     }
 
-    // /** @test */
-    // public function a_default_Category_has_a_Subcategory_named_null()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_default_Category_has_a_Subcategory_named_null()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newDefaultCategory($list);
+
+        $this->assertDatabaseHas('subcategories', ['category_id' => $category->id, 'name' => null]);
+        $this->assertEquals(null, $category->subcategories()->first()->name);
+    }
 }
