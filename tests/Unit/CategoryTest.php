@@ -76,13 +76,20 @@ class CategoryTest extends TestCase
         $this->assertDatabaseHas('subcategories', ['category_id' => $category->id, 'name' => 'New Subcategory']); 
     }
 
-    // /** @test */
-    // public function a_Category_can_access_its_Subcategories()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_Category_can_access_its_Subcategories()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        
+        $newSubcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+
+        $this->assertEquals(
+            $newSubcategory->id,
+            $category->subcategories->where('name', 'New Subcategory')->first()->id
+        );
+    }
 
     // /** @test */
     // public function a_Category_can_be_updated()
