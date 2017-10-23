@@ -103,13 +103,17 @@ class CategoryTest extends TestCase
         $this->assertEquals('New Name', $category->name);
     }
 
-    // /** @test */
-    // public function a_Category_can_be_deleted()
-    // {
-    //     //given 
-    //     //when 
-    //     //then 
-    // }
+    /** @test */
+    public function a_Category_can_be_deleted()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        
+        Category::deleteCategory($category);
+        
+        $this->assertDatabaseMissing('categories', ['id' => $category->id, 'name' => 'Category Name']);
+    }
 
     // /** @test */
     // public function a_default_Category_can_be_created()
