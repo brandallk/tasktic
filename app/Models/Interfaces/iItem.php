@@ -12,9 +12,11 @@ interface iItem
     /** @param $content  is either DateTime, string, or text */
     public static function newItem(Task $task, string $type, $content);
 
-    public function updateItem(iItem $item, string $content);
+    /** @param $content  is either DateTime, string, or text */
+    public function updateItem(iItem $item, $content);
 
-    public function updateTask(iItem $item, string $content);
+    /** @param $content  is either DateTime, string, or text */
+    public function updateTask(iItem $item, $content);
 
     public static function deleteItem(iItem $item, Task $task);
 }

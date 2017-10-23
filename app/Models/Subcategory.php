@@ -38,7 +38,7 @@ class Subcategory extends Model
         $uniqueID = uniqid();
 
         $subcategory = self::create([
-            'category_id' => $category->id, // shouldn't need this if I associate with $category below
+            'category_id' => $category->id,
             'name' => $name,
             'list_element_id' => $uniqueID,
         ]);

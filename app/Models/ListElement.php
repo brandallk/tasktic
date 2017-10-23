@@ -22,7 +22,7 @@ class ListElement extends Model
     public static function addListElement(TaskList $list, string $type, $name, string $uniqueID)
     {
         $element = self::create([
-            'task_list_id' => $list->id, // shouldn't need this if I associate with $list below
+            'task_list_id' => $list->id,
             'unique_id' => $uniqueID,
             'type' => $type,
             'name' => $name

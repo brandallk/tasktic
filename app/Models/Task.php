@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\ListElement;
 use App\Models\Subcategory;
 use App\Models\Task;
+use App\Models\TaskItem;
 use App\Models\Interfaces\iItem;
 use App\Models\DeadlineItem;
 use App\Models\DetailItem;
@@ -17,8 +18,6 @@ class Task extends Model
     protected $fillable = [
         'subcategory_id', 'name', 'list_element_id'
     ];
-
-    public $items = [];
 
     public function subcategory()
     {
@@ -40,33 +39,38 @@ class Task extends Model
         return $this->hasMany(LinkItem::class);
     }
 
-    public function addItem(iItem $item)
+    public function taskItems()
     {
-        $this->items[] = [
-            'type' => $item->type,
-            'uniqueID' => $item->list_item_id
-        ];
+        return $this->hasMany(TaskItem::class);
     }
 
-    public function removeItem(iItem $item)
-    {
-        $itemDescription = [
-            'type' => $item->type,
-            'uniqueID' => $item->list_item_id
-        ];
+    // public function addItem(iItem $item)
+    // {
+    //     $this->items[] = [
+    //         'type' => $item->type,
+    //         'uniqueID' => $item->list_item_id
+    //     ];
+    // }
 
-        if (in_array($itemDescription, $this->items)) {
-            $key = array_search($itemDescription, $this->items);
-            array_splice($this->items, $key, 1);
-        }
-    }
+    // public function removeItem(iItem $item)
+    // {
+    //     $itemDescription = [
+    //         'type' => $item->type,
+    //         'uniqueID' => $item->list_item_id
+    //     ];
+
+    //     if (in_array($itemDescription, $this->items)) {
+    //         $key = array_search($itemDescription, $this->items);
+    //         array_splice($this->items, $key, 1);
+    //     }
+    // }
 
     public static function newTask(Subcategory $subcategory, string $name, string $deadline = null)
     {
         $uniqueID = uniqid();
 
         $task = self::create([
-            'subcategory_id' => $subcategory->id, // shouldn't need this if I associate with $subcategory below
+            'subcategory_id' => $subcategory->id,
             'name' => $name,
             'list_element_id' => $uniqueID,
             'deadline' => $deadline

@@ -40,7 +40,7 @@ class Category extends Model
         $uniqueID = uniqid();
 
         $category = self::create([
-            'task_list_id' => $list->id, // shouldn't need this if I associate with $list below
+            'task_list_id' => $list->id,
             'name' => $name,
             'list_element_id' => $uniqueID,
         ]);
