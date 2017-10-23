@@ -40,10 +40,10 @@ class CategoryTest extends TestCase
     public function a_Category_belongs_to_a_TaskList()
     {
         $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
         
-        $this->assertEquals('New List', $category->taskList->name);
+        $this->assertEquals('List Name', $category->taskList->name);
     }
 
     /** @test */

@@ -34,13 +34,15 @@ class ListElementTest extends TestCase
         $this->assertEquals('dnor794#dnu8v', $listElement->unique_id);
     }
 
-    // /** @test */
-    // public function a_List_Element_belongs_to_a_TaskList()
-    // {
-    //     // given 
-    //     // when 
-    //     // then 
-    // }
+    /** @test */
+    public function a_List_Element_belongs_to_a_TaskList()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $listElement = ListElement::addListElement($list, 'task', 'Task Name', 'dnor794#dnu8v');
+
+        $this->assertEquals('List Name', $listElement->taskList->name);
+    }
 
     // /** @test */
     // public function a_List_Element_can_be_deleted()
