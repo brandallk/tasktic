@@ -31,18 +31,19 @@ class TaskTest extends TestCase
         $this->assertInstanceOf(Task::class, $task);
     }
 
-    // /** @test */
-    // public function a_Subcategory_has_a_name_and_list_element_id()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'New List');
-    //     $category = Category::newCategory($list, 'New Category');
-    //     $subcategory = Subcategory::newSubcategory($category, 'New Subcategory'); 
+    /** @test */
+    public function a_Task_has_a_name_and_list_element_id()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $task = Task::newTask($subcategory, 'New Task');
         
-    //     $this->assertEquals('New Subcategory', $subcategory->name);
-    //     $this->assertFalse($subcategory->list_element_id == null);
-    //     $this->assertInternalType('string', $subcategory->list_element_id);
-    // }
+        $this->assertEquals('New Task', $task->name);
+        $this->assertFalse($task->list_element_id == null);
+        $this->assertInternalType('string', $task->list_element_id);
+    }
 
     // /** @test */
     // public function a_Subcategory_belongs_to_a_Category()
