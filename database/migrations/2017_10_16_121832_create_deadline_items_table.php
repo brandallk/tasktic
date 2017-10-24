@@ -18,7 +18,7 @@ class CreateDeadlineItemsTable extends Migration
             $table->integer('task_id')->unsigned();
             $table->string('list_element_id');
             $table->string('type')->default('deadline');
-            $table->dateTime('deadline');
+            $table->string('deadline');
             $table->timestamps();
         });
     }

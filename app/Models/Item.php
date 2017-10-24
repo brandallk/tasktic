@@ -10,15 +10,12 @@ use App\Models\Interfaces\iItem;
 
 abstract class Item extends Model implements iItem
 {
-    /** @param $content  is either DateTime, string, or text */
-    abstract public function updateTask(iItem $item, $content);
-
     public function task()
     {
         return $this->belongsTo(Task::class);
     }
 
-    /** @param $content  is either DateTime, string, or text */
+    /** @param $content  is either string or text */
     public static function newItem(Task $task, string $type, $content)
     {
         $uniqueID = uniqid();
@@ -41,17 +38,9 @@ abstract class Item extends Model implements iItem
         return $item;
     }
 
-    /** @param $content  is either DateTime, string, or text */
-    public function updateItem(iItem $item, $content)
-    {
-        $item->content = $content;
-        $item->save();
-
-        $this->updateTask($item, $content);
-
-        return $item;
-    }
-
+    /** @param $content  is either string or text */
+    abstract public function updateItem(iItem $item, Task $task, $content);
+    
     public static function deleteItem(iItem $item, Task $task)
     {
         $list = $task->subcategory->category->taskList;

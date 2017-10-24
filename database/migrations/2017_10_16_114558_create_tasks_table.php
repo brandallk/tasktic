@@ -19,7 +19,7 @@ class CreateTasksTable extends Migration
             $table->string('list_element_id');
             $table->string('name');
             $table->string('status')->default('incomplete');
-            $table->dateTime('deadline')->nullable();
+            $table->string('deadline')->nullable();
             $table->timestamps();
         });
     }

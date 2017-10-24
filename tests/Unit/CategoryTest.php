@@ -112,7 +112,15 @@ class CategoryTest extends TestCase
         
         Category::deleteCategory($category);
         
-        $this->assertDatabaseMissing('categories', ['id' => $category->id, 'name' => 'Category Name']);
+        $this->assertDatabaseMissing(
+            'categories',
+            ['id' => $category->id, 'name' => 'Category Name']
+        );
+
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['type' => 'category', 'name' => 'Category Name']
+        );
     }
 
     /** @test */

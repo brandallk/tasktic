@@ -13,7 +13,7 @@ class ListElementTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_List_Element_can_be_created()
+    public function a_ListElement_can_be_created()
     {
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'New List');
@@ -23,7 +23,7 @@ class ListElementTest extends TestCase
     }
 
     /** @test */
-    public function a_List_Element_has_a_type_a_name_and_a_unique_id()
+    public function a_ListElement_has_a_type_a_name_and_a_unique_id()
     {
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'New List');
@@ -35,7 +35,7 @@ class ListElementTest extends TestCase
     }
 
     /** @test */
-    public function a_List_Element_belongs_to_a_TaskList()
+    public function a_ListElement_belongs_to_a_TaskList()
     {
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -45,7 +45,7 @@ class ListElementTest extends TestCase
     }
 
     /** @test */
-    public function a_List_Element_can_be_deleted()
+    public function a_ListElement_can_be_deleted()
     {
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -53,6 +53,9 @@ class ListElementTest extends TestCase
 
         ListElement::deleteListElement($list, 'dnor794#dnu8v');
         
-        $this->assertDatabaseMissing('list_elements', ['id' => $listElement->id, 'name' => 'Task Name']);
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['id' => $listElement->id, 'name' => 'Task Name']
+        );
     }
 }

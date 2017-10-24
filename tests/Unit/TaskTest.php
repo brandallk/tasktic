@@ -45,110 +45,256 @@ class TaskTest extends TestCase
         $this->assertInternalType('string', $task->list_element_id);
     }
 
-    // /** @test */
-    // public function a_Subcategory_belongs_to_a_Category()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'List Name');
-    //     $category = Category::newCategory($list, 'Category Name');
-    //     $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+    /** @test */
+    public function a_new_Task_has_status_equal_to_incomplete_by_default()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $task = Task::newTask($subcategory, 'New Task');
         
-    //     $this->assertEquals('Category Name', $subcategory->category->name);
-    // }
+        $this->assertEquals('incomplete', $task->status);
+    }
 
-    // /** @test */
-    // public function a_new_Subcategory_gets_added_to_its_parent_TaskList_listElements()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'New List');
-    //     $category = Category::newCategory($list, 'New Category');
-    //     $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+    /** @test */
+    public function a_new_Task_has_deadline_equal_to_null_by_default()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $task = Task::newTask($subcategory, 'New Task');
         
-    //     $this->assertDatabaseHas(
-    //         'list_elements',
-    //         ['type' => 'subcategory', 'name' => 'New Subcategory']
-    //     );
+        $this->assertEquals(null, $task->deadline);
+    }
 
-    //     $this->assertEquals(
-    //         'New Subcategory',
-    //         $list->listElements->where('unique_id', $subcategory->list_element_id)->first()->name
-    //     );
-    // }
-
-    // /** @test */
-    // public function a_Subategory_can_add_a_Task()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'New List');
-    //     $category = Category::newCategory($list, 'New Category');
-    //     $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+    /** @test */
+    public function a_new_Task_can_be_assigned_a_deadline()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $task = Task::newTask($subcategory, 'New Task', 'Monday, Oct. 24');
         
-    //     $newTask = Task::newTask($subcategory, 'New Task');
+        $this->assertDatabaseHas('deadline_items', ['task_id' => $task->id, 'deadline' => 'Monday, Oct. 24']);
+        $this->assertEquals('Monday, Oct. 24', $task->deadline);
+        $this->assertEquals('Monday, Oct. 24', $task->deadlineItem->deadline);
+    }
 
-    //     $this->assertDatabaseHas('tasks', ['subcategory_id' => $subcategory->id, 'name' => 'New Task']); 
-    // }
-
-    // /** @test */
-    // public function a_Subategory_can_access_its_Tasks()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'New List');
-    //     $category = Category::newCategory($list, 'New Category');
-    //     $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+    /** @test */
+    public function a_new_Task_that_is_assigned_a_deadline_gets_a_corresponding_task_item_automatically()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $task = Task::newTask($subcategory, 'New Task', 'Monday, Oct. 24');
         
-    //     $newTask = Task::newTask($subcategory, 'New Task');
+        $this->assertDatabaseHas('task_items', ['task_id' => $task->id, 'type' => 'deadline']);
+        $this->assertEquals(
+            'deadline',
+            $task->taskItems->where('unique_id', $task->deadlineItem->list_element_id)->first()->type
+        );
+    }
 
-    //     $this->assertEquals(
-    //         $newTask->id,
-    //         $subcategory->tasks->where('name', 'New Task')->first()->id
-    //     );
-    // }
-
-    // /** @test */
-    // public function a_Subcategory_can_be_updated()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'New List');
-    //     $category = Category::newCategory($list, 'New Category');
-    //     $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+    /** @test */
+    public function a_Task_belongs_to_a_Subcategory()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name');
         
-    //     $subcategory->updateSubcategory($subcategory, 'New Name');
-        
-    //     $this->assertEquals('New Name', $subcategory->name);
-    // }
+        $this->assertEquals('Subcategory Name', $task->subcategory->name);
+    }
 
-    // /** @test */
-    // public function a_Subcategory_can_be_deleted()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'List Name');
-    //     $category = Category::newCategory($list, 'Category Name');
-    //     $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+    /** @test */
+    public function a_new_Task_gets_added_to_its_parent_TaskList_listElements_automatically()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $task = Task::newTask($subcategory, 'New Task');
         
-    //     Subcategory::deleteSubcategory($subcategory);
+        $this->assertDatabaseHas(
+            'list_elements',
+            ['type' => 'task', 'name' => 'New Task']
+        );
+
+        $this->assertEquals(
+            'New Task',
+            $list->listElements->where('unique_id', $task->list_element_id)->first()->name
+        );
+    }
+
+    /** @test */
+    public function a_Task_can_add_a_DetailItem()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $task = Task::newTask($subcategory, 'New Task');
+
+        $detailItem = ItemManager::newItem('detail', 'new task detail', $task);
+
+        $this->assertDatabaseHas('detail_items', ['task_id' => $task->id, 'detail' => 'new task detail']);
+        $this->assertEquals(
+            'new task detail',
+            $task->detailItems->where('list_element_id', $detailItem->list_element_id)->first()->detail
+        );
+    }
+
+    /** @test */
+    public function a_Task_that_adds_a_DetailItem_gets_a_corresponding_TaskItem_automatically()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $task = Task::newTask($subcategory, 'New Task');
+
+        $detailItem = ItemManager::newItem('detail', 'new task detail', $task);
+
+        $this->assertDatabaseHas('task_items', ['task_id' => $task->id, 'type' => 'detail']);
+        $this->assertEquals(
+            'detail',
+            $task->taskItems->where('unique_id', $detailItem->list_element_id)->first()->type
+        );
+    }
+
+    /** @test */
+    public function a_Task_can_add_a_LinkItem()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $task = Task::newTask($subcategory, 'New Task');
+
+        $linkItem = ItemManager::newItem('link', 'http://www.example.com', $task);
+
+        $this->assertDatabaseHas('link_items', ['task_id' => $task->id, 'link' => 'http://www.example.com']);
+        $this->assertEquals(
+            'http://www.example.com',
+            $task->linkItems->where('list_element_id', $linkItem->list_element_id)->first()->link
+        );
+    }
+
+    /** @test */
+    public function a_Task_that_adds_a_LinkItem_gets_a_corresponding_TaskItem_automatically()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'New Category');
+        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $task = Task::newTask($subcategory, 'New Task');
+
+        $linkItem = ItemManager::newItem('link', 'http://www.example.com', $task);
+
+        $this->assertDatabaseHas('task_items', ['task_id' => $task->id, 'type' => 'link']);
+        $this->assertEquals(
+            'link',
+            $task->taskItems->where('unique_id', $linkItem->list_element_id)->first()->type
+        );
+    }
+
+    /** @test */
+    public function a_Task_name_can_be_updated()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $task = Task::newTask($subcategory, 'Task Name');
         
-    //     $this->assertDatabaseMissing('subcategories', ['id' => $subcategory->id, 'name' => 'Subcategory Name']);
-    // }
-
-    // /** @test */
-    // public function a_default_Subcategory_can_be_created()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'List Name');
-    //     $category = Category::newCategory($list, 'Category Name');
-    //     $subcategory = Subcategory::newDefaultSubcategory($category);
+        $task->updateDetails($task, 'New Name');
         
-    //     $this->assertDatabaseHas('subcategories', ['id' => $subcategory->id]);
-    // }
+        $this->assertEquals('New Name', $task->name);
+    }
 
-    // /** @test */
-    // public function a_default_Subcategory_is_named_null()
-    // {
-    //     $user = factory(User::class)->create();
-    //     $list = TaskList::newTaskList($user, 'List Name');
-    //     $category = Category::newCategory($list, 'Category Name');
-    //     $subcategory = Subcategory::newDefaultSubcategory($category);
+    /** @test */
+    public function a_Task_deadline_can_be_updated()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
+        
+        $task->updateDetails($task, null, 'Friday, Oct. 27');
+        
+        $this->assertEquals('Friday, Oct. 27', $task->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
+    }
 
-    //     $this->assertEquals(null, $subcategory->name);
-    // }
+    /** @test */
+    public function a_Task_name_and_deadline_can_be_updated_simultaneously()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
+        
+        $task->updateDetails($task, 'New Name', 'Friday, Oct. 27');
+        
+        $this->assertEquals('New Name', $task->name);
+        $this->assertEquals('Friday, Oct. 27', $task->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
+    }
+
+    /** @test */
+    public function Task_status_can_be_updated()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $task = Task::newTask($subcategory, 'Task Name');
+
+        // default status
+        $this->assertEquals('incomplete', $task->status);
+        
+        // change to 'complete' status
+        $task->updateStatus($task, 'complete');
+        
+        $this->assertEquals('complete', $task->status);
+
+        // change to 'priority' status
+        $task->updateStatus($task, 'priority');
+        
+        $this->assertEquals('priority', $task->status);
+
+        // change back to 'incomplete' status
+        $task->updateStatus($task, 'incomplete');
+        
+        $this->assertEquals('incomplete', $task->status);
+    }
+
+    /** @test */
+    public function a_Task_can_be_deleted()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $task = Task::newTask($subcategory, 'Task Name');
+        
+        Task::deleteTask($task);
+        
+        $this->assertDatabaseMissing(
+            'tasks',
+            ['id' => $task->id, 'name' => 'Task Name']
+        );
+
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['type' => 'task', 'name' => 'Task Name']
+        );
+    }
 }

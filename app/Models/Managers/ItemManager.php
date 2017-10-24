@@ -28,7 +28,7 @@ class ItemManager
         return $itemType;
     }
 
-    /** @param $content  is either DateTime, string, or text */
+    /** @param $content  is either string or text */
     public static function newItem(string $type, $content, Task $task)
     {
         $itemType = self::item($type);

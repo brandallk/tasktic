@@ -16,7 +16,7 @@ use App\Models\Managers\ItemManager;
 class Task extends Model
 {
     protected $fillable = [
-        'subcategory_id', 'name', 'list_element_id'
+        'subcategory_id', 'name', 'list_element_id', 'status', 'deadline'
     ];
 
     public function subcategory()
@@ -52,6 +52,7 @@ class Task extends Model
             'subcategory_id' => $subcategory->id,
             'name' => $name,
             'list_element_id' => $uniqueID,
+            'status' => 'incomplete',
             'deadline' => $deadline
         ]);
 
@@ -77,7 +78,7 @@ class Task extends Model
 
         if (!is_null($deadline)) {
             $item = $task->deadlineItem;
-            $item->updateItem($item, $deadline);
+            $item->updateItem($item, $task, $deadline);
         }
 
         return $task;
@@ -96,7 +97,7 @@ class Task extends Model
         $list = $task->subcategory->category->taskList;
         $uniqueID = $task->list_element_id;
 
-        foreach ($task->items as $item) {
+        foreach ($task->taskItems as $item) {
             ItemManager::deleteItem($item->type, $item->uniqueID, $task);
         }
 

@@ -11,8 +11,11 @@ class LinkItem extends Item
         'task_id', 'list_element_id', 'type', 'link'
     ];
 
-    public function updateTask(iItem $item, $content)
+    public function updateItem(iItem $item, Task $task, $content)
     {
-        return $item->task;
+        $item->link = $content;
+        $item->save();
+
+        return $item;
     }
 }

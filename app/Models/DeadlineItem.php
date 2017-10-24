@@ -11,12 +11,14 @@ class DeadlineItem extends Item
         'task_id', 'list_element_id', 'type', 'deadline'
     ];
 
-    public function updateTask(iItem $item, $content)
+    public function updateItem(iItem $item, Task $task, $content)
     {
-        $task = $item->task;
+        $item->deadline = $content;
+        $item->save();
+
         $task->deadline = $content;
         $task->save();
 
-        return $task;
+        return $item;
     }
 }

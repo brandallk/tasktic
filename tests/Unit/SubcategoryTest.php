@@ -121,7 +121,15 @@ class SubcategoryTest extends TestCase
         
         Subcategory::deleteSubcategory($subcategory);
         
-        $this->assertDatabaseMissing('subcategories', ['id' => $subcategory->id, 'name' => 'Subcategory Name']);
+        $this->assertDatabaseMissing(
+            'subcategories',
+            ['id' => $subcategory->id, 'name' => 'Subcategory Name']
+        );
+
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['type' => 'subcategory', 'name' => 'Subcategory Name']
+        );
     }
 
     /** @test */

@@ -11,8 +11,11 @@ class DetailItem extends Item
         'task_id', 'list_element_id', 'type', 'detail'
     ];
 
-    public function updateTask(iItem $item, $content)
+    public function updateItem(iItem $item, Task $task, $content)
     {
-        return $item->task;
+        $item->detail = $content;
+        $item->save();
+
+        return $item;
     }
 }
