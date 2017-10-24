@@ -36,7 +36,7 @@ class ItemManager
         return $itemType::newItem($task, $type, $content);
     }
 
-    public static function deleteItem(string $type, int $uniqueID, Task $task)
+    public static function deleteItem(string $type, string $uniqueID, Task $task)
     {
         $itemType = self::item($type);
 
