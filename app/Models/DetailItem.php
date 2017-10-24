@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Item;
+use App\Models\ListElement;
 use App\Models\Interfaces\iItem;
 
 class DetailItem extends Item
@@ -16,8 +17,7 @@ class DetailItem extends Item
         $item->detail = $content;
         $item->save();
 
-        $list = (new TaskList)->where('id', $task->id)->first();
-
+        $list = $task->subcategory->category->taskList;
         ListElement::updateListElement($list, $content, $item->list_element_id);
 
         return $item;
