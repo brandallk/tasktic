@@ -10,8 +10,6 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Task;
 use App\Models\DeadlineItem;
-use App\Models\DetailItem;
-use App\Models\LinkItem;
 
 class DeadlineItemTest extends TestCase
 {
@@ -144,7 +142,7 @@ class DeadlineItemTest extends TestCase
         );
 
         // The parent Task should be updated
-        $this->assertEquals(null, $task->deadlineItem);
+        $this->assertCount(0, $task->deadlineItem()->get());
         $this->assertEquals(null, $task->deadline);
 
         // The parent Task's corresponding TaskItem should be deleted
@@ -158,70 +156,6 @@ class DeadlineItemTest extends TestCase
         $this->assertDatabaseMissing(
             'list_elements',
             ['type' => 'deadline', 'name' => '8:00 am, December 25, 2017']
-        );
-    }
-
-
-
-
-
-
-    /** @test */
-    public function a_DetailItem_can_be_created()
-    {
-        $task = $this->makeNewTask();
-        $item = DetailItem::newItem($task, 'detail', 'a new task detail');
-
-        $this->assertDatabaseHas(
-            'detail_items',
-            ['task_id' => $task->id, 'type' => 'detail', 'detail' => 'a new task detail']
-        );
-
-        $this->assertDatabaseHas(
-            'task_items',
-            ['task_id' => $task->id, 'type' => 'detail']
-        );
-
-        $this->assertDatabaseHas(
-            'list_elements',
-            ['type' => 'detail', 'name' => 'a new task detail']
-        );
-
-        $this->assertEquals(
-            'a new task detail',
-            $task->detailItems->where('list_element_id', $item->list_element_id)->first()->detail
-        );
-    }
-
-
-
-
-
-
-    /** @test */
-    public function a_LinkItem_can_be_created()
-    {
-        $task = $this->makeNewTask();
-        $item = LinkItem::newItem($task, 'link', 'http://www.example.com');
-
-        $this->assertDatabaseHas(
-            'link_items',
-            ['task_id' => $task->id, 'type' => 'link', 'link' => 'http://www.example.com']
-        );
-
-        $this->assertDatabaseHas(
-            'task_items',
-            ['task_id' => $task->id, 'type' => 'link']
-        );
-
-        $this->assertDatabaseHas(
-            'list_elements',
-            ['type' => 'link', 'name' => 'http://www.example.com']
-        );
-
-        $this->assertEquals(
-            'http://www.example.com',
-            $task->linkItems->where('list_element_id', $item->list_element_id)->first()->link
         );
     }
 }
