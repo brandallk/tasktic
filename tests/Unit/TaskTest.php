@@ -18,13 +18,19 @@ class TaskTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function makeNewSubcategory()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        
+        return $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+    }
+
     /** @test */
     public function a_Task_can_be_created()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'New Task');
         
         $this->assertDatabaseHas('tasks', ['id' => $task->id, 'name' => 'New Task']);
@@ -34,10 +40,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_has_a_name_and_list_element_id()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'New Task');
         
         $this->assertEquals('New Task', $task->name);
@@ -48,10 +51,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_new_Task_has_status_equal_to_incomplete_by_default()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'New Task');
         
         $this->assertEquals('incomplete', $task->status);
@@ -60,10 +60,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_new_Task_has_deadline_equal_to_null_by_default()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'New Task');
         
         $this->assertEquals(null, $task->deadline);
@@ -72,10 +69,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_new_Task_can_be_assigned_a_deadline()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'New Task', 'Monday, Oct. 24');
         
         $this->assertDatabaseHas('deadline_items', ['task_id' => $task->id, 'deadline' => 'Monday, Oct. 24']);
@@ -86,10 +80,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_new_Task_that_is_assigned_a_deadline_gets_a_corresponding_task_item_automatically()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'New Task', 'Monday, Oct. 24');
         
         $this->assertDatabaseHas('task_items', ['task_id' => $task->id, 'type' => 'deadline']);
@@ -102,10 +93,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_belongs_to_a_Subcategory()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'List Name');
-        $category = Category::newCategory($list, 'Category Name');
-        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $subcategory = $this->makeNewSubcategory();
         $task = Task::newTask($subcategory, 'Task Name');
         
         $this->assertEquals('Subcategory Name', $task->subcategory->name);
@@ -134,10 +122,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_can_add_a_DetailItem()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'New Task');
 
         $detailItem = ItemManager::newItem('detail', 'new task detail', $task);
@@ -152,10 +137,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_that_adds_a_DetailItem_gets_a_corresponding_TaskItem_automatically()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'New Task');
 
         $detailItem = ItemManager::newItem('detail', 'new task detail', $task);
@@ -170,10 +152,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_can_add_a_LinkItem()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'New Task');
 
         $linkItem = ItemManager::newItem('link', 'http://www.example.com', $task);
@@ -188,10 +167,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_that_adds_a_LinkItem_gets_a_corresponding_TaskItem_automatically()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'New Task');
 
         $linkItem = ItemManager::newItem('link', 'http://www.example.com', $task);
@@ -206,10 +182,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_name_can_be_updated()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'List Name');
-        $category = Category::newCategory($list, 'Category Name');
-        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name');
         
         $task->updateDetails($task, 'New Name');
@@ -220,10 +193,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_deadline_can_be_updated()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'List Name');
-        $category = Category::newCategory($list, 'Category Name');
-        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
         
         $task->updateDetails($task, null, 'Friday, Oct. 27');
@@ -235,10 +205,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_name_and_deadline_can_be_updated_simultaneously()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'List Name');
-        $category = Category::newCategory($list, 'Category Name');
-        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
         
         $task->updateDetails($task, 'New Name', 'Friday, Oct. 27');
@@ -251,10 +218,7 @@ class TaskTest extends TestCase
     /** @test */
     public function Task_status_can_be_updated()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'List Name');
-        $category = Category::newCategory($list, 'Category Name');
-        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name');
 
         // default status
@@ -279,10 +243,7 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_can_be_deleted()
     {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'List Name');
-        $category = Category::newCategory($list, 'Category Name');
-        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');        
+        $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name');
         
         Task::deleteTask($task);
