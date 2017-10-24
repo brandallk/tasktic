@@ -38,6 +38,16 @@ class ListElement extends Model
         return $element;
     }
 
+    public static function updateListElement(TaskList $list, $name, string $uniqueID)
+    {
+        $element = $list->listElements->where('unique_id', $uniqueID)->first();
+
+        $element->name = $name;
+        $element->save();
+
+        return $element;
+    }
+
     public static function deleteListElement(TaskList $list, string $uniqueID)
     {
         $element = $list->listElements->where('unique_id', $uniqueID)->first();

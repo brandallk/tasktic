@@ -16,6 +16,10 @@ class LinkItem extends Item
         $item->link = $content;
         $item->save();
 
+        $list = (new TaskList)->where('id', $task->id)->first();
+
+        ListElement::updateListElement($list, $content, $item->list_element_id);
+
         return $item;
     }
 }

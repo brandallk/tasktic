@@ -16,6 +16,10 @@ class DetailItem extends Item
         $item->detail = $content;
         $item->save();
 
+        $list = (new TaskList)->where('id', $task->id)->first();
+
+        ListElement::updateListElement($list, $content, $item->list_element_id);
+
         return $item;
     }
 }

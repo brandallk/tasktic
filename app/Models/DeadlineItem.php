@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Item;
+use App\Models\TaskList;
+use App\Models\ListElement;
 use App\Models\Interfaces\iItem;
 
 class DeadlineItem extends Item
@@ -18,6 +20,10 @@ class DeadlineItem extends Item
 
         $task->deadline = $content;
         $task->save();
+
+        $list = (new TaskList)->where('id', $task->id)->first();
+
+        ListElement::updateListElement($list, $content, $item->list_element_id);
 
         return $item;
     }
