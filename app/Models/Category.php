@@ -58,6 +58,9 @@ class Category extends Model
         $category->name = $name;
         $category->save();
 
+        $list = $category->taskList;
+        ListElement::updateListElement($list, $name, $category->list_element_id);
+
         return $category;
     }
 

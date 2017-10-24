@@ -187,7 +187,18 @@ class TaskTest extends TestCase
         
         $task->updateDetails($task, 'New Name');
         
+        // The Task itself should be updated
         $this->assertEquals('New Name', $task->name);
+
+        // The parent TaskList's corresponding ListElement should be updated
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['type' => 'task', 'name' => 'Task Name']
+        );
+        $this->assertDatabaseHas(
+            'list_elements',
+            ['type' => 'task', 'name' => 'New Name']
+        );
     }
 
     /** @test */

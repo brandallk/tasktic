@@ -57,6 +57,9 @@ class Subcategory extends Model
         $subcategory->name = $name;
         $subcategory->save();
 
+        $list = $subcategory->category->taskList;
+        ListElement::updateListElement($list, $name, $subcategory->list_element_id);
+
         return $subcategory;
     }
 

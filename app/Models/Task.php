@@ -74,6 +74,9 @@ class Task extends Model
         if (!is_null($name)) {
             $task->name = $name;
             $task->save();
+
+            $list = $task->subcategory->category->taskList;
+            ListElement::updateListElement($list, $name, $task->list_element_id);
         }
 
         if (!is_null($deadline)) {

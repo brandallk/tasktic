@@ -101,6 +101,16 @@ class CategoryTest extends TestCase
         $category->updateCategory($category, 'New Name');
         
         $this->assertEquals('New Name', $category->name);
+
+        // The parent TaskList's corresponding ListElement should be updated
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['type' => 'category', 'name' => 'New Category']
+        );
+        $this->assertDatabaseHas(
+            'list_elements',
+            ['type' => 'category', 'name' => 'New Name']
+        );
     }
 
     /** @test */

@@ -108,7 +108,18 @@ class SubcategoryTest extends TestCase
         
         $subcategory->updateSubcategory($subcategory, 'New Name');
         
+        // The Subcategory itself should be updated
         $this->assertEquals('New Name', $subcategory->name);
+
+        // The parent TaskList's corresponding ListElement should be updated
+        $this->assertDatabaseMissing(
+            'list_elements',
+            ['type' => 'subcategory', 'name' => 'New Subcategory']
+        );
+        $this->assertDatabaseHas(
+            'list_elements',
+            ['type' => 'subcategory', 'name' => 'New Name']
+        );
     }
 
     /** @test */
