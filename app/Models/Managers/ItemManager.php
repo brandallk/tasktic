@@ -9,38 +9,38 @@ use App\Models\LinkItem;
 
 class ItemManager
 {
-    protected static function item(string $type)
+    private static function getClassName(string $type)
     {
-        $itemType = null;
+        $className = null;
 
         switch ($type) {
             case 'deadline':
-                $itemType = DeadlineItem::class;
+                $className = DeadlineItem::class;
                 break;
             case 'detail':
-                $itemType = DetailItem::class;
+                $className = DetailItem::class;
                 break;
             case 'link':
-                $itemType = LinkItem::class;
+                $className = LinkItem::class;
                 break;
         }
 
-        return $itemType;
+        return $className;
     }
 
     /** @param $content  is either string or text */
     public static function newItem(string $type, $content, Task $task)
     {
-        $itemType = self::item($type);
+        $className = self::getClassName($type);
 
-        return $itemType::newItem($task, $type, $content);
+        return $className::newItem($task, $type, $content);
     }
 
     public static function deleteItem(string $type, string $uniqueID, Task $task)
     {
-        $itemType = self::item($type);
+        $className = self::getClassName($type);
 
-        $item = $itemType::where('list_element_id', $uniqueID)->first();
-        $itemType::deleteItem($item, $task);
+        $item = $className::where('list_element_id', $uniqueID)->first();
+        $className::deleteItem($item, $task);
     }
 }
