@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ListElement;
 use App\Models\Task;
@@ -18,24 +19,26 @@ abstract class Item extends Model implements iItem
     /** @param $content  is either string or text */
     public static function newItem(Task $task, string $type, $content)
     {
-        $uniqueID = uniqid();
+        return DB::transaction(function () use ($task, $type, $content) {
+            $uniqueID = uniqid();
 
-        $item = self::create([
-            'task_id' => $task->id,
-            'list_element_id' => $uniqueID,
-            'type' => $type,
-            $type => $content
-        ]);
+            $item = self::create([
+                'task_id' => $task->id,
+                'list_element_id' => $uniqueID,
+                'type' => $type,
+                $type => $content
+            ]);
 
-        $item->task()->associate($task);
-        $item->save();
+            $item->task()->associate($task);
+            $item->save();
 
-        TaskItem::addItem($item, $task);
+            TaskItem::addItem($item, $task);
 
-        $list = $task->subcategory->category->taskList;
-        ListElement::addListElement($list, $type, $content, $uniqueID);
+            $list = $task->subcategory->category->taskList;
+            ListElement::addListElement($list, $type, $content, $uniqueID);
 
-        return $item;
+            return $item;
+        });
     }
 
     /** @param $content  is either string or text */
@@ -43,13 +46,17 @@ abstract class Item extends Model implements iItem
     
     public static function deleteItem(iItem $item, Task $task)
     {
-        $list = $task->subcategory->category->taskList;
-        $uniqueID = $item->list_element_id;
+        return DB::transaction(function () use ($item, $task) {
+            $list = $task->subcategory->category->taskList;
+            $uniqueID = $item->list_element_id;
 
-        TaskItem::removeItem($item, $task);
+            TaskItem::removeItem($item, $task);
 
-        $item->delete();
+            $item->delete();
 
-        ListElement::deleteListElement($list, $uniqueID);
+            ListElement::deleteListElement($list, $uniqueID);
+
+            return true;
+        });
     }
 }
