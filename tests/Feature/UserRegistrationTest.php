@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class UserRegistration extends TestCase
+class UserRegistrationTest extends TestCase
 {
     use RefreshDatabase;
 

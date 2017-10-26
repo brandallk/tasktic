@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use DB;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -62,15 +63,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        return DB::transaction(function () use ($data) {
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+            ]);
 
-        // Create a default TaskList for ths new User
-        (new \App\Models\TaskList)->newDefaultTaskList($user);
+            // Create a default TaskList for ths new User
+            (new \App\Models\TaskList)->newDefaultTaskList($user);
 
-        return $user;
+            return $user;
+        });
     }
 }
