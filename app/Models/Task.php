@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ListElement;
 use App\Models\Subcategory;
@@ -46,45 +47,49 @@ class Task extends Model
 
     public static function newTask(Subcategory $subcategory, string $name, string $deadline = null)
     {
-        $uniqueID = uniqid();
+        return DB::transaction(function () use ($subcategory, $name, $deadline) {
+            $uniqueID = uniqid();
 
-        $task = self::create([
-            'subcategory_id' => $subcategory->id,
-            'name' => $name,
-            'list_element_id' => $uniqueID,
-            'status' => 'incomplete',
-            'deadline' => $deadline
-        ]);
+            $task = self::create([
+                'subcategory_id' => $subcategory->id,
+                'name' => $name,
+                'list_element_id' => $uniqueID,
+                'status' => 'incomplete',
+                'deadline' => $deadline
+            ]);
 
-        $task->subcategory()->associate($subcategory);
-        $task->save();
+            $task->subcategory()->associate($subcategory);
+            $task->save();
 
-        if (!is_null($deadline)) {
-            ItemManager::newItem('deadline', $deadline, $task);
-        }
+            if (!is_null($deadline)) {
+                ItemManager::newItem('deadline', $deadline, $task);
+            }
 
-        $list = $subcategory->category->taskList;
-        ListElement::addListElement($list, 'task', $name, $uniqueID);
+            $list = $subcategory->category->taskList;
+            ListElement::addListElement($list, 'task', $name, $uniqueID);
 
-        return $task;
+            return $task;
+        });
     }
 
     public function updateDetails(Task $task, string $name = null, string $deadline = null)
     {
-        if (!is_null($name)) {
-            $task->name = $name;
-            $task->save();
+        return DB::transaction(function () use ($task, $name, $deadline) {
+            if (!is_null($name)) {
+                $task->name = $name;
+                $task->save();
 
-            $list = $task->subcategory->category->taskList;
-            ListElement::updateListElement($list, $name, $task->list_element_id);
-        }
+                $list = $task->subcategory->category->taskList;
+                ListElement::updateListElement($list, $name, $task->list_element_id);
+            }
 
-        if (!is_null($deadline)) {
-            $item = $task->deadlineItem;
-            $item->updateItem($item, $task, $deadline);
-        }
+            if (!is_null($deadline)) {
+                $item = $task->deadlineItem;
+                $item->updateItem($item, $task, $deadline);
+            }
 
-        return $task;
+            return $task;
+        });
     }
 
     public function updateStatus(Task $task, string $status)
@@ -97,16 +102,20 @@ class Task extends Model
 
     public static function deleteTask(Task $task)
     {
-        $list = $task->subcategory->category->taskList;
-        $uniqueID = $task->list_element_id;
+        return DB::transaction(function () use ($task) {
+            $list = $task->subcategory->category->taskList;
+            $uniqueID = $task->list_element_id;
 
-        foreach ($task->taskItems as $item) {
-            ItemManager::deleteItem($item->type, $item->uniqueID, $task);
-        }
+            foreach ($task->taskItems as $item) {
+                ItemManager::deleteItem($item->type, $item->uniqueID, $task);
+            }
 
-        // Note: important that the Task is deleted AFTER its child Items are deleted
-        $task->delete();
+            // Note: important that the Task is deleted AFTER its child Items are deleted
+            $task->delete();
 
-        ListElement::deleteListElement($list, $uniqueID);
+            ListElement::deleteListElement($list, $uniqueID);
+
+            return true;
+        });
     }
 }
