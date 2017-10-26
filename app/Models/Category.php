@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\TaskList;
 use App\Models\ListElement;
@@ -26,56 +27,66 @@ class Category extends Model
 
     public static function newDefaultCategory(TaskList $list)
     {
-        // Create a new Category with 'name' == null
-        $defaultCategory = self::newCategory($list, null);
+        return DB::transaction(function () use ($list) {
+            // Create a new Category with 'name' == null
+            $defaultCategory = self::newCategory($list, null);
 
-        Subcategory::newDefaultSubcategory($defaultCategory);
+            Subcategory::newDefaultSubcategory($defaultCategory);
 
-        return $defaultCategory;
+            return $defaultCategory;
+        });
     }
 
     /** @param $name  is either a string or null */
     public static function newCategory(TaskList $list, $name)
     {
-        $uniqueID = uniqid();
+        return DB::transaction(function () use ($list, $name) {
+            $uniqueID = uniqid();
 
-        $category = self::create([
-            'task_list_id' => $list->id,
-            'name' => $name,
-            'list_element_id' => $uniqueID,
-        ]);
+            $category = self::create([
+                'task_list_id' => $list->id,
+                'name' => $name,
+                'list_element_id' => $uniqueID,
+            ]);
 
-        $category->taskList()->associate($list);
-        $category->save();
+            $category->taskList()->associate($list);
+            $category->save();
 
-        ListElement::addListElement($list, 'category', $name, $uniqueID);
+            ListElement::addListElement($list, 'category', $name, $uniqueID);
 
-        return $category;
+            return $category;
+        });
     }
 
     public function updateCategory(Category $category, string $name)
     {
-        $category->name = $name;
-        $category->save();
+        return DB::transaction(function () use ($category, $name) {
+            $category->name = $name;
+            $category->save();
 
-        $list = $category->taskList;
-        ListElement::updateListElement($list, $name, $category->list_element_id);
+            $list = $category->taskList;
+            ListElement::updateListElement($list, $name, $category->list_element_id);
 
-        return $category;
+            return $category;
+        });
     }
 
     public static function deleteCategory(Category $category)
     {
-        $list = $category->taskList;
-        $uniqueID = $category->list_element_id;
+        return DB::transaction(function () use ($category) {
+            $list = $category->taskList;
+            $uniqueID = $category->list_element_id;
 
-        foreach ($category->subcategories as $subcategory) {
-            Subcategory::deleteSubcategory($subcategory);
-        }
+            foreach ($category->subcategories as $subcategory) {
+                Subcategory::deleteSubcategory($subcategory);
+            }
 
-        // Note: important that the Category is deleted AFTER its child Subcategories are deleted
-        $category->delete();
+            // Note: important that the Category is deleted AFTER its child Subcategories are deleted
+            $category->delete();
 
-        ListElement::deleteListElement($list, $uniqueID);
+            ListElement::deleteListElement($list, $uniqueID);
+
+            return true;
+        });
     }
 }
