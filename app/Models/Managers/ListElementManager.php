@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Managers;
 
 use App\Models\TaskList;
 use App\Models\Category;
@@ -16,13 +16,13 @@ class ListElementManager
 
         switch ($type) {
             case 'category':
-                $builderFunc = self::buildCategory;
+                $builderFunc = 'buildCategory';
                 break;
             case 'subcategory':
-                $builderFunc = self::buildSubcategory;
+                $builderFunc = 'buildSubcategory';
                 break;
             case 'task':
-                $builderFunc = self::buildTask;
+                $builderFunc = 'buildTask';
                 break;
         }
 
@@ -33,7 +33,7 @@ class ListElementManager
     {
         $builderFunc = self::getBuilder($elementType);
 
-        $element = $builderFunc($name, $list);
+        $element = self::$builderFunc($name, $list);
 
         return $element;
     }
@@ -45,14 +45,14 @@ class ListElementManager
 
     private static function buildSubcategory(string $name, TaskList $list)
     {
-        $category = Category::where(['task_list_id', $list->id], ['name', null])->first();
+        $category = Category::where('task_list_id', $list->id)->where('name', null)->first();
         return Subcategory::newSubcategory($category, $name);
     }
 
     private static function buildTask(string $name, TaskList $list)
     {
-        $category = Category::where(['task_list_id', $list->id], ['name', null])->first();
-        $subcategory = Subcategory::where(['category_id', $category->id], ['name', null])->first();
+        $category = Category::where('task_list_id', $list->id)->where('name', null)->first();
+        $subcategory = Subcategory::where('category_id', $category->id)->where('name', null)->first();
         return Task::newTask($subcategory, $name);
     }
 }
