@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\TaskList;
@@ -25,17 +26,19 @@ class ListElement extends Model
     /** @param $name  is either a string or null */
     public static function addListElement(TaskList $list, string $type, $name, string $uniqueID)
     {
-        $element = self::create([
-            'task_list_id' => $list->id,
-            'unique_id' => $uniqueID,
-            'type' => $type,
-            'name' => $name
-        ]);
+        return DB::transaction(function () use ($list, $type, $name, $uniqueID) {
+            $element = self::create([
+                'task_list_id' => $list->id,
+                'unique_id' => $uniqueID,
+                'type' => $type,
+                'name' => $name
+            ]);
 
-        $element->taskList()->associate($list);
-        $element->save();
+            $element->taskList()->associate($list);
+            $element->save();
 
-        return $element;
+            return $element;
+        });
     }
 
     public static function updateListElement(TaskList $list, $name, string $uniqueID)
