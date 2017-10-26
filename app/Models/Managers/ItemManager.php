@@ -41,6 +41,7 @@ class ItemManager
         $className = self::getClassName($type);
 
         $item = $className::where('list_element_id', $uniqueID)->first();
-        $className::deleteItem($item, $task);
+        
+        return $className::deleteItem($item, $task);
     }
 }
