@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\TaskList;
@@ -40,19 +41,21 @@ class TaskList extends Model
 
     public static function newTaskList(User $user, string $name, bool $saved = true)
     {
-        $list = self::create([
-            'user_id' => $user->id,
-            'name' => $name,
-            'saved' => $saved,
-            'autodelete' => true,
-        ]);
+        return DB::transaction(function () use ($user, $name, $saved) {
+            $list = self::create([
+                'user_id' => $user->id,
+                'name' => $name,
+                'saved' => $saved,
+                'autodelete' => true,
+            ]);
 
-        $list->user()->associate($user);
-        $list->save();
+            $list->user()->associate($user);
+            $list->save();
 
-        Category::newDefaultCategory($list);
+            Category::newDefaultCategory($list);
 
-        return $list;
+            return $list;
+        });
     }
 
     public function updateTaskList(TaskList $list, string $name)
@@ -77,12 +80,16 @@ class TaskList extends Model
 
     public static function deleteTaskList(TaskList $list)
     {
-        foreach ($list->categories as $category) {
-            Category::deleteCategory($category);
-        }
+        return DB::transaction(function () use ($list) {
+            foreach ($list->categories as $category) {
+                Category::deleteCategory($category);
+            }
 
-        // Note: important that the TaskList is deleted AFTER its child Categories are deleted
-        $list->delete();
+            // Note: important that the TaskList is deleted AFTER its child Categories are deleted
+            $list->delete();
+
+            return true;
+        });
     }
 
     public function updateLastTimeLoaded(TaskList $list)
