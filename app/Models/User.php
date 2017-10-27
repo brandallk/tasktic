@@ -29,8 +29,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * Eloquent relationship: User has-many TaskLists.
+     * Define an Eloquent ORM one-to-many relationship.
      *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany  User has-many TaskLists.
      */
     public function taskLists()
     {
@@ -40,6 +41,7 @@ class User extends Authenticatable
     /**
      * Get the TaskList that the User most-recently loaded.
      *
+     * @return App\Models\TaskList  The User's TaskList that has the most-recent 'last_time_loaded' property.
      */
     public function getCurrentList()
     {
