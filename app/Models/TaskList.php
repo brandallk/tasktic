@@ -33,7 +33,7 @@ class TaskList extends Model
     /**
      * Define an Eloquent ORM one-to-many relationship. ListElements include Categories, Subcategories,
      * Tasks, DeadlineItems, DetailItems, and LinkItems. The ListElements collection provides a single
-     * list of objects that belong to the TaskList, including their names and uniqueIDs.
+     * list of object instances that belong to the TaskList, including their names and uniqueIDs.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany  TaskList has-many ListElements.
      */
