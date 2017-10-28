@@ -155,7 +155,7 @@ class TaskList extends Model
      *
      * @param App\Models\TaskList $list  The TaskList to be deleted.
      *
-     * @return bool  TRUE
+     * @return bool
      */
     public static function deleteTaskList(TaskList $list)
     {
