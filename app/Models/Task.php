@@ -81,7 +81,7 @@ class Task extends Model
      * Create a new Task with the given name, assigned to the given Subcategory. Use a database
      * transaction so operations will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Subcategory $Subcategory  The Subcategory to which the Task belongs.
+     * @param App\Models\Subcategory $subcategory  The Subcategory to which the Task belongs.
      * @param string $name  The name assigned to the Task.
      * @param string $deadline  Optional string that names a date/time in any user-provided format.
      * NULL by default. If not NULL, it is used as the name of a new-created DeadlineItem assigned
