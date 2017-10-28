@@ -1,4 +1,8 @@
 <?php
+/**
+ * An interface implemented by all DeadlineItems, DetailItems, and LinkItems, which
+ * extend the App\Models\Item abstract class.
+ */
 
 namespace App\Models\Interfaces;
 
@@ -9,10 +13,8 @@ interface iItem
 {
     public function task();
 
-    /** @param $content  is either string or text */
     public static function newItem(Task $task, string $type, string $content);
 
-    /** @param $content  is either string or text */
     public function updateItem(iItem $item, Task $task, string $content);
 
     public static function deleteItem(iItem $item, Task $task);
