@@ -32,12 +32,12 @@ abstract class Item extends Model implements iItem
      *
      * @param App\Models\Task $task  The Task to which the iItem belongs.
      * @param string $type  The type of iItem created: 'deadline', 'detail', or 'link'.
-     * @param mixed $content  The deadline string, detail text, or link URL string that comprises
+     * @param string $content  The deadline string, detail text, or link URL string that comprises
      * the body of the iItem.
      *
      * @return App\Models\Interfaces\iItem
      */
-    public static function newItem(Task $task, string $type, $content)
+    public static function newItem(Task $task, string $type, string $content)
     {
         return DB::transaction(function () use ($task, $type, $content) {
             /* A unique 13-character string to distinguish the iItem from other ListElements and
@@ -70,11 +70,11 @@ abstract class Item extends Model implements iItem
      *
      * @param App\Models\Interfaces\iItem $item  The iItem to be updated.
      * @param App\Models\Task $task  The Task to which the iItem belongs.
-     * @param mixed $content  The new content.
+     * @param string $content  The new content.
      *
      * @return App\Models\Interfaces\iItem
      */
-    abstract public function updateItem(iItem $item, Task $task, $content);
+    abstract public function updateItem(iItem $item, Task $task, string $content);
     
     /**
      * Delete the given iItem. Use a database transaction so operations will automatically

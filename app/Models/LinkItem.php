@@ -32,7 +32,7 @@ class LinkItem extends Item
      *
      * @return App\Models\LinkItem
      */
-    public function updateItem(iItem $item, Task $task, $content)
+    public function updateItem(iItem $item, Task $task, string $content)
     {
         return DB::transaction(function () use ($item, $task, $content) {
             $item->link = $content;

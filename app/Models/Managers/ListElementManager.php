@@ -49,14 +49,15 @@ class ListElementManager
      * or 'task'.
      * @param string $name  The name assigned to the new list-element.
      * @param App\Models\TaskList $list  The TaskList to which the list-element belongs.
+     * @param string $deadline  Optional string that names a date/time if a Task instance is being created.
      *
      * @return mixed  App\Models\Category, App\Models\Subcategory, or App\Models\Task
      */
-    public static function newListElement(string $elementType, string $name, TaskList $list)
+    public static function newListElement(string $elementType, string $name, TaskList $list, string $deadline = null)
     {
         $builder = self::getBuilder($elementType);
 
-        $element = self::$builderFunc($name, $list);
+        $element = self::$builder($name, $list, $deadline);
 
         return $element;
     }
@@ -66,10 +67,11 @@ class ListElementManager
      *
      * @param string $name  The name assigned to the new Category.
      * @param App\Models\TaskList $list  The TaskList to which the Category belongs.
+     * @param string $deadline  (Not used by this method.)
      *
      * @return App\Models\Category
      */
-    private static function buildCategory(string $name, TaskList $list)
+    private static function buildCategory(string $name, TaskList $list, string $deadline = null)
     {
         return Category::newCategory($list, $name);
     }
@@ -80,10 +82,11 @@ class ListElementManager
      *
      * @param string $name  The name assigned to the new Subcategory.
      * @param App\Models\TaskList $list  The TaskList to which the Subcategory belongs.
+     * @param string $deadline  (Not used by this method.)
      *
      * @return App\Models\Subcategory
      */
-    private static function buildSubcategory(string $name, TaskList $list)
+    private static function buildSubcategory(string $name, TaskList $list, string $deadline = null)
     {
         $category = Category::where('task_list_id', $list->id)->where('name', null)->first();
         return Subcategory::newSubcategory($category, $name);
@@ -95,13 +98,14 @@ class ListElementManager
      *
      * @param string $name  The name assigned to the new Task.
      * @param App\Models\TaskList $list  The TaskList to which the Task belongs.
+     * @param string $deadline  Optional string that names a date/time in any user-provided format.
      *
      * @return App\Models\Task
      */
-    private static function buildTask(string $name, TaskList $list)
+    private static function buildTask(string $name, TaskList $list, string $deadline = null)
     {
         $category = Category::where('task_list_id', $list->id)->where('name', null)->first();
         $subcategory = Subcategory::where('category_id', $category->id)->where('name', null)->first();
-        return Task::newTask($subcategory, $name);
+        return Task::newTask($subcategory, $name, $deadline);
     }
 }
