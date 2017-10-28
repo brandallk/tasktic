@@ -1,4 +1,8 @@
 <?php
+/**
+ * An abstract class containing methods shared by classes implementing the iItem interface:
+ * DeadlineItem, DetailItem, and LinkItem.
+ */
 
 namespace App\Models;
 
@@ -11,15 +15,33 @@ use App\Models\Interfaces\iItem;
 
 abstract class Item extends Model implements iItem
 {
+    /**
+     * Define an Eloquent ORM one-to-many reverse relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo  Item belongs-to Task.
+     */
     public function task()
     {
         return $this->belongsTo(Task::class);
     }
 
-    /** @param $content  is either string or text */
+    /**
+     * Create a new iItem of the given type (DeadlineItem, DetailItem, or LinkItem), assigned to
+     * the given Task. Use a database transaction so operations will automatically rollback if a
+     * failure occurs.
+     *
+     * @param App\Models\Task $task  The Task to which the iItem belongs.
+     * @param string $type  The type of iItem created: 'deadline', 'detail', or 'link'.
+     * @param mixed $content  The deadline string, detail text, or link URL string that comprises
+     * the body of the iItem.
+     *
+     * @return App\Models\Interfaces\iItem
+     */
     public static function newItem(Task $task, string $type, $content)
     {
         return DB::transaction(function () use ($task, $type, $content) {
+            /* A unique 13-character string to distinguish the iItem from other ListElements and
+               TaskItems */
             $uniqueID = uniqid();
 
             $item = self::create([
@@ -32,8 +54,10 @@ abstract class Item extends Model implements iItem
             $item->task()->associate($task);
             $item->save();
 
+            // Also create a TaskItem on the parent Task corresponding to the new iItem.
             TaskItem::addItem($item, $task);
 
+            // Also create a ListElement on the TaskList corresponding to the new iItem.
             $list = $task->subcategory->category->taskList;
             ListElement::addListElement($list, $type, $content, $uniqueID);
 
@@ -41,19 +65,38 @@ abstract class Item extends Model implements iItem
         });
     }
 
-    /** @param $content  is either string or text */
+    /**
+     * Update the given iItem's content. (This method is implemented by iItem classes.)
+     *
+     * @param App\Models\Interfaces\iItem $item  The iItem to be updated.
+     * @param App\Models\Task $task  The Task to which the iItem belongs.
+     * @param mixed $content  The new content.
+     *
+     * @return App\Models\Interfaces\iItem
+     */
     abstract public function updateItem(iItem $item, Task $task, $content);
     
+    /**
+     * Delete the given iItem. Use a database transaction so operations will automatically
+     * rollback if a failure occurs.
+     *
+     * @param App\Models\Interfaces\iItem $item  The iItem to be deleted.
+     * @param App\Models\Task $task  The iItem's parent Task.
+     *
+     * @return bool
+     */
     public static function deleteItem(iItem $item, Task $task)
     {
         return DB::transaction(function () use ($item, $task) {
             $list = $task->subcategory->category->taskList;
             $uniqueID = $item->list_element_id;
 
+            // Also delete the corresponding TaskItem.
             TaskItem::removeItem($item, $task);
 
             $item->delete();
 
+            // Also delete the corresponding ListELement.
             ListElement::deleteListElement($list, $uniqueID);
 
             return true;

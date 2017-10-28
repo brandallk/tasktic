@@ -28,7 +28,7 @@ class DeadlineItem extends Item
      *
      * @param App\Models\Interfaces\iItem $item  The DeadlineItem to be updated.
      * @param App\Models\Task $task  The Task to which the DeadlineItem belongs.
-     * @param string $content  The new deadline: either a string or NULL.
+     * @param string $content  The new deadline string.
      *
      * @return App\Models\DeadlineItem
      */
