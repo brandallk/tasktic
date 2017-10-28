@@ -41,8 +41,8 @@ class ItemManager
     }
 
     /**
-     * Create a new iItem instance of the given type (DeadlineItem, DetailItem, or LinkItem),
-     * assigned to the given Task.
+     * Factory method: Create a new iItem instance of the given type (DeadlineItem, DetailItem,
+     * or LinkItem), assigned to the given Task.
      *
      * @param string $type  The type of iItem created: 'deadline', 'detail', or 'link'.
      * @param mixed $content  The deadline string, detail text, or link URL string that comprises
