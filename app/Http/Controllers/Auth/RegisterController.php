@@ -63,17 +63,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return DB::transaction(function () use ($data) {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-            ]);
+        try {
+            return DB::transaction(function () use ($data) {
+                $user = User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => bcrypt($data['password']),
+                ]);
 
-            // Create a default TaskList for the new User
-            \App\Models\TaskList::newDefaultTaskList($user);
+                // Create a default TaskList for the new User
+                \App\Models\TaskList::newDefaultTaskList($user);
 
-            return $user;
-        });
+                return $user;
+            });
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 }
