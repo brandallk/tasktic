@@ -163,7 +163,7 @@ class TaskListTest extends TestCase
         $list->saved = false;
         $list->save();
 
-        $list->setDefaultName($list);
+        $list->resetNameByDate($list);
 
         $today = \Carbon\Carbon::today();
         $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
@@ -177,7 +177,7 @@ class TaskListTest extends TestCase
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'Saved');
 
-        $list->setDefaultName($list);
+        $list->resetNameByDate($list);
 
         $today = \Carbon\Carbon::today();
         $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
@@ -266,13 +266,19 @@ class TaskListTest extends TestCase
     }
 
     /** @test */
-    public function a_new_TaskList_has_a_last_time_loaded_prop_that_is_null_by_default()
+    public function a_new_TaskList_has_a_last_time_loaded_prop_equal_to_its_creation_datetime()
     {
         $user = factory(User::class)->create();
+
+        $testTime = (\Carbon\Carbon::now())->toDateTimeString();
         $list = TaskList::newTaskList($user, 'New List');
         
-        $this->assertDatabaseHas('task_lists', ['name' => 'New List', 'last_time_loaded' => null]);
-        $this->assertEquals(null, $list->last_time_loaded);
+        $this->assertDatabaseHas(
+            'task_lists',
+            ['name' => 'New List', 'last_time_loaded' => $testTime]
+        );
+
+        $this->assertEquals($testTime, $list->last_time_loaded);
     }
 
     /** @test */

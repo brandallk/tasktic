@@ -17,7 +17,7 @@ class TaskList extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'saved', 'autodelete'
+        'user_id', 'name', 'saved', 'last_time_loaded', 'autodelete'
     ];
 
     /**
@@ -84,6 +84,7 @@ class TaskList extends Model
                 'user_id' => $user->id,
                 'name' => $name,
                 'saved' => $saved,
+                'last_time_loaded' => (\Carbon\Carbon::now())->toDateTimeString(),
                 'autodelete' => true,
             ]);
 
@@ -120,13 +121,12 @@ class TaskList extends Model
      *
      * @return bool
      */
-    public function setDefaultName(TaskList $list)
+    public function resetNameByDate(TaskList $list)
     {
         if (!$list->saved) {
             // Get a string for the current day's date formatted like "Wednesday, October 18th"
             $defaultName = (\Carbon\Carbon::now())->format('l\, F jS');
-            $this->updateTaskList($list, $defaultName);
-            return true;
+            return $this->updateTaskList($list, $defaultName);
         }
 
         return false;
