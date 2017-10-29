@@ -14,8 +14,6 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    @yield('topLinks')
-
     <!-- Authentication Links -->
     @if (Auth::guest())
         <a href="{{ route('login') }}">Login</a>
@@ -31,6 +29,8 @@
             {{ csrf_field() }}
         </form>
     @endif
+
+    @yield('nav')
 
     @yield('content')
 
