@@ -15,9 +15,8 @@
 @endsection
 
 @section('content')
-    <h1>About Tasktic</h1>
-
-    <div>
+    <section>
+        <h1>About Tasktic</h1>
         <p>A few paragraphs on what the Tasktic app is.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -26,10 +25,10 @@
             cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
             proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </p>
-    </div>
+    </section>
 
-    <h2>How Tasktic was Created</h2>
-    <div>
+    <section>
+        <h2>How Tasktic was Created</h2>
         <p>A few more paragraphs on how Tasktic was made and why.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -38,14 +37,14 @@
             cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
             proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </p>
-    </div>
+    </section>
 
-    <div class="footer">
+    <footer>
         <ul>
             <li><a href="#">Github Repo</a></li>
             <li><a href="#">BenjamenKing.com</a></li>
             <li><a href="{{ route('contact') }}">Contact Me</a></li>
         </ul>
-    </div>
+    </footer>
 
 @endsection
