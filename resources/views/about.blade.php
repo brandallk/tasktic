@@ -43,7 +43,7 @@
     <div class="footer">
         <ul>
             <li><a href="#">Github Repo</a></li>
-            <li><a href="#">BenjamenKine.com</a></li>
+            <li><a href="#">BenjamenKing.com</a></li>
             <li><a href="{{ route('contact') }}">Contact Me</a></li>
         </ul>
     </div>

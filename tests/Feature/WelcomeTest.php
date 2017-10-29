@@ -26,7 +26,7 @@ class WelcomeTest extends TestCase
     }
 
     /** @test */
-    public function showWelcome_method_returns_the_welcome_view()
+    public function WelcomeController_showWelcome_method_returns_the_welcome_view()
     {
         $response = $this->get('/');
 
@@ -69,7 +69,7 @@ class WelcomeTest extends TestCase
         $response = $this->get('/');
 
         $this->assertFalse(Auth::check());
-        
+
         $response
             ->assertSee('Log In')
             ->assertSee('Register')
