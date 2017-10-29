@@ -70,8 +70,8 @@ class RegisterController extends Controller
                 'password' => bcrypt($data['password']),
             ]);
 
-            // Create a default TaskList for ths new User
-            (new \App\Models\TaskList)->newDefaultTaskList($user);
+            // Create a default TaskList for the new User
+            \App\Models\TaskList::newDefaultTaskList($user);
 
             return $user;
         });

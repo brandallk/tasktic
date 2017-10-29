@@ -54,5 +54,11 @@ class UserRegistrationTest extends TestCase
         $currentList = $user->getCurrentList();
 
         $this->assertEquals($defaultList->id, $currentList->id);
+
+        $defaultCat = $defaultList->categories->first();
+        $this->assertEquals(null, $defaultCat->name);
+
+        $defaultSubcat = $defaultCat->subcategories->first();
+        $this->assertEquals(null, $defaultSubcat->name);
     }
 }
