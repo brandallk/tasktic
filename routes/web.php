@@ -35,13 +35,13 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('/', 'WelcomeController@showWelcome')->name('welcome');
 
 // About page
-Route::get('/', 'AboutController@showAbout')->name('about');
+Route::get('/about', 'AboutController@showAbout')->name('about');
 
 // Help page
-Route::get('/', 'HelpController@showHelp')->name('help');
+Route::get('/help', 'HelpController@showHelp')->name('help');
 
 // Contact page
-Route::get('/', 'ContactController@showContact')->name('contact');
+Route::get('/contact', 'ContactController@showContact')->name('contact');
 
 /**
  * Routes accessible only to a logged-in user

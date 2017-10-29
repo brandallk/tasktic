@@ -29,7 +29,7 @@
                             </button>
                         @else
                             <button type="button" name="login">
-                                <a href="{{ route('login') }}">Login</a>
+                                <a href="{{ route('login') }}">Log In</a>
                             </button>
                             <button type="button" name="register">
                                 <a href="{{ route('register') }}">Register</a>
