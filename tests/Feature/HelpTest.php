@@ -10,7 +10,7 @@ class HelpTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function HelpController_showHelp_method_returns_the_about_view()
+    public function HelpController_showHelp_method_returns_the_help_view()
     {
         $response = $this->get('/help');
 
