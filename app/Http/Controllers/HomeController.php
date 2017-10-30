@@ -28,14 +28,17 @@ class HomeController extends Controller
         try {
             $user = Auth::user();
             $role = $user->role;
+
         } catch (\Throwable $e) {
             return redirect()->back();
+
         } catch (\Exception $e) {
             return redirect()->back();
         }
 
         if ($role == 'admin') {
             return view('admin.dashboard');
+
         } elseif ($role == 'visitor') {
             try {
                 $currentList = $user->getCurrentList();
@@ -44,12 +47,17 @@ class HomeController extends Controller
                 if ($resetName) {
                     $currentList = $resetName;
                 }
+
+                $routeParams = ['list' => $currentList->id];
+                return redirect()->route('lists.show', $routeParams);
+
             } catch (\Throwable $e) {
                 return redirect()->back();
+
             } catch (\Exception $e) {
                 return redirect()->back();
             }
-            return redirect()->route('lists.show');
+
         } else {
             return redirect()->back();
         }
