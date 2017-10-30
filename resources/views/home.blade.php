@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('topLinks')
+@section('nav')
     <a href="/">Welcome Page</a>
 @endsection
 

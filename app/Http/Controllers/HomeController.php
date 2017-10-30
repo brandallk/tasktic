@@ -31,7 +31,6 @@ class HomeController extends Controller
 
         } catch (\Throwable $e) {
             return redirect()->back();
-
         } catch (\Exception $e) {
             return redirect()->back();
         }
@@ -53,7 +52,6 @@ class HomeController extends Controller
 
             } catch (\Throwable $e) {
                 return redirect()->back();
-
             } catch (\Exception $e) {
                 return redirect()->back();
             }

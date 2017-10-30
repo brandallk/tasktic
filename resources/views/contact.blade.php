@@ -9,7 +9,7 @@
         <ul>
             <li><a href="{{ route('welcome') }}">Welcome Page</a></li>
             <li><a href="{{ route('about') }}">About Tasktic</a></li>
-            <li><a href="{{ route('contact') }}">Help</a></li>
+            <li><a href="{{ route('help') }}">Help</a></li>
         </ul>
     </nav>
 @endsection
