@@ -52,7 +52,8 @@ class WelcomeTest extends TestCase
     {
         $user = $this->registerNewUser();
 
-        $response = $this->get('/');
+        $response = $this->actingAs($user)
+                         ->get('/');
 
         $response
             ->assertSee('Home')
