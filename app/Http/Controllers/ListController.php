@@ -19,13 +19,12 @@ class ListController extends Controller
                 'lists' => Auth::user()->taskLists
             ];
 
-            return view('lists.index', $data);
+            return view('list.index', $data);
 
         } catch (\Throwable $e) {
             return redirect()->back();
         } catch (\Exception $e) {
-            return redirect()->back();
-            
+            return redirect()->back();            
         }
     }
 }
