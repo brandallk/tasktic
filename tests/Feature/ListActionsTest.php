@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class ListTest extends TestCase
+class ListActionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -37,5 +37,25 @@ class ListTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.index')
             ->assertSee('List Index');
+    }
+
+    /** @test */
+    public function ListController_store_method_creats_a_TaskList_from_the_request_name()
+    {
+        $user = $this->registerNewUser();
+
+        $requestData = [
+            'name' => 'New List'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->post('/lists', $requestData);
+
+        $this->assertDatabaseHas('task_lists', ['name' => 'New List']);
+
+        $this->assertEquals(
+            'New List',
+            $user->taskLists->sortByDesc('id')->first()->name // The user's last-added TaskList
+        );
     }
 }

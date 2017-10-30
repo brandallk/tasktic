@@ -46,7 +46,7 @@ class ListController extends Controller
 
             $newList = TaskList::newTaskList($user, $name);
 
-            return $this->show($newList);
+            return $this->show($newList); // test that response is the list.show view (after show method is added)
 
         } catch (\Throwable $e) {
             return redirect()->back();
