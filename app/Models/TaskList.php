@@ -156,7 +156,7 @@ class TaskList extends Model
 
         return DB::transaction(function () use ($list) {
             foreach ($list->categories as $category) {
-                Category::deleteCategory($category);
+                $category->deleteCategory();
             }
 
             // Note: important that the TaskList is deleted AFTER its child Categories are deleted

@@ -120,7 +120,7 @@ class CategoryTest extends TestCase
         $list = TaskList::newTaskList($user, 'List Name');
         $category = Category::newCategory($list, 'Category Name');
         
-        Category::deleteCategory($category);
+        $category->deleteCategory();
         
         $this->assertDatabaseMissing(
             'categories',

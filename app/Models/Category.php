@@ -120,12 +120,12 @@ class Category extends Model
      * Delete the given Category and all Subcategories belonging to it. Use a database transaction
      * so operations will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Category $category  The Category to be deleted.
-     *
      * @return bool
      */
-    public static function deleteCategory(Category $category)
+    public function deleteCategory()
     {
+        $category = $this;
+
         return DB::transaction(function () use ($category) {
             $list = $category->taskList;
             $uniqueID = $category->list_element_id;
