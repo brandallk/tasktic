@@ -99,7 +99,7 @@ class DeadlineItemTest extends TestCase
         $task = $this->makeNewTask();
         $item = DeadlineItem::newItem($task, 'deadline', '8:00 am, December 25, 2017');
 
-        $item->updateItem($item, $task, '10:30 pm, November 3, 2012');
+        $item->updateItem($task, '10:30 pm, November 3, 2012');
 
         // The DeadlineItem itself should be updated
         $this->assertDatabaseMissing(

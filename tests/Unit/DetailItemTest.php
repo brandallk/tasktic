@@ -99,7 +99,7 @@ class DetailItemTest extends TestCase
         $task = $this->makeNewTask();
         $item = DetailItem::newItem($task, 'detail', 'original detail');
 
-        $item->updateItem($item, $task, 'a different detail');
+        $item->updateItem($task, 'a different detail');
 
         // The DetailItem itself should be updated
         $this->assertDatabaseMissing(

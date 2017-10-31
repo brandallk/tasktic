@@ -26,14 +26,15 @@ class DeadlineItem extends Item
      * Update the given DeadlineItem's deadline. Use a database transaction so operations will
      * automatically rollback if a failure occurs.
      *
-     * @param App\Models\Interfaces\iItem $item  The DeadlineItem to be updated.
      * @param App\Models\Task $task  The Task to which the DeadlineItem belongs.
      * @param string $content  The new deadline string.
      *
      * @return App\Models\DeadlineItem
      */
-    public function updateItem(iItem $item, Task $task, string $content)
+    public function updateItem(Task $task, string $content)
     {
+        $item = $this;
+
         return DB::transaction(function () use ($item, $task, $content) {
             $item->deadline = $content;
             $item->save();

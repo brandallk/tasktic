@@ -26,14 +26,15 @@ class DetailItem extends Item
      * Update the given DetailItem's detail string. Use a database transaction so operations
      * will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Interfaces\iItem $item  The DetailItem to be updated.
      * @param App\Models\Task $task  The Task to which the DetailItem belongs.
      * @param string $content  The new detail string.
      *
      * @return App\Models\DetailItem
      */
-    public function updateItem(iItem $item, Task $task, string $content)
+    public function updateItem(Task $task, string $content)
     {
+        $item = $this;
+
         return DB::transaction(function () use ($item, $task, $content) {
             $item->detail = $content;
             $item->save();

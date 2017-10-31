@@ -144,7 +144,7 @@ class Task extends Model
 
             if (!is_null($deadline)) {
                 $item = $task->deadlineItem;
-                $item->updateItem($item, $task, $deadline);
+                $item->updateItem($task, $deadline);
             }
 
             return $task;

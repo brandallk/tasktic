@@ -15,7 +15,7 @@ interface iItem
 
     public static function newItem(Task $task, string $type, string $content);
 
-    public function updateItem(iItem $item, Task $task, string $content);
+    public function updateItem(Task $task, string $content);
 
     public static function deleteItem(iItem $item, Task $task);
 }

@@ -68,13 +68,12 @@ abstract class Item extends Model implements iItem
     /**
      * Update the given iItem's content. (This method is implemented by iItem classes.)
      *
-     * @param App\Models\Interfaces\iItem $item  The iItem to be updated.
      * @param App\Models\Task $task  The Task to which the iItem belongs.
      * @param string $content  The new content.
      *
      * @return App\Models\Interfaces\iItem
      */
-    abstract public function updateItem(iItem $item, Task $task, string $content);
+    abstract public function updateItem(Task $task, string $content);
     
     /**
      * Delete the given iItem. Use a database transaction so operations will automatically

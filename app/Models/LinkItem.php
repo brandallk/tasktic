@@ -26,14 +26,15 @@ class LinkItem extends Item
      * Update the given LinkItem's link (URL) string. Use a database transaction so operations
      * will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Interfaces\iItem $item  The LinkItem to be updated.
      * @param App\Models\Task $task  The Task to which the LinkItem belongs.
      * @param string $content  The new link (URL) string.
      *
      * @return App\Models\LinkItem
      */
-    public function updateItem(iItem $item, Task $task, string $content)
+    public function updateItem(Task $task, string $content)
     {
+        $item = $this;
+
         return DB::transaction(function () use ($item, $task, $content) {
             $item->link = $content;
             $item->save();

@@ -99,7 +99,7 @@ class LinkItemTest extends TestCase
         $task = $this->makeNewTask();
         $item = LinkItem::newItem($task, 'link', 'http://www.example.com');
 
-        $item->updateItem($item, $task, 'https://www.google.com');
+        $item->updateItem($task, 'https://www.google.com');
 
         // The LinkItem itself should be updated
         $this->assertDatabaseMissing(
