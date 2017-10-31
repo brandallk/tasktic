@@ -106,7 +106,7 @@ class SubcategoryTest extends TestCase
         $category = Category::newCategory($list, 'New Category');
         $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
         
-        $subcategory->updateSubcategory($subcategory, 'New Name');
+        $subcategory->updateSubcategory('New Name');
         
         // The Subcategory itself should be updated
         $this->assertEquals('New Name', $subcategory->name);

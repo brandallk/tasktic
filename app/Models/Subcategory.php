@@ -94,13 +94,14 @@ class Subcategory extends Model
      * Update the given Subcategory's name. Use a database transaction so operations will
      * automatically rollback if a failure occurs.
      *
-     * @param App\Models\Subcategory $subcategory  The Subcategory to be updated.
      * @param mixed $name  The Subcategory's new name.
      *
      * @return App\Models\Subcategory
      */
-    public function updateSubcategory(Subcategory $subcategory, string $name)
+    public function updateSubcategory(string $name)
     {
+        $subcategory = $this;
+
         return DB::transaction(function () use ($subcategory, $name) {
             $subcategory->name = $name;
             $subcategory->save();
