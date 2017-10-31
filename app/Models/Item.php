@@ -84,14 +84,13 @@ abstract class Item extends Model implements iItem
     public function deleteItem()
     {
         $item = $this;
-        $task = $this->task;
 
-        return DB::transaction(function () use ($item, $task) {
-            $list = $task->subcategory->category->taskList;
+        return DB::transaction(function () use ($item) {
+            $list = $item->task->subcategory->category->taskList;
             $uniqueID = $item->list_element_id;
 
             // Also delete the corresponding TaskItem.
-            TaskItem::removeItem($item, $task);
+            TaskItem::removeItem($item);
 
             $item->delete();
 

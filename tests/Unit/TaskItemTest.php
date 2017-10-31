@@ -74,7 +74,7 @@ class TaskItemTest extends TestCase
         $item = $this->makeNewDetailItem($task);
         $taskItem = TaskItem::addItem($item, $task);
 
-        TaskItem::removeItem($item, $task);
+        TaskItem::removeItem($item);
 
         $this->assertDatabaseMissing(
             'task_items',

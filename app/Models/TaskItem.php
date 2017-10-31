@@ -65,15 +65,14 @@ class TaskItem extends Model
      * Delete a TaskItem corresponding to the given iItem that is assigned to the given Task.
      * Use a database transaction so operations will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Task $task  The Task to which the TaskItem belongs.
      * @param App\Models\Interfaces\iItem $item  The DeadlineItem, DetailItem, or LinkItem
      * corresponding to this TaskItem
      *
      * @return bool
      */
-    public static function removeItem(iItem $item, Task $task)
+    public static function removeItem(iItem $item)
     {
-        $taskItem = $task->taskItems->where('unique_id', $item->list_element_id)->first();
+        $taskItem = $item->task->taskItems->where('unique_id', $item->list_element_id)->first();
 
         $taskItem->delete();
 
