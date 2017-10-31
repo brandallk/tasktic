@@ -96,7 +96,7 @@ class ListController extends Controller
     {
         try {
             // Update the TaskList's 'last_time_loaded' property
-            $list->updateLastTimeLoaded($list);
+            $list->updateLastTimeLoaded();
 
             $data = [
                 'user' => Auth::user(),

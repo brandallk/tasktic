@@ -284,12 +284,11 @@ class TaskListTest extends TestCase
     /** @test */
     public function a_TaskLists_last_time_loaded_prop_can_be_updated_to_match_current_DateTime()
     {
-        //given a tasklist exists
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'New List');
-        //when call updateLastTimeLoaded
-        $list->updateLastTimeLoaded($list);
-        //then tasklist->last_time_loaded is the current DateTime
+        
+        $list->updateLastTimeLoaded();
+        
         $now = \Carbon\Carbon::now();
         $nowDateTime = $now->toDateTimeString();
 

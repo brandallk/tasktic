@@ -132,18 +132,16 @@ class TaskList extends Model
     /**
      * Update the given TaskList's 'last_time_loaded' property to the current DateTime.
      *
-     * @param App\Models\TaskList $list  The TaskList to be updated.
-     *
      * @return void
      */
-    public function updateLastTimeLoaded(TaskList $list)
+    public function updateLastTimeLoaded()
     {
         $now = (\Carbon\Carbon::now())->toDateTimeString();
 
-        $list->last_time_loaded = $now;
-        $list->save();
+        $this->last_time_loaded = $now;
+        $this->save();
 
-        return $list;
+        return $this;
     }
 
     /**
