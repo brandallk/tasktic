@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\TaskList;
+use App\Http\Controllers\ListController;
 
 class ListActionsTest extends TestCase
 {
@@ -156,5 +157,16 @@ class ListActionsTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show')
             ->assertSee('List Name');
+    }
+
+    /** @test */
+    public function ListController_destroy_method_deletes_the_list()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        (new ListController)->destroy($list);
+
+        $this->assertDatabaseMissing('task_lists', ['name' => 'List Name']);
     }
 }

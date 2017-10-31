@@ -125,7 +125,7 @@ class ListController extends Controller
     {
         try {
 
-            $list->deleteTaskList(); // test that the list is deleted
+            $list->deleteTaskList();
 
             return redirect()->route('lists.index'); // test that the method returns the index view
 
