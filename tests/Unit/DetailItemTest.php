@@ -135,7 +135,7 @@ class DetailItemTest extends TestCase
         $item = DetailItem::newItem($task, 'detail', 'a new task detail');
         $uniqueID = $item->list_element_id;
 
-        DetailItem::deleteItem($item, $task);
+        $item->deleteItem();
 
         // The DetailItem itself should be deleted
         $this->assertDatabaseMissing(

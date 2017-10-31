@@ -135,7 +135,7 @@ class LinkItemTest extends TestCase
         $item = LinkItem::newItem($task, 'link', 'http://www.example.com');
         $uniqueID = $item->list_element_id;
 
-        LinkItem::deleteItem($item, $task);
+        $item->deleteItem();
 
         // The LinkItem itself should be deleted
         $this->assertDatabaseMissing(

@@ -79,13 +79,13 @@ abstract class Item extends Model implements iItem
      * Delete the given iItem. Use a database transaction so operations will automatically
      * rollback if a failure occurs.
      *
-     * @param App\Models\Interfaces\iItem $item  The iItem to be deleted.
-     * @param App\Models\Task $task  The iItem's parent Task.
-     *
      * @return bool
      */
-    public static function deleteItem(iItem $item, Task $task)
+    public function deleteItem()
     {
+        $item = $this;
+        $task = $this->task;
+
         return DB::transaction(function () use ($item, $task) {
             $list = $task->subcategory->category->taskList;
             $uniqueID = $item->list_element_id;

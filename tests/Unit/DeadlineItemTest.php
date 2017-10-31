@@ -133,7 +133,7 @@ class DeadlineItemTest extends TestCase
         $item = DeadlineItem::newItem($task, 'deadline', '8:00 am, December 25, 2017');
         $uniqueID = $item->list_element_id;
 
-        DeadlineItem::deleteItem($item, $task);
+        $item->deleteItem();
 
         // The DeadlineItem itself should be deleted
         $this->assertDatabaseMissing(

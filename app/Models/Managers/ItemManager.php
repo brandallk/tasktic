@@ -8,6 +8,7 @@
 namespace App\Models\Managers;
 
 use App\Models\Task;
+use App\Models\Interfaces\iItem;
 use App\Models\DeadlineItem;
 use App\Models\DetailItem;
 use App\Models\LinkItem;
@@ -27,10 +28,10 @@ class ItemManager
 
         switch ($type) {
             case 'deadline':
-                $className = DeadlineItem::class;
+                $className =  DeadlineItem::class;
                 break;
             case 'detail':
-                $className = DetailItem::class;
+                $className =  DetailItem::class;
                 break;
             case 'link':
                 $className = LinkItem::class;
@@ -73,6 +74,6 @@ class ItemManager
 
         $item = $className::where('list_element_id', $uniqueID)->first();
         
-        return $className::deleteItem($item, $task);
+        return $item->deleteItem();
     }
 }
