@@ -4,8 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\TaskList;
 
 class ListActionsTest extends TestCase
 {
@@ -56,6 +57,27 @@ class ListActionsTest extends TestCase
         $this->assertEquals(
             'New List',
             $user->taskLists->sortByDesc('id')->first()->name // The user's last-added TaskList
+        );
+    }
+
+    /** @test */
+    public function ListController_update_method_updates_a_TaskList_name()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        $requestData = [
+            'name' => 'New Name'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/lists/{$list->id}", $requestData);
+
+        $this->assertDatabaseHas('task_lists', ['name' => 'New Name']);
+
+        $this->assertEquals(
+            $list->id,
+            $user->taskLists->where('name', 'New Name')->first()->id
         );
     }
 }
