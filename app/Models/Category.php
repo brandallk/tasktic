@@ -131,7 +131,7 @@ class Category extends Model
             $uniqueID = $category->list_element_id;
 
             foreach ($category->subcategories as $subcategory) {
-                Subcategory::deleteSubcategory($subcategory);
+                $subcategory->deleteSubcategory();
             }
 
             // Note: important that the Category is deleted AFTER its child Subcategories are deleted

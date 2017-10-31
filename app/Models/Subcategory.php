@@ -118,12 +118,12 @@ class Subcategory extends Model
      * Delete the given Subcategory and all Tasks belonging to it. Use a database transaction
      * so operations will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Subcategory $subcategory  The Subcategory to be deleted.
-     *
      * @return bool
      */
-    public static function deleteSubcategory(Subcategory $subcategory)
+    public function deleteSubcategory()
     {
+        $subcategory = $this;
+
         return DB::transaction(function () use ($subcategory) {
             $list = $subcategory->category->taskList;
             $uniqueID = $subcategory->list_element_id;

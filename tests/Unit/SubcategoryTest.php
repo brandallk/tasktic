@@ -130,7 +130,7 @@ class SubcategoryTest extends TestCase
         $category = Category::newCategory($list, 'Category Name');
         $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
         
-        Subcategory::deleteSubcategory($subcategory);
+        $subcategory->deleteSubcategory();
         
         $this->assertDatabaseMissing(
             'subcategories',
