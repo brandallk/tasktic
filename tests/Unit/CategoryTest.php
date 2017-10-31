@@ -98,7 +98,7 @@ class CategoryTest extends TestCase
         $list = TaskList::newTaskList($user, 'New List');
         $category = Category::newCategory($list, 'New Category');
         
-        $category->updateCategory($category, 'New Name');
+        $category->updateCategory('New Name');
         
         $this->assertEquals('New Name', $category->name);
 

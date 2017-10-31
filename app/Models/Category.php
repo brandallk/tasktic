@@ -96,13 +96,14 @@ class Category extends Model
      * Update the given Category's name. Use a database transaction so operations will
      * automatically rollback if a failure occurs.
      *
-     * @param App\Models\Category $category  The Category to be updated.
      * @param mixed $name  The Category's new name.
      *
      * @return App\Models\Category
      */
-    public function updateCategory(Category $category, $name)
+    public function updateCategory($name)
     {
+        $category = $this;
+
         return DB::transaction(function () use ($category, $name) {
             $category->name = $name;
             $category->save();
