@@ -185,7 +185,7 @@ class TaskTest extends TestCase
         $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name');
         
-        $task->updateDetails($task, 'New Name');
+        $task->updateDetails('New Name');
         
         // The Task itself should be updated
         $this->assertEquals('New Name', $task->name);
@@ -207,7 +207,7 @@ class TaskTest extends TestCase
         $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
         
-        $task->updateDetails($task, null, 'Friday, Oct. 27');
+        $task->updateDetails(null, 'Friday, Oct. 27');
         
         $this->assertEquals('Friday, Oct. 27', $task->deadline);
         $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
@@ -219,7 +219,7 @@ class TaskTest extends TestCase
         $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
         
-        $task->updateDetails($task, 'New Name', 'Friday, Oct. 27');
+        $task->updateDetails('New Name', 'Friday, Oct. 27');
         
         $this->assertEquals('New Name', $task->name);
         $this->assertEquals('Friday, Oct. 27', $task->deadline);

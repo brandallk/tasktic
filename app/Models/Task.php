@@ -123,14 +123,15 @@ class Task extends Model
      * Update the given Task's name and/or deadline. Use a database transaction so operations
      * will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Task $task  The Task to be updated.
      * @param string $name  Optional parameter: the Task's new name.
      * @param string $deadline  Optional parameter: the Task's new deadline.
      *
      * @return App\Models\Task
      */
-    public function updateDetails(Task $task, string $name = null, string $deadline = null)
+    public function updateDetails(string $name = null, string $deadline = null)
     {
+        $task = $this;
+
         return DB::transaction(function () use ($task, $name, $deadline) {
             if (!is_null($name)) {
                 $task->name = $name;
