@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\TaskList;
 use App\Models\ListElement;
@@ -153,14 +154,21 @@ class TaskList extends Model
     public function deleteTaskList()
     {
         $list = $this;
+        $user = Auth::user();
 
-        return DB::transaction(function () use ($list) {
+        return DB::transaction(function () use ($list, $user) {
             foreach ($list->categories as $category) {
                 $category->deleteCategory();
             }
 
             // Note: important that the TaskList is deleted AFTER its child Categories are deleted
             $this->delete();
+
+            // If the deleted TaskList was the user's only remaining TaskList, create a
+            // new default TaskList.
+            if ($user->taskLists->isEmpty()) {
+                $newDefaultList = TaskList::newDefaultTaskList($user);
+            }
 
             return true;
         });

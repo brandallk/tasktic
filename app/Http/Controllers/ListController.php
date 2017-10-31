@@ -124,6 +124,7 @@ class ListController extends Controller
     public function destroy(TaskList $list)
     {
         try {
+
             $list->deleteTaskList(); // test that the list is deleted
 
             return redirect()->route('lists.index'); // test that the method returns the index view
