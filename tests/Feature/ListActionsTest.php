@@ -61,6 +61,24 @@ class ListActionsTest extends TestCase
     }
 
     /** @test */
+    public function ListController_store_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+
+        $requestData = [
+            'name' => 'New List'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->post('/lists', $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('New List');
+    }
+
+    /** @test */
     public function ListController_update_method_updates_a_TaskList_name()
     {
         $user = $this->registerNewUser();
@@ -79,6 +97,25 @@ class ListActionsTest extends TestCase
             $list->id,
             $user->taskLists->where('name', 'New Name')->first()->id
         );
+    }
+
+    /** @test */
+    public function ListController_update_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        $requestData = [
+            'name' => 'New Name'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/lists/{$list->id}", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('New Name');
     }
 
     /** @test */
