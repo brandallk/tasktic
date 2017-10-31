@@ -99,6 +99,7 @@ class ListController extends Controller
             $showingList = $list->updateLastTimeLoaded($list); // test that the method updates the property
 
             $data = [
+                'user' => Auth::user(),
                 'list' => $showingList
             ];
 
