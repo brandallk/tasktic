@@ -91,7 +91,7 @@ class TaskListTest extends TestCase
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'Original Name');
         
-        $list->updateTaskList($list, 'New Name');
+        $list->updateTaskList('New Name');
         
         $this->assertEquals('New Name', $list->name);
     }

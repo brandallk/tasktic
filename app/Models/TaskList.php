@@ -100,17 +100,16 @@ class TaskList extends Model
     /**
      * Update a TaskList's name.
      *
-     * @param App\Models\TaskList $list  The TaskList to be updated.
      * @param string $name  The new name assigned to the TaskList.
      *
      * @return App\Models\TaskList
      */
-    public function updateTaskList(TaskList $list, string $name)
+    public function updateTaskList(string $name)
     {
-        $list->name = $name;
-        $list->save();
+        $this->name = $name;
+        $this->save();
 
-        return $list;
+        return $this;
     }
 
     /**
@@ -126,7 +125,7 @@ class TaskList extends Model
         if (!$list->saved) {
             // Get a string for the current day's date formatted like "Wednesday, October 18th"
             $defaultName = (\Carbon\Carbon::now())->format('l\, F jS');
-            return $this->updateTaskList($list, $defaultName);
+            return $this->updateTaskList($defaultName);
         }
 
         return false;

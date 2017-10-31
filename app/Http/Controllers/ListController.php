@@ -48,7 +48,7 @@ class ListController extends Controller
 
             $newList = TaskList::newTaskList($user, $name);
 
-            return $this->show($newList); // test that response is the list.show view (after show method is added)
+            return $this->show($newList);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -74,9 +74,9 @@ class ListController extends Controller
         try {
             $name = $request->name;
 
-            $updatedList = $list->updateTaskList($list, $name);
+            $updatedList = $list->updateTaskList($name);
 
-            return $this->show($updatedList); // test that response is the list.show view (after show method is added)
+            return $this->show($updatedList);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -96,14 +96,14 @@ class ListController extends Controller
     {
         try {
             // Update the TaskList's 'last_time_loaded' property
-            $list->updateLastTimeLoaded($list); // test that the method updates the property
+            $list->updateLastTimeLoaded($list);
 
             $data = [
                 'user' => Auth::user(),
                 'list' => $list
             ];
 
-            return view('list.show', $data); // test that the method returns the view
+            return view('list.show', $data);
 
         } catch (\Throwable $e) {
             return redirect()->back();
