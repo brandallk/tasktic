@@ -120,7 +120,10 @@
         <!-- Add-A-Task Button -->
         <button type="button" name="add-task">Add A Task</button>
 
-    </main>    
+    </main>
+
+    <!-- Hidden element for testing purposes -->
+    <span style="display:none">last_time_loaded == {{ $list->last_time_loaded }}</span>
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>

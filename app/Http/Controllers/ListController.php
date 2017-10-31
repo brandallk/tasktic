@@ -96,11 +96,11 @@ class ListController extends Controller
     {
         try {
             // Update the TaskList's 'last_time_loaded' property
-            $showingList = $list->updateLastTimeLoaded($list); // test that the method updates the property
+            $list->updateLastTimeLoaded($list); // test that the method updates the property
 
             $data = [
                 'user' => Auth::user(),
-                'list' => $showingList
+                'list' => $list
             ];
 
             return view('list.show', $data); // test that the method returns the view
