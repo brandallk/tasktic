@@ -61,7 +61,7 @@ class ListController extends Controller
      * Update the given TaskList.
      *
      * @param Illuminate\Http\Request $request
-     * @param App\Models\TaskList $list  (Value delivered by implicit route-model binding)
+     * @param App\Models\TaskList $list
      *
      * @return \Illuminate\Http\Response
      */
@@ -77,6 +77,32 @@ class ListController extends Controller
             $updatedList = $list->updateTaskList($list, $name);
 
             return $this->show($updatedList); // test that response is the list.show view (after show method is added)
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
+
+    /**
+     * Show the given TaskList in the 'list.show' view.
+     *
+     * @param App\Models\TaskList $list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(TaskList $list)
+    {
+        try {
+            // Update the TaskList's 'last_time_loaded' property
+            $showingList = $list->updateLastTimeLoaded($list); // test that the method updates the property
+
+            $data = [
+                'list' => $showingList
+            ];
+
+            return view('list.show', $data); // test that the method returns the view
 
         } catch (\Throwable $e) {
             return redirect()->back();
