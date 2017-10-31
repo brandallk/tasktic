@@ -209,8 +209,8 @@ class TaskTest extends TestCase
         
         $task->updateDetails(null, 'Friday, Oct. 27');
         
-        $this->assertEquals('Friday, Oct. 27', $task->deadline);
         $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task->deadline);
     }
 
     /** @test */
@@ -222,8 +222,8 @@ class TaskTest extends TestCase
         $task->updateDetails('New Name', 'Friday, Oct. 27');
         
         $this->assertEquals('New Name', $task->name);
-        $this->assertEquals('Friday, Oct. 27', $task->deadline);
         $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task->deadline);
     }
 
     /** @test */

@@ -48,9 +48,9 @@ class Task extends Model
     }
 
     /**
-     * Define an Eloquent ORM one-to-many relationship.
+     * Define an Eloquent ORM one-to-one relationship.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany  Task has-many DeadlineItems.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne  Task has-one DeadlineItem.
      */
     public function deadlineItem()
     {

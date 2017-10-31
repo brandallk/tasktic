@@ -111,4 +111,27 @@ class ListController extends Controller
             return redirect()->back();            
         }
     }
+
+    /**
+     * Delete the given TaskList. (Reserved for possible future use: No route currently
+     * calls this method. Users cannot currently delete their lists. Instead, inactive
+     * lists are automatically deleted after 120 days.)
+     *
+     * @param App\Models\TaskList $list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(TaskList $list)
+    {
+        try {
+            $list->deleteTaskList(); // test that the list is deleted
+
+            return redirect()->route('lists.index'); // test that the method returns the index view
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 }
