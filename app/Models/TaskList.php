@@ -148,19 +148,19 @@ class TaskList extends Model
      * Delete the given TaskList and all Categories belonging to it. Use a database transaction
      * so operations will automatically rollback if a failure occurs.
      *
-     * @param App\Models\TaskList $list  The TaskList to be deleted.
-     *
      * @return bool
      */
-    public static function deleteTaskList(TaskList $list)
+    public function deleteTaskList()
     {
+        $list = $this;
+
         return DB::transaction(function () use ($list) {
             foreach ($list->categories as $category) {
                 Category::deleteCategory($category);
             }
 
             // Note: important that the TaskList is deleted AFTER its child Categories are deleted
-            $list->delete();
+            $this->delete();
 
             return true;
         });

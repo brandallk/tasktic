@@ -102,7 +102,7 @@ class TaskListTest extends TestCase
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'List Name');
         
-        TaskList::deleteTaskList($list);
+        $list->deleteTaskList();
         
         $this->assertDatabaseMissing('task_lists', ['id' => $list->id, 'name' => 'List Name']);
     }
