@@ -257,7 +257,7 @@ class TaskTest extends TestCase
         $subcategory = $this->makeNewSubcategory();        
         $task = Task::newTask($subcategory, 'Task Name');
         
-        Task::deleteTask($task);
+        $task->deleteTask();
         
         $this->assertDatabaseMissing(
             'tasks',

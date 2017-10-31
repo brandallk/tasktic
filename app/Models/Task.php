@@ -171,12 +171,12 @@ class Task extends Model
      * Delete the given Task and all iItem instances belonging to it. Use a database transaction
      * so operations will automatically rollback if a failure occurs.
      *
-     * @param App\Models\Task $task  The Task to be deleted.
-     *
      * @return bool
      */
-    public static function deleteTask(Task $task)
+    public function deleteTask()
     {
+        $task = $this;
+
         return DB::transaction(function () use ($task) {
             $list = $task->subcategory->category->taskList;
             $uniqueID = $task->list_element_id;

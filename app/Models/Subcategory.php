@@ -129,7 +129,7 @@ class Subcategory extends Model
             $uniqueID = $subcategory->list_element_id;
 
             foreach ($subcategory->tasks as $task) {
-                Task::deleteTask($task);
+                $task->deleteTask();
             }
 
             // Note: important that the Subcategory is deleted AFTER its child Tasks are deleted
