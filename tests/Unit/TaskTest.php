@@ -236,17 +236,17 @@ class TaskTest extends TestCase
         $this->assertEquals('incomplete', $task->status);
         
         // change to 'complete' status
-        $task->updateStatus($task, 'complete');
+        $task->updateStatus('complete');
         
         $this->assertEquals('complete', $task->status);
 
         // change to 'priority' status
-        $task->updateStatus($task, 'priority');
+        $task->updateStatus('priority');
         
         $this->assertEquals('priority', $task->status);
 
         // change back to 'incomplete' status
-        $task->updateStatus($task, 'incomplete');
+        $task->updateStatus('incomplete');
         
         $this->assertEquals('incomplete', $task->status);
     }

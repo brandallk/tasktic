@@ -155,17 +155,16 @@ class Task extends Model
      * Update the given Task's status. The 'status' can be 'incomplete', 'complete', or
      * 'priority'.
      *
-     * @param App\Models\Task $task  The Task to be updated.
      * @param string $status  The Task's new status: 'incomplete', 'complete', or 'priority'.
      *
      * @return App\Models\Task
      */
-    public function updateStatus(Task $task, string $status)
+    public function updateStatus(string $status)
     {
-        $task->status = $status;
-        $task->save();
+        $this->status = $status;
+        $this->save();
 
-        return $task;
+        return $this;
     }
 
     /**
