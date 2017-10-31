@@ -116,13 +116,11 @@ class TaskList extends Model
      * Update an unsaved TaskList's name to the current date and return TRUE. If the TaskList
      * is already 'saved', do nothing and return FALSE.
      *
-     * @param App\Models\TaskList $list  The TaskList to be updated.
-     *
      * @return bool
      */
-    public function resetNameByDate(TaskList $list)
+    public function resetNameByDate()
     {
-        if (!$list->saved) {
+        if (!$this->saved) {
             // Get a string for the current day's date formatted like "Wednesday, October 18th"
             $defaultName = (\Carbon\Carbon::now())->format('l\, F jS');
             return $this->updateTaskList($defaultName);

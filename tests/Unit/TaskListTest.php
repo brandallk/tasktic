@@ -163,7 +163,7 @@ class TaskListTest extends TestCase
         $list->saved = false;
         $list->save();
 
-        $list->resetNameByDate($list);
+        $list->resetNameByDate();
 
         $today = \Carbon\Carbon::today();
         $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
@@ -177,7 +177,7 @@ class TaskListTest extends TestCase
         $user = factory(User::class)->create();
         $list = TaskList::newTaskList($user, 'Saved');
 
-        $list->resetNameByDate($list);
+        $list->resetNameByDate();
 
         $today = \Carbon\Carbon::today();
         $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th

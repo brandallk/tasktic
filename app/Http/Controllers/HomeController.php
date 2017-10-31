@@ -42,7 +42,7 @@ class HomeController extends Controller
             try {
                 $currentList = $user->getCurrentList();
 
-                $resetName = $currentList->resetNameByDate($currentList);
+                $resetName = $currentList->resetNameByDate();
                 if ($resetName) {
                     $currentList = $resetName;
                 }
