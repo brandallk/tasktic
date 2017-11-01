@@ -38,7 +38,7 @@ class SubcategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'categoryID' => 'required|string'
+            'categoryID' => 'required|integer'
         ]);
 
         try {
