@@ -41,22 +41,39 @@ class ListTest extends TestCase
             ->assertSee('List Index');
     }
 
-    /** @test */
-    public function ListController_createListElement_method_returns_redirect_if_request_validation_fails()
+    /**
+     * @test
+     *
+     * @dataProvider provideForRequestValidation
+     */
+    public function ListController_createListElement_method_returns_redirect_if_request_validation_fails(
+        $elementType, $name, $deadline)
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
 
         $requestData = [
-            'elementType' => 'makesTheValidationFail',
-            'name' => 'New Name',
-            'deadline' => null
+            'elementType' => $elementType,
+            'name' => $name,
+            'deadline' => $deadline
         ];
 
         $response = $this->actingAs($user)
                          ->post("/lists/{$list->id}/create-element", $requestData);
 
         $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 5 data sets that should each fail the ListController::createListElement validation
+    public function provideForRequestValidation()
+    {
+        return [
+            ['makesTheValidationFail', 'New Name', null], // invalid elementType
+            [null, 'New Name', null], // missing elementType
+            ['category', 123, null], // invalid name
+            ['category', null, null], // missing name
+            ['category', 'New Name', 123], // invalid deadline
+        ];
     }
 
     /** @test */
