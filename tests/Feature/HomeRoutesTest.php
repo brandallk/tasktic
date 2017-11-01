@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class HomeTest extends TestCase
+class HomeRoutesTest extends TestCase
 {
     use RefreshDatabase;
 

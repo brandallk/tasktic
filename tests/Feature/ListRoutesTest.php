@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Models\TaskList;
 use App\Http\Controllers\ListController;
 
-class ListTest extends TestCase
+class ListRoutesTest extends TestCase
 {
     use RefreshDatabase;
 
