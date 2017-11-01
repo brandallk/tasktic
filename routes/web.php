@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/lists/{list}', 'ListController@destroy')->name('lists.destroy');
 
-    Route::post('/lists/{list}/create-element', 'ListController@createElement')
+    Route::post('/lists/{list}/create-element', 'ListController@createListElement')
         ->name('lists.create.element');
 
     // Category resources

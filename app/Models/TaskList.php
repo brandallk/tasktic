@@ -166,8 +166,8 @@ class TaskList extends Model
 
             // If the deleted TaskList was the user's only remaining TaskList, create a
             // new default TaskList.
-            if ($user->taskLists->isEmpty()) {
-                $newDefaultList = TaskList::newDefaultTaskList($user);
+            if ($user->taskLists()->get()->isEmpty()) {
+                TaskList::newDefaultTaskList($user);
             }
 
             return true;

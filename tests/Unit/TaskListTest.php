@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\TaskList;
 use App\Models\Category;
@@ -100,6 +101,7 @@ class TaskListTest extends TestCase
     public function a_TaskList_can_be_deleted()
     {
         $user = factory(User::class)->create();
+        Auth::login($user);
         $list = TaskList::newTaskList($user, 'List Name');
         
         $list->deleteTaskList();

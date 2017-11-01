@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Models\TaskList;
 use App\Http\Controllers\ListController;
 
-class ListActionsTest extends TestCase
+class ListTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -39,6 +39,45 @@ class ListActionsTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.index')
             ->assertSee('List Index');
+    }
+
+    /** @test */
+    public function ListController_createListElement_method_returns_redirect_if_request_validation_fails()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        $requestData = [
+            'elementType' => 'makesTheValidationFail',
+            'name' => 'New Name',
+            'deadline' => null
+        ];
+
+        $response = $this->actingAs($user)
+                         ->post("/lists/{$list->id}/create-element", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    /** @test */
+    public function ListController_createListElement_method_returns_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        $requestData = [
+            'elementType' => 'category',
+            'name' => 'New Name',
+            'deadline' => null
+        ];
+
+        $response = $this->actingAs($user)
+                         ->post("/lists/{$list->id}/create-element", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('New Name');
     }
 
     /** @test */
@@ -119,31 +158,6 @@ class ListActionsTest extends TestCase
             ->assertSee('New Name');
     }
 
-    // /** @test */
-    // public function ListController_show_method_updates_the_TaskList_last_time_loaded_property()
-    // {
-    //     $user = $this->registerNewUser();
-    //     $list = TaskList::newTaskList($user, 'List Name');
-
-    //     // Artificially set the 'last_time_loaded' to Jan 1, 1975.
-    //     $list->last_time_loaded =
-    //         (\Carbon\Carbon::create(1975, 1, 1, 12, 0, 0))->toDateTimeString();
-    //     $list->save();
-
-    //     $response = $this->actingAs($user)
-    //                      ->get("/lists/{$list->id}");
-
-    //     // $this->assertEquals(
-    //     //     (\Carbon\Carbon::now())->toDateTimeString(),
-    //     //     $list->last_time_loaded
-    //     // );
-
-    //     // The above assertion should work, but doesn't. (?!) However, the following
-    //     // assertion does work if the view includes a hidden span that echoes out
-    //     // $list->last_time_loaded
-    //     $response->assertSee((\Carbon\Carbon::now())->toDateTimeString());
-    // }
-
     /** @test */
     public function ListController_show_method_returns_the_list_show_view()
     {
@@ -169,4 +183,29 @@ class ListActionsTest extends TestCase
 
         $this->assertDatabaseMissing('task_lists', ['name' => 'List Name']);
     }
+
+    // /** @test */
+    // public function ListController_show_method_updates_the_TaskList_last_time_loaded_property()
+    // {
+    //     $user = $this->registerNewUser();
+    //     $list = TaskList::newTaskList($user, 'List Name');
+
+    //     // Artificially set the 'last_time_loaded' to Jan 1, 1975.
+    //     $list->last_time_loaded =
+    //         (\Carbon\Carbon::create(1975, 1, 1, 12, 0, 0))->toDateTimeString();
+    //     $list->save();
+
+    //     $response = $this->actingAs($user)
+    //                      ->get("/lists/{$list->id}");
+
+    //     // $this->assertEquals(
+    //     //     (\Carbon\Carbon::now())->toDateTimeString(),
+    //     //     $list->last_time_loaded
+    //     // );
+
+    //     // The above assertion should work, but doesn't. (?!) However, the following
+    //     // assertion does work if the view includes a hidden span that echoes out
+    //     // $list->last_time_loaded
+    //     $response->assertSee((\Carbon\Carbon::now())->toDateTimeString());
+    // }
 }

@@ -122,9 +122,6 @@
 
     </main>
 
-    <!-- Hidden element for testing purposes -->
-    <span style="display:none">last_time_loaded == {{ $list->last_time_loaded }}</span>
-
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
 </body>

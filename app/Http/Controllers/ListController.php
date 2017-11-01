@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TaskList;
+use App\Models\Managers\ListElementManager;
 
 class ListController extends Controller
 {
@@ -21,6 +22,49 @@ class ListController extends Controller
             ];
 
             return view('list.index', $data);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
+
+    /**
+     * Create a new Category, Subcategory, or Task instance belonging to the
+     * current TaskList
+     *
+     * @param Illuminate\Http\Request $request
+     * @param TaskList $list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createListElement(Request $request, TaskList $list)
+    {
+        $request->validate([
+            'elementType' => [
+                'required',                
+                // elementType must be 'category', 'subcategory', or 'task'
+                'regex:/^((sub)?(category))|(task)$/i'
+            ],
+            'name' => 'required|string',
+            'deadline' => 'nullable|string'
+        ]);
+
+        try {
+            ListElementManager::newListElement(
+                $request->elementType,
+                $request->name,
+                $list,
+                $request->deadline
+            );
+
+            $data = [
+                'user' => Auth::user(),
+                'list' => $list
+            ];
+
+            return view('list.show', $data);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -127,7 +171,7 @@ class ListController extends Controller
 
             $list->deleteTaskList();
 
-            return redirect()->route('lists.index'); // test that the method returns the index view
+            return redirect()->route('lists.index');
 
         } catch (\Throwable $e) {
             return redirect()->back();
