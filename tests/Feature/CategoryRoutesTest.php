@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\TaskList;
-use App\Http\Controllers\ListController;
+use App\Models\Category;
 
 class CategoryRoutesTest extends TestCase
 {
@@ -94,5 +94,72 @@ class CategoryRoutesTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show')
             ->assertSee('Category Name');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdateMethodRequestValidation
+     */
+    public function CategoryController_update_method_returns_redirect_if_request_validation_fails($name)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+
+        $requestData = [
+            'name' => $name
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/categories/{$category->id}", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 4 data sets that should each fail the CategoryController::store validation
+    public function provideForUpdateMethodRequestValidation()
+    {
+        return [
+            [123], // invalid name
+            [null], // missing name
+        ];
+    }
+
+    /** @test */
+    public function CategoryController_update_method_updates_a_Category_name()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+
+        $requestData = [
+            'name' => 'New Name'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/categories/{$category->id}", $requestData);
+
+        $this->assertDatabaseHas('categories', ['name' => 'New Name']);
+    }
+
+    /** @test */
+    public function CategoryController_update_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+
+        $requestData = [
+            'name' => 'New Name'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/categories/{$category->id}", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('New Name');
     }
 }

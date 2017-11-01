@@ -34,7 +34,7 @@ class CategoryController extends Controller
                 'list' => $list
             ];
 
-            return view('list.show', $data); // test the view is returned and contains new cat. name
+            return view('list.show', $data);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -51,21 +51,30 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, Category $category)
-    // {
-    //     $request->validate([
-            
-    //     ]);
+    public function update(Request $request, Category $category)
+    {
+        $request->validate([
+            'name' => 'required|string' // test validation
+        ]);
 
-    //     try {
-            
+        try {
+            $name = $request->name;
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();            
-    //     }
-    // }
+            $category->updateCategory($name);
+
+            $data = [
+                'user' => Auth::user(),
+                'list' => $category->taskList
+            ];
+
+            return view('list.show', $data);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 
     /**
      * Delete the given Category.
