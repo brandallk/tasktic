@@ -162,4 +162,33 @@ class CategoryRoutesTest extends TestCase
             ->assertViewIs('list.show')
             ->assertSee('New Name');
     }
+
+    /** @test */
+    public function CategoryController_destroy_method_deletes_a_Category()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+
+        $response = $this->actingAs($user)
+                         ->delete("/categories/{$category->id}");
+
+        $this->assertDatabaseMissing('categories', ['name' => 'Category Name']);
+    }
+
+    /** @test */
+    public function CategoryController_destroy_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+
+        $response = $this->actingAs($user)
+                         ->delete("/categories/{$category->id}");
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertDontSee('Category Name');
+    }
 }
