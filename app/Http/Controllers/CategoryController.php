@@ -10,6 +10,23 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     /**
+     * Return the 'list.show' view.
+     *
+     * @param App\Models\TaskList $list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function showListView(TaskList $list)
+    {
+        $data = [
+                'user' => Auth::user(),
+                'list' => $list
+            ];
+
+            return view('list.show', $data);
+    }
+
+    /**
      * Create a new Category instance and show it.
      *
      * @param Illuminate\Http\Request $request
@@ -29,12 +46,7 @@ class CategoryController extends Controller
 
             Category::newCategory($list, $name);
 
-            $data = [
-                'user' => Auth::user(),
-                'list' => $list
-            ];
-
-            return view('list.show', $data);
+            return $this->showListView($list);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -54,20 +66,16 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|string' // test validation
+            'name' => 'required|string'
         ]);
 
         try {
+            $list = $category->taskList;
             $name = $request->name;
 
             $category->updateCategory($name);
 
-            $data = [
-                'user' => Auth::user(),
-                'list' => $category->taskList
-            ];
-
-            return view('list.show', $data);
+            return $this->showListView($list);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -83,16 +91,19 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Category $category)
-    // {
-    //     try {
+    public function destroy(Category $category)
+    {
+        try {
+            $list = $category->taskList;
 
-            
+            $category->deleteCategory();
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();            
-    //     }
-    // }
+            return $this->showListView($list);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 }
