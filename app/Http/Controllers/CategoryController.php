@@ -20,14 +20,14 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'currentListID' => 'required|integer' // test validation failures make redirect
+            'currentListID' => 'required|integer'
         ]);
 
         try {
             $list = TaskList::find($request->currentListID);
             $name = $request->name;
 
-            Category::newCategory($list, $name); // test a new category is created
+            Category::newCategory($list, $name);
 
             $data = [
                 'user' => Auth::user(),
