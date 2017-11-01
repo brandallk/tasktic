@@ -49,7 +49,7 @@ class TaskController extends Controller
             $name = $request->name;
             $deadline = $request->deadline;
 
-            Task::newTask($subcategory, $name, $deadline)
+            Task::newTask($subcategory, $name, $deadline);
 
             return $this->showListView($list);
 
