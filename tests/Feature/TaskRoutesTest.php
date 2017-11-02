@@ -301,4 +301,87 @@ class TaskRoutesTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show');
     }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdatePriorityMethodRequestValidationFailure
+     */
+    public function TaskController_updatePriority_method_returns_redirect_if_request_validation_fails($status)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'status' => $status
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/priority", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 2 data sets that should each fail the TaskController::updatePriority validation
+    public function provideForUpdatePriorityMethodRequestValidationFailure()
+    {
+        return [
+            ['complete'], // invalid status
+            [null], // missing status
+        ];
+    }
+
+    /** @test */
+    public function TaskController_updatePriority_method_toggles_a_Task_status()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'status' => 'incomplete']);
+
+        $requestData = [
+            'status' => 'priority'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/priority", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'status' => 'priority']);
+
+        $requestData = [
+            'status' => 'incomplete'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/priority", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'status' => 'incomplete']);
+    }
+
+    /** @test */
+    public function TaskController_updatePriority_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'status' => 'priority'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/priority", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show');
+    }
 }
