@@ -45,7 +45,7 @@ class ListController extends Controller
             'elementType' => [
                 'required',                
                 // elementType must be 'category', 'subcategory', or 'task'
-                'regex:/^((sub)?(category))|(task)$/i'
+                'regex:/^(sub)?category|task$/i'
             ],
             'name' => 'required|string',
             'deadline' => 'nullable|string'
