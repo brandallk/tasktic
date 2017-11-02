@@ -164,17 +164,18 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Task $task)
-    // {
-    //     try {
-            
+    public function destroy(Task $task)
+    {
+        try {
+            $list = $task->subcategory->category->taskList;
+            $task->deleteTask()
 
-    //         return $this->showListView($list);
+            return $this->showListView($list);
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();            
-    //     }
-    // }
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 }
