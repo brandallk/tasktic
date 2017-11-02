@@ -51,7 +51,7 @@ class TaskRoutesTest extends TestCase
         $response->assertStatus(302); // 302 is a redirect
     }
 
-    // 4 data sets that should each fail the TaskController::store validation
+    // 5 data sets that should each fail the TaskController::store validation
     public function provideForStoreMethodRequestValidation()
     {
         return [
@@ -131,7 +131,7 @@ class TaskRoutesTest extends TestCase
         $response->assertStatus(302); // 302 is a redirect
     }
 
-    // 4 data sets that should each fail the TaskController::updateDetails validation
+    // 2 data sets that should each fail the TaskController::updateDetails validation
     public function provideForUpdateDetailsMethodRequestValidationFailure()
     {
         return [
@@ -165,7 +165,7 @@ class TaskRoutesTest extends TestCase
         $response->assertSuccessful();
     }
 
-    // 4 data sets that should each fail the TaskController::updateDetails validation
+    // 3 data sets that should each fail the TaskController::updateDetails validation
     public function provideForUpdateDetailsMethodRequestValidation()
     {
         return [
@@ -195,8 +195,6 @@ class TaskRoutesTest extends TestCase
         $this->assertDatabaseHas('tasks', ['name' => 'New Name', 'deadline' => 'New deadline']);
     }
 
-
-
     /** @test */
     public function TaskController_updateDetails_method_returns_the_list_show_view()
     {
@@ -219,5 +217,88 @@ class TaskRoutesTest extends TestCase
             ->assertViewIs('list.show')
             ->assertSee('New Name')
             ->assertSee('New deadline');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdateStatusMethodRequestValidationFailure
+     */
+    public function TaskController_updateStatus_method_returns_redirect_if_request_validation_fails($status)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'status' => $status
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/status", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 2 data sets that should each fail the TaskController::updateStatus validation
+    public function provideForUpdateStatusMethodRequestValidationFailure()
+    {
+        return [
+            ['priority'], // invalid status
+            [null], // missing status
+        ];
+    }
+
+    /** @test */
+    public function TaskController_updateStatus_method_toggles_a_Task_status()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'status' => 'incomplete']);
+
+        $requestData = [
+            'status' => 'complete'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/status", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'status' => 'complete']);
+
+        $requestData = [
+            'status' => 'incomplete'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/status", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'status' => 'incomplete']);
+    }
+
+    /** @test */
+    public function TaskController_updateStatus_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'status' => 'complete'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/status", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show');
     }
 }
