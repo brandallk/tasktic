@@ -68,23 +68,28 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function updateDetails(Request $request, Task $task)
-    // {
-    //     $request->validate([
-            
-    //     ]);
+    public function updateDetails(Request $request, Task $task)
+    {
+        $request->validate([
+            'name' => 'nullable|string',
+            'deadline' => 'nullable|string'
+        ]);
 
-    //     try {
-            
+        try {
+            $list = $task->subcategory->category->taskList;
+            $name = $request->name;
+            $deadline = $request->deadline;
 
-    //         return $this->showListView($list);
+            $task->updateDetails($name, $deadline);
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();            
-    //     }
-    // }
+            return $this->showListView($list);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 
     /**
      * Update the given Task's status.
