@@ -125,30 +125,37 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the given Task's priority status.
+     * Update the given Task's priority status: Toggle between 'incomplete' and 'priority'.
      *
      * @param Illuminate\Http\Request $request
      * @param App\Models\Task $task
      *
      * @return \Illuminate\Http\Response
      */
-    // public function updatePriority(Request $request, Task $task)
-    // {
-    //     $request->validate([
-            
-    //     ]);
+    public function updatePriority(Request $request, Task $task)
+    {
+        $request->validate([
+            'status' => [
+                'required',                
+                // status must be 'incomplete' or 'priority'
+                'regex:/^incomplete|priority$/i'
+            ],
+        ]);
 
-    //     try {
-            
+        try {
+            $list = $task->subcategory->category->taskList;
+            $status = $request->status;
 
-    //         return $this->showListView($list);
+            $task->updateStatus($status);
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();            
-    //     }
-    // }
+            return $this->showListView($list);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 
     /**
      * Delete the given Task.
