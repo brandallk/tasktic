@@ -105,4 +105,119 @@ class TaskRoutesTest extends TestCase
             ->assertViewIs('list.show')
             ->assertSee('Task Name');
     }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdateDetailsMethodRequestValidationFailure
+     */
+    public function TaskController_updateDetails_method_returns_redirect_if_request_validation_fails(
+        $name, $deadline)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'name' => $name,
+            'deadline' => $deadline
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/details", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 4 data sets that should each fail the TaskController::updateDetails validation
+    public function provideForUpdateDetailsMethodRequestValidationFailure()
+    {
+        return [
+            [123, 'May 1'], // invalid name
+            ['New Name', 123], // invalid deadline
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdateDetailsMethodRequestValidation
+     */
+    public function TaskController_updateDetails_method_will_accept_null_name_or_deadline(
+        $name, $deadline)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'name' => $name,
+            'deadline' => $deadline
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/details", $requestData);
+
+        $response->assertSuccessful();
+    }
+
+    // 4 data sets that should each fail the TaskController::updateDetails validation
+    public function provideForUpdateDetailsMethodRequestValidation()
+    {
+        return [
+            [null, 'May 1'], // missing name
+            ['New Name', null], // missing deadline
+            [null, null], // missing name and deadline
+        ];
+    }
+
+    /** @test */
+    public function TaskController_updateDetails_method_updates_a_Task_name_or_deadline()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'name' => 'New Name',
+            'deadline' => 'New deadline'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/details", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'New Name', 'deadline' => 'New deadline']);
+    }
+
+
+
+    /** @test */
+    public function TaskController_updateDetails_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $requestData = [
+            'name' => 'New Name',
+            'deadline' => 'New deadline'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task->id}/details", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('New Name')
+            ->assertSee('New deadline');
+    }
 }
