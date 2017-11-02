@@ -384,4 +384,37 @@ class TaskRoutesTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show');
     }
+
+    /** @test */
+    public function TaskController_destroy_method_deletes_a_Task()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $response = $this->actingAs($user)
+                         ->delete("/tasks/{$task->id}");
+
+        $this->assertDatabaseMissing('tasks', ['name' => 'Task Name']);
+    }
+
+    /** @test */
+    public function TaskController_destroy_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+
+        $response = $this->actingAs($user)
+                         ->delete("/tasks/{$task->id}");
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertDontSee('Task Name');
+    }
 }

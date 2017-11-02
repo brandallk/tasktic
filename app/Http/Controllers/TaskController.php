@@ -168,14 +168,14 @@ class TaskController extends Controller
     {
         try {
             $list = $task->subcategory->category->taskList;
-            $task->deleteTask()
+            $task->deleteTask();
 
             return $this->showListView($list);
 
         } catch (\Throwable $e) {
             return redirect()->back();
         } catch (\Exception $e) {
-            return redirect()->back();            
+            return redirect()->back();
         }
     }
 }

@@ -182,7 +182,7 @@ class Task extends Model
             $uniqueID = $task->list_element_id;
 
             foreach ($task->taskItems as $item) {
-                ItemManager::deleteItem($item->type, $item->uniqueID, $task);
+                ItemManager::deleteItem($item->type, $item->unique_id, $task);
             }
 
             // Note: important that the Task is deleted AFTER its child Items are deleted

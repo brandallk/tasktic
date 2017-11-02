@@ -255,7 +255,7 @@ class TaskTest extends TestCase
     public function a_Task_can_be_deleted()
     {
         $subcategory = $this->makeNewSubcategory();        
-        $task = Task::newTask($subcategory, 'Task Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
         
         $task->deleteTask();
         
