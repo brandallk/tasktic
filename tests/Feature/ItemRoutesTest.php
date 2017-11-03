@@ -155,7 +155,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_updateDetail_method_updates_an_DetailItem_content()
+    public function ItemController_updateDetail_method_updates_a_DetailItem_content()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -195,5 +195,85 @@ class ItemRoutesTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show')
             ->assertSee('Some other task detail.');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdateLinkMethodRequestValidationFailure
+     */
+    public function ItemController_updateLink_method_returns_redirect_if_request_validation_fails($content)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('link', 'http://someuri.com', $task);
+
+        $requestData = [
+            'content' => $content
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/items/link/{$item->id}", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 6 data sets that should each fail the ItemController::updatelink validation
+    public function provideForUpdateLinkMethodRequestValidationFailure()
+    {
+        return [
+            [123], // invalid content
+            ['notAValidURL'], // invalid content
+            ['hts/invalid.commm'], // invalid content
+            ['htts/www.invalid.com'], // invalid content
+            ['https:/www.invalid.com'], // invalid content
+            [null], // missing content
+        ];
+    }
+
+    /** @test */
+    public function ItemController_updateLink_method_updates_a_LinkItem_content()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('link', 'http://originaluri.com', $task);
+
+        $requestData = [
+            'content' => 'http://newuri.com'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/items/link/{$item->id}", $requestData);
+
+        $this->assertDatabaseHas('link_items', ['type' => 'link', 'link' => 'http://newuri.com']);
+    }
+
+    /** @test */
+    public function ItemController_updateLink_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('link', 'http://originaluri.com', $task);
+
+        $requestData = [
+            'content' => 'http://newuri.com'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/items/link/{$item->id}", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('http://newuri.com');
     }
 }

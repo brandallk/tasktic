@@ -121,7 +121,7 @@ class ItemController extends Controller
     public function updateLink(Request $request, LinkItem $item)
     {
         $request->validate([
-            'content' => 'required|string'
+            'content' => 'required|url'
         ]);
 
         try {
