@@ -145,8 +145,9 @@ class ItemController extends Controller
         $type = $item->type;
         $uniqueID = $item->list_element_id;
         $task = $item->task;
+        $list = $task->subcategory->category->taskList;
 
-        ItemManager::deleteItem($type, $uniqueID, $task)
+        ItemManager::deleteItem($type, $uniqueID, $task);
 
         return $this->showListView($list);
     }

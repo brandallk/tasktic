@@ -276,4 +276,74 @@ class ItemRoutesTest extends TestCase
             ->assertViewIs('list.show')
             ->assertSee('http://newuri.com');
     }
+
+    /** @test */
+    public function ItemController_destroyDetail_method_deletes_a_DetailItem()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('detail', 'A task detail.', $task);
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/detail/{$item->id}");
+
+        $this->assertDatabaseMissing('detail_items', ['type' => 'detail', 'detail' => 'A task detail.']);
+    }
+
+    /** @test */
+    public function ItemController_destroyDetail_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('detail', 'A task detail.', $task);
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/detail/{$item->id}");
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertDontSee('A task detail.');
+    }
+
+    /** @test */
+    public function ItemController_destroyLink_method_deletes_a_LinkItem()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('link', 'http://someuri.com', $task);
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/link/{$item->id}");
+
+        $this->assertDatabaseMissing('link_items', ['type' => 'link', 'link' => 'http://someuri.com']);
+    }
+
+    /** @test */
+    public function ItemController_destroyLink_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('link', 'http://someuri.com', $task);
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/link/{$item->id}");
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertDontSee('http://someuri.com');
+    }
 }
