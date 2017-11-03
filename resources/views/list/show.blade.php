@@ -90,8 +90,8 @@
 
                                 @if ($task->deadlineItem)
                                     <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
-                                        if ($tas->status == 'priority') {echo 'priority';}
-                                        elseif ($tas->status == 'complete') {echo 'complete';}
+                                        if ($task->status == 'priority') {echo 'priority';}
+                                        elseif ($task->status == 'complete') {echo 'complete';}
                                         else {echo 'incomplete';}
                                     ?>">
                                         <span>{alarm-clock icon}</span>
@@ -132,6 +132,7 @@
 
         <!-- Add-A-Task Button -->
         <button type="button" name="add-task">Add A Task</button>
+        @include('list.partials.listElement.create')
 
     </main>
 
