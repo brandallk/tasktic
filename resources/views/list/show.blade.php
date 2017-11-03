@@ -37,7 +37,41 @@
                 </ul>
             </li>
             <li class="action logout">Logout</li>
-        </ul>        
+        </ul>
+
+        <div class="hidden modal new">
+            <form method="post" action="{{ route('lists.store') }}">
+                {{ csrf_field() }}
+                <span class="modal-heading">
+                    Create a new list
+                </span>
+                <label>Name:
+                <input type="text" name="name">
+                </label>
+                <input type="submit" value="submit">
+            </form>
+        </div>
+
+        <div class="hidden modal save">
+            <form method="post" action="{{ route('lists.update', ['list' => $list->id]) }}">
+                {{ csrf_field() }}
+                {{ method_field('PATCH') }}
+                <span class="modal-heading">
+                    Save this list as...
+                </span>
+                <label>Name:
+                <input type="text" name="name">
+                </label>
+                <input type="submit" value="submit">
+            </form>
+        </div>
+
+        <div class="hidden logout">
+            <form method="post" action="{{ route('logout') }}">
+                {{ csrf_field() }}
+            </form>
+        </div>
+
     </div>
     <!-- Main-Menu Toggle Button -->
     <span class="menu-toggle closed">{menu-toggle icon}</span>

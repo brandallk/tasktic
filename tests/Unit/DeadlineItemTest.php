@@ -129,9 +129,20 @@ class DeadlineItemTest extends TestCase
     /** @test */
     public function a_DeadlineItem_can_be_deleted()
     {
-        $task = $this->makeNewTask();
-        $item = DeadlineItem::newItem($task, 'deadline', '8:00 am, December 25, 2017');
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', '8:00 am, December 25, 2017');
+        
+        $item = $task->deadlineItem;
+        
         $uniqueID = $item->list_element_id;
+
+        $this->assertDatabaseHas(
+            'tasks',
+            ['id' => $task->id, 'name' => 'Task Name', 'deadline' => '8:00 am, December 25, 2017']
+        );
 
         $item->deleteItem();
 
@@ -143,7 +154,10 @@ class DeadlineItemTest extends TestCase
 
         // The parent Task should be updated
         $this->assertCount(0, $task->deadlineItem()->get());
-        $this->assertEquals(null, $task->deadline);
+        $this->assertDatabaseHas(
+            'tasks',
+            ['id' => $task->id, 'name' => 'Task Name', 'deadline' => null]
+        );
 
         // The parent Task's corresponding TaskItem should be deleted
         $this->assertDatabaseMissing(
