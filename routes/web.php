@@ -100,8 +100,12 @@ Route::middleware(['auth'])->group(function () {
     // Task-item resources (DeadlineItems, DetailItems, LinkItems)
     Route::post('/items', 'ItemController@store')->name('items.store');
 
-    Route::patch('/items/{item}', 'ItemController@update')->name('items.update');
+    Route::patch('/items/detail/{item}', 'ItemController@updateDetail')->name('items.update.detail');
 
-    Route::delete('/items/{item}', 'ItemController@destroy')->name('items.destroy');
+    Route::patch('/items/link/{item}', 'ItemController@updateLink')->name('items.update.link');
+
+    Route::delete('/items/detail/{item}', 'ItemController@destroyDetail')->name('items.destroy.detail');
+
+    Route::delete('/items/link/{item}', 'ItemController@destroyLink')->name('items.destroy.link');
 
 });

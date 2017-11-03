@@ -10,6 +10,7 @@ use App\Models\TaskList;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Task;
+use App\Models\Managers\ItemManager;
 
 class ItemRoutesTest extends TestCase
 {
@@ -118,5 +119,81 @@ class ItemRoutesTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show')
             ->assertSee('A new task detail.');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideForUpdateDetailMethodRequestValidationFailure
+     */
+    public function ItemController_updateDetail_method_returns_redirect_if_request_validation_fails($content)
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('detail', 'A task detail.', $task);
+
+        $requestData = [
+            'content' => $content
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/items/detail/{$item->id}", $requestData);
+
+        $response->assertStatus(302); // 302 is a redirect
+    }
+
+    // 2 data sets that should each fail the ItemController::updateDetail validation
+    public function provideForUpdateDetailMethodRequestValidationFailure()
+    {
+        return [
+            [123], // invalid content
+            [null], // missing content
+        ];
+    }
+
+    /** @test */
+    public function ItemController_updateDetail_method_updates_an_DetailItem_content()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('detail', 'A task detail.', $task);
+
+        $requestData = [
+            'content' => 'Some other task detail.'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/items/detail/{$item->id}", $requestData);
+
+        $this->assertDatabaseHas('detail_items', ['type' => 'detail', 'detail' => 'Some other task detail.']);
+    }
+
+    /** @test */
+    public function ItemController_updateDetail_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $item = ItemManager::newItem('detail', 'A task detail.', $task);
+
+        $requestData = [
+            'content' => 'Some other task detail.'
+        ];
+
+        $response = $this->actingAs($user)
+                         ->patch("/items/detail/{$item->id}", $requestData);
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertSee('Some other task detail.');
     }
 }

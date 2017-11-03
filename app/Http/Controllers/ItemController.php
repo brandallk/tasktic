@@ -10,6 +10,8 @@ use App\Models\Subcategory;
 use App\Models\Task;
 use App\Models\Managers\ItemManager;
 use App\Models\Interfaces\iItem;
+use App\Models\DetailItem;
+use App\Models\LinkItem;
 
 class ItemController extends Controller
 {
@@ -67,30 +69,34 @@ class ItemController extends Controller
     }
 
     /**
-     * Update the given iItem.
+     * Update the given DetailItem.
      *
      * @param Illuminate\Http\Request $request
-     * @param App\Models\Interfaces\iItem $item
+     * @param App\Models\DetailItem $item
      *
      * @return \Illuminate\Http\Response
      */
-    // public function updateDetails(Request $request, iItem $item)
-    // {
-    //     $request->validate([
-            
-    //     ]);
+    public function updateDetail(Request $request, DetailItem $item)
+    {
+        $request->validate([
+            'content' => 'required|string'
+        ]);
 
-    //     try {
-            
+        try {
+            $task = $item->task;
+            $list = $task->subcategory->category->taskList;
+            $content = $request->content;
 
-    //         return $this->showListView($list);
+            $item->updateItem($task, $content);
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();            
-    //     }
-    // }
+            return $this->showListView($list);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
 
     /**
      * Delete the given iItem.
