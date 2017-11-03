@@ -39,32 +39,9 @@
             <li class="action logout">Logout</li>
         </ul>
 
-        <div class="hidden modal new">
-            <form method="post" action="{{ route('lists.store') }}">
-                {{ csrf_field() }}
-                <span class="modal-heading">
-                    Create a new list
-                </span>
-                <label>Name:
-                <input type="text" name="name">
-                </label>
-                <input type="submit" value="submit">
-            </form>
-        </div>
+        @include('list.partials.list.create')
 
-        <div class="hidden modal save">
-            <form method="post" action="{{ route('lists.update', ['list' => $list->id]) }}">
-                {{ csrf_field() }}
-                {{ method_field('PATCH') }}
-                <span class="modal-heading">
-                    Save this list as...
-                </span>
-                <label>Name:
-                <input type="text" name="name">
-                </label>
-                <input type="submit" value="submit">
-            </form>
-        </div>
+        @include('list.partials.list.save')
 
         <div class="hidden logout">
             <form method="post" action="{{ route('logout') }}">
