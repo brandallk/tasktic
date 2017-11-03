@@ -69,6 +69,25 @@ class ItemController extends Controller
     }
 
     /**
+     * Update the given iItem.
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Models\Interfaces\iItem $item
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function update(Request $request, iItem $item)
+    {
+        $task = $item->task;
+        $list = $task->subcategory->category->taskList;
+        $content = $request->content;
+
+        $item->updateItem($task, $content);
+
+        return $this->showListView($list);
+    }
+
+    /**
      * Update the given DetailItem.
      *
      * @param Illuminate\Http\Request $request
@@ -82,15 +101,31 @@ class ItemController extends Controller
             'content' => 'required|string'
         ]);
 
+        try {            
+            return $this->update($request, $item);
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();            
+        }
+    }
+
+    /**
+     * Update the given LinkItem.
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Models\LinkItem $item
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateLink(Request $request, LinkItem $item)
+    {
+        $request->validate([
+            'content' => 'required|string'
+        ]);
+
         try {
-            $task = $item->task;
-            $list = $task->subcategory->category->taskList;
-            $content = $request->content;
-
-            $item->updateItem($task, $content);
-
-            return $this->showListView($list);
-
+            return $this->update($request, $item);
         } catch (\Throwable $e) {
             return redirect()->back();
         } catch (\Exception $e) {
