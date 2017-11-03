@@ -140,17 +140,52 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(iItem $item)
-    // {
-    //     try {
-            
+    public function destroy(iItem $item)
+    {
+        $type = $item->type;
+        $uniqueID = $item->list_element_id;
+        $task = $item->task;
 
-    //         return $this->showListView($list);
+        ItemManager::deleteItem($type, $uniqueID, $task)
 
-    //     } catch (\Throwable $e) {
-    //         return redirect()->back();
-    //     } catch (\Exception $e) {
-    //         return redirect()->back();
-    //     }
-    // }
+        return $this->showListView($list);
+    }
+
+    /**
+     * Delete the given DetailItem.
+     *
+     * @param App\Models\DetailItem $item
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyDetail(DetailItem $item)
+    {
+        try {
+            return $this->destroy($item);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Delete the given LinkItem.
+     *
+     * @param App\Models\LinkItem $item
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyLink(LinkItem $item)
+    {
+        try {
+            return $this->destroy($item);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+    }
 }
