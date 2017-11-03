@@ -36,19 +36,17 @@
                         </li>
                 </ul>
             </li>
-            <li class="action logout">Logout</li>
+            <li class="action logout">
+                <form method="post" action="{{ route('logout') }}">
+                    {{ csrf_field() }}
+                    <input type="submit" value="Logout">
+                </form>
+            </li>
         </ul>
 
         @include('list.partials.list.create')
-
         @include('list.partials.list.save')
-
-        <div class="hidden logout">
-            <form method="post" action="{{ route('logout') }}">
-                {{ csrf_field() }}
-            </form>
-        </div>
-
+        
     </div>
     <!-- Main-Menu Toggle Button -->
     <span class="menu-toggle closed">{menu-toggle icon}</span>
