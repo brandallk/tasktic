@@ -46,7 +46,7 @@
 
         @include('list.partials.list.create')
         @include('list.partials.list.save')
-        
+
     </div>
     <!-- Main-Menu Toggle Button -->
     <span class="menu-toggle closed">{menu-toggle icon}</span>
@@ -73,23 +73,27 @@
         @if ($list->categories)
         @foreach ($list->categories as $category)
 
-            <div id="{{ $category->list_element_id }}" class="category">
+            <div id="{{ $category->list_element_id }}" class="selectable category">
                 <span>{{ $category->name }}</span>
 
                 @if ($category->subcategories)
                 @foreach ($category->subcategories as $subcategory)
 
-                    <div id="{{ $subcategory->list_element_id }}" class="subcategory">
+                    <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory">
                         <span>{{ $subcategory->name }}</span>
 
                         @if ($subcategory->tasks)
                         @foreach ($subcategory->tasks as $task)
 
-                            <div id="{{ $task->list_element_id }}" class="task">
+                            <div id="{{ $task->list_element_id }}" class="selectable task">
                                 <span>{{ $task->name }}</span>
 
                                 @if ($task->deadlineItem)
-                                    <div id="{{ $task->deadlineItem->list_element_id }}" class="deadline">
+                                    <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
+                                        if ($tas->status == 'priority') {echo 'priority';}
+                                        elseif ($tas->status == 'complete') {echo 'complete';}
+                                        else {echo 'incomplete';}
+                                    ?>">
                                         <span>{alarm-clock icon}</span>
                                         <span>{{ $task->deadlineItem->deadline }}</span>
                                     </div>
@@ -97,7 +101,7 @@
 
                                 @if ($task->linkItems)
                                 @foreach ($task->linkItems as $link)
-                                    <div id="{{ $link->list_element_id }}" class="link">
+                                    <div id="{{ $link->list_element_id }}" class="selectable link">
                                         <span>{{ $link->link }}</span>
                                     </div>
                                 @endforeach
@@ -105,7 +109,7 @@
 
                                 @if ($task->detailItems)
                                 @foreach ($task->detailItems as $detail)
-                                    <div id="{{ $detail->list_element_id }}" class="detail">
+                                    <div id="{{ $detail->list_element_id }}" class="selectable detail">
                                         <span>{{ $detail->detail }}</span>
                                     </div>
                                 @endforeach
