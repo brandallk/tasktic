@@ -278,6 +278,68 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
+    public function ItemController_destroyDeadline_method_deletes_a_DeadlineItem()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $deadlineItemID = $task->deadlineItem->id;
+
+        $this->assertDatabaseHas(
+            'deadline_items',
+            ['id' => $deadlineItemID, 'type' => 'deadline', 'deadline' => 'July 4']
+        );
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/deadline/{$deadlineItemID}");
+
+        $this->assertDatabaseMissing(
+            'deadline_items',
+            ['type' => 'deadline', 'deadline' => 'July 4']
+        );
+    }
+
+    /** @test */
+    public function ItemController_destroyDeadline_method_deletes_a_parent_Task_deadline_property()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name', 'July 4');
+        $deadlineItemID = $task->deadlineItem->id;
+
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'deadline' => 'July 4']);
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/deadline/{$deadlineItemID}");
+
+        $this->assertDatabaseMissing('tasks', ['name' => 'Task Name', 'deadline' => 'July 4']);
+        $this->assertDatabaseHas('tasks', ['name' => 'Task Name', 'deadline' => null]);
+    }
+
+    /** @test */
+    public function ItemController_destroyDeadline_method_returns_the_list_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+        $task = Task::newTask($subcategory, 'Task Name');
+        $item = ItemManager::newItem('deadline', 'July 4', $task);
+
+        $response = $this->actingAs($user)
+                         ->delete("/items/deadline/{$item->id}");
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.show')
+            ->assertDontSee('July 4');
+    }
+
+    /** @test */
     public function ItemController_destroyDetail_method_deletes_a_DetailItem()
     {
         $user = $this->registerNewUser();

@@ -104,6 +104,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/items/link/{item}', 'ItemController@updateLink')->name('items.update.link');
 
+    Route::delete('/items/deadline/{item}', 'ItemController@destroyDeadline')->name('items.destroy.deadine');
+
     Route::delete('/items/detail/{item}', 'ItemController@destroyDetail')->name('items.destroy.detail');
 
     Route::delete('/items/link/{item}', 'ItemController@destroyLink')->name('items.destroy.link');

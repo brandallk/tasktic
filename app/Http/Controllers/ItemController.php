@@ -10,6 +10,7 @@ use App\Models\Subcategory;
 use App\Models\Task;
 use App\Models\Managers\ItemManager;
 use App\Models\Interfaces\iItem;
+use App\Models\DeadlineItem;
 use App\Models\DetailItem;
 use App\Models\LinkItem;
 
@@ -150,6 +151,25 @@ class ItemController extends Controller
         ItemManager::deleteItem($type, $uniqueID, $task);
 
         return $this->showListView($list);
+    }
+
+    /**
+     * Delete the given DeadlineItem.
+     *
+     * @param App\Models\DeadlineItem $item
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyDeadline(DeadlineItem $item)
+    {
+        try {
+            return $this->destroy($item);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 
     /**

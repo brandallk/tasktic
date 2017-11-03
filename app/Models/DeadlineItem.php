@@ -23,7 +23,7 @@ class DeadlineItem extends Item
     ];
 
     /**
-     * Update the given DeadlineItem's deadline. Use a database transaction so operations will
+     * Update a DeadlineItem's deadline. Use a database transaction so operations will
      * automatically rollback if a failure occurs.
      *
      * @param App\Models\Task $task  The Task to which the DeadlineItem belongs.
@@ -49,5 +49,19 @@ class DeadlineItem extends Item
 
             return $item;
         });
+    }
+
+    /**
+     * Delete a DeadlineItem. Null out the parent Task's 'deadline' property, then
+     * execute the generic 'deleteItem' method from App\Models\Item.
+     *
+     * @return bool
+     */
+    public function deleteItem()
+    {
+        $this->task->deadline = null;
+        $this->task->save();
+
+        return parent::deleteItem();
     }
 }
