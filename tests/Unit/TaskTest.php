@@ -12,6 +12,7 @@ use App\Models\Task;
 use App\Models\TaskItem;
 use App\Models\Managers\ItemManager;
 use App\Models\Interfaces\iItem;
+use App\Models\DeadlineItem;
 use App\Models\Item;
 
 class TaskTest extends TestCase
@@ -204,13 +205,23 @@ class TaskTest extends TestCase
     /** @test */
     public function a_Task_deadline_can_be_updated()
     {
-        $subcategory = $this->makeNewSubcategory();        
-        $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
+        $subcategory = $this->makeNewSubcategory();
+        $task1 = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
         
-        $task->updateDetails(null, 'Friday, Oct. 27');
+        $task1->updateDetails(null, 'Friday, Oct. 27');
         
-        $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
-        $this->assertEquals('Friday, Oct. 27', $task->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task1->deadlineItem->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task1->deadline);
+
+        // Make sure Task::updateDetails method works even if no deadline exists
+        $task2 = Task::newTask($subcategory, 'Another Task Name');
+        
+        $task2->updateDetails(null, 'Saturday, Oct. 28');
+        $task2_deadlineItem = DeadlineItem::where('task_id', $task2->id)->first();
+        
+        $this->assertEquals('Saturday, Oct. 28', $task2_deadlineItem->deadline);
+        $this->assertDatabaseHas('deadline_items', ['task_id' => $task2->id, 'deadline' => 'Saturday, Oct. 28']);
+        $this->assertEquals('Saturday, Oct. 28', $task2->deadline);
     }
 
     /** @test */
