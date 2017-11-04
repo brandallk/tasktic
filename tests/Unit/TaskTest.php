@@ -206,22 +206,32 @@ class TaskTest extends TestCase
     public function a_Task_deadline_can_be_updated()
     {
         $subcategory = $this->makeNewSubcategory();
-        $task1 = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
+        $task = Task::newTask($subcategory, 'Task Name', 'Monday, Oct. 24');
         
-        $task1->updateDetails(null, 'Friday, Oct. 27');
+        $task->updateDetails(null, 'Friday, Oct. 27');
         
-        $this->assertEquals('Friday, Oct. 27', $task1->deadlineItem->deadline);
-        $this->assertEquals('Friday, Oct. 27', $task1->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task->deadlineItem->deadline);
+        $this->assertEquals('Friday, Oct. 27', $task->deadline);
+    }
 
+     /** @test */
+    public function a_Task_with_no_deadline_can_be_updated_with_a_deadline()
+    {
+        $subcategory = $this->makeNewSubcategory();
+        $task = Task::newTask($subcategory, 'Another Task Name');
+        
         // Make sure Task::updateDetails method works even if no deadline exists
-        $task2 = Task::newTask($subcategory, 'Another Task Name');
-        
-        $task2->updateDetails(null, 'Saturday, Oct. 28');
-        $task2_deadlineItem = DeadlineItem::where('task_id', $task2->id)->first();
-        
-        $this->assertEquals('Saturday, Oct. 28', $task2_deadlineItem->deadline);
-        $this->assertDatabaseHas('deadline_items', ['task_id' => $task2->id, 'deadline' => 'Saturday, Oct. 28']);
-        $this->assertEquals('Saturday, Oct. 28', $task2->deadline);
+        $task->updateDetails(null, 'Saturday, Oct. 28');
+
+        $task_deadlineItem = DeadlineItem::where('task_id', $task->id)->first();        
+        $this->assertEquals('Saturday, Oct. 28', $task_deadlineItem->deadline);
+
+        $this->assertDatabaseHas(
+            'deadline_items',
+            ['task_id' => $task->id, 'deadline' => 'Saturday, Oct. 28']
+        );
+
+        $this->assertEquals('Saturday, Oct. 28', $task->deadline);
     }
 
     /** @test */
