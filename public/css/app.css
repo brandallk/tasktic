@@ -1,0 +1,59 @@
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans);* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 1em;
+  color: #86c7e6;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn {
+  display: inline-block;
+  color: white;
+  padding: 1em;
+  width: 10em;
+  font-size: 1em;
+  border-radius: 0.5em;
+  margin: 1em;
+}
+
+.pink {
+  background-color: #e98696;
+}
+
+body.welcome-page {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 75em;
+}
+
+body.welcome-page nav {
+  text-align: right;
+  margin: 2em 3em 1.25em;
+  border-bottom: solid thin;
+}
+
+body.welcome-page div.greeting {
+  margin: 0 3em;
+}
+
+body.welcome-page div.greeting h1 {
+  margin-top: 20%;
+}
+
+body.welcome-page div.greeting h1,
+body.welcome-page div.greeting span {
+  font-size: 2em;
+}
+
+body.welcome-page div.greeting div.authLinks {
+  margin-top: 1em;
+}
+

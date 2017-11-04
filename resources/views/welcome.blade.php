@@ -6,34 +6,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Welcome to Tasktic!</title>
+
+        <!-- Styles -->
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
         
     </head>
-    <body>
+    <body class="welcome-page">
             <nav>
                 <ul>
                     <li><a href="{{ route('about') }}">About Tasktic</a></li>
                 </ul>
             </nav>
 
-            <hr>
-
-            <div class="welcome">
+            <div class="greeting">
                 <h1>Welcome to Tasktic!</h1>
                 <span>Get Organized. Create your daily todo-list online!</span>
 
                 @if (Route::has('login'))
                     <div class="authLinks">
                         @auth
-                            <button type="button" name="home">
-                                <a href="{{ url('/home') }}">Home</a>
-                            </button>
+                            <a class="btn pink" href="{{ url('/home') }}">Home</a>
                         @else
-                            <button type="button" name="login">
-                                <a href="{{ route('login') }}">Log In</a>
-                            </button>
-                            <button type="button" name="register">
-                                <a href="{{ route('register') }}">Register</a>
-                            </button>
+                            <a class="btn pink" href="{{ route('login') }}">Log In</a>
+                            <a class="btn pink" href="{{ route('register') }}">Register</a>
                         @endauth
                     </div>
                 @endif
