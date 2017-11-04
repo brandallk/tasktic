@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <!-- Main Menu -->
+    <!-- Main Menu (Top Menu) -->
     <div class="main-menu hidden">
         <ul>
             <li class="action save">Save</li>
@@ -51,13 +51,13 @@
     <!-- Main-Menu Toggle Button -->
     <span class="menu-toggle closed">{menu-toggle icon}</span>
 
-    <!-- Title Area -->
+    <!-- List-Title Area -->
     <div class="title">
         <h1>{{ $list->name }}</h1>
         <button type="button" name="priorities">Priorities</button>
     </div>
 
-    <!-- Action Menu -->
+    <!-- Action Menu (Secondary Menu) -->
     <div class="action-menu">
         <ul>
             <li class="action-button create">{create icon}</li>
@@ -70,24 +70,40 @@
 
     <!-- The List -->
     <main>
+
+        <!-- Validation Error Messages Display -->
+        @if ($errors->any())
+            <div class="alert">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- List categories -->
         @if ($list->categories)
         @foreach ($list->categories as $category)
 
             <div id="{{ $category->list_element_id }}" class="selectable category">
                 <span>{{ $category->name }}</span>
 
+                <!-- List subcategories -->
                 @if ($category->subcategories)
                 @foreach ($category->subcategories as $subcategory)
 
                     <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory">
                         <span>{{ $subcategory->name }}</span>
 
+                        <!-- List tasks -->
                         @if ($subcategory->tasks)
                         @foreach ($subcategory->tasks as $task)
 
                             <div id="{{ $task->list_element_id }}" class="selectable task">
                                 <span>{{ $task->name }}</span>
 
+                                <!-- Deadline Items -->
                                 @if ($task->deadlineItem)
 
                                     <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
@@ -103,6 +119,7 @@
 
                                 @endif
 
+                                <!-- Link Items -->
                                 @if ($task->linkItems)
                                 @foreach ($task->linkItems as $link)
 
@@ -116,6 +133,7 @@
                                 @endforeach
                                 @endif
 
+                                <!-- Detail Items -->
                                 @if ($task->detailItems)
                                 @foreach ($task->detailItems as $detail)
 
@@ -135,7 +153,7 @@
                                 @include('list.partials.task.edit.priority')
                                 @include('list.partials.task.delete')
                                 
-                            </div> <!-- end Task div -->
+                            </div> <!-- end Tasks div -->
 
                         @endforeach
                         @endif
@@ -144,7 +162,7 @@
                         @include('list.partials.subcategory.edit')
                         @include('list.partials.subcategory.delete')
 
-                    </div> <!-- end Subcategory div -->
+                    </div> <!-- end Subcategories div -->
 
                 @endforeach
                 @endif
@@ -153,7 +171,7 @@
                 @include('list.partials.category.edit')
                 @include('list.partials.category.delete')
 
-            </div> <!-- end Category div -->
+            </div> <!-- end Categories div -->
 
         @endforeach
         @endif
