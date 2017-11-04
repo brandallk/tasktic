@@ -120,11 +120,15 @@
                         @endforeach
                         @endif
 
+                        @include('list.partials.subcategory.edit')
+                        @include('list.partials.subcategory.delete')
+
                     </div> <!-- end Subcategory div -->
 
                 @endforeach
                 @endif
-                
+
+                @include('list.partials.subcategory.create')
                 @include('list.partials.category.edit')
                 @include('list.partials.category.delete')
 
