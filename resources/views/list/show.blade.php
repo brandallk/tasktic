@@ -114,12 +114,18 @@
                                     </div>
                                 @endforeach
                                 @endif
+
+                                @include('list.partials.task.edit.details')
+                                @include('list.partials.task.edit.status')
+                                @include('list.partials.task.edit.priority')
+                                @include('list.partials.task.delete')
                                 
                             </div> <!-- end Task div -->
 
                         @endforeach
                         @endif
 
+                        @include('list.partials.task.create')
                         @include('list.partials.subcategory.edit')
                         @include('list.partials.subcategory.delete')
 
