@@ -115,20 +115,25 @@
                                 @endforeach
                                 @endif
                                 
-                            </div>
+                            </div> <!-- end Task div -->
 
                         @endforeach
                         @endif
 
-                    </div>
+                    </div> <!-- end Subcategory div -->
 
                 @endforeach
                 @endif
+                
+                @include('list.partials.category.edit')
+                @include('list.partials.category.delete')
 
-            </div>
+            </div> <!-- end Category div -->
 
         @endforeach
         @endif
+
+        @include('list.partials.category.create')
 
         <!-- Add-A-Task Button -->
         <button type="button" name="add-task">Add A Task</button>
