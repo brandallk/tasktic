@@ -89,6 +89,7 @@
                                 <span>{{ $task->name }}</span>
 
                                 @if ($task->deadlineItem)
+
                                     <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
                                         if ($task->status == 'priority') {echo 'priority';}
                                         elseif ($task->status == 'complete') {echo 'complete';}
@@ -97,24 +98,38 @@
                                         <span>{alarm-clock icon}</span>
                                         <span>{{ $task->deadlineItem->deadline }}</span>
                                     </div>
+
+                                    @include('list.partials.item.deadline.delete')
+
                                 @endif
 
                                 @if ($task->linkItems)
                                 @foreach ($task->linkItems as $link)
+
                                     <div id="{{ $link->list_element_id }}" class="selectable link">
                                         <span>{{ $link->link }}</span>
                                     </div>
+
+                                    @include('list.partials.item.link.edit')
+                                    @include('list.partials.item.link.delete')
+
                                 @endforeach
                                 @endif
 
                                 @if ($task->detailItems)
                                 @foreach ($task->detailItems as $detail)
+
                                     <div id="{{ $detail->list_element_id }}" class="selectable detail">
                                         <span>{{ $detail->detail }}</span>
                                     </div>
+
+                                    @include('list.partials.item.detail.edit')
+                                    @include('list.partials.item.detail.delete')
+
                                 @endforeach
                                 @endif
 
+                                @include('list.partials.item.create')
                                 @include('list.partials.task.edit.details')
                                 @include('list.partials.task.edit.status')
                                 @include('list.partials.task.edit.priority')

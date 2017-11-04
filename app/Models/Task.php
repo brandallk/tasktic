@@ -133,7 +133,9 @@ class Task extends Model
         $task = $this;
 
         return DB::transaction(function () use ($task, $name, $deadline) {
+            // If the request includes a new 'name'
             if (!is_null($name)) {
+                // Update the old 'name'
                 $task->name = $name;
                 $task->save();
 
@@ -142,9 +144,23 @@ class Task extends Model
                 ListElement::updateListElement($list, $name, $task->list_element_id);
             }
 
+            // If the request includes a new 'deadline'
             if (!is_null($deadline)) {
-                $item = $task->deadlineItem;
-                $item->updateItem($task, $deadline);
+
+                // If there is already a 'deadline' for this Task
+                if (!is_null($task->deadlineItem)) {
+                    // Update it
+                    $task->deadlineItem->updateItem($task, $deadline);
+                }
+
+                // If there's no 'deadline' for this Task
+                else {
+                    // Create one
+                    $item = DeadlineItem::newItem($task, 'deadline', $deadline);
+                    // And update the Task's matching 'deadline' property
+                    $task->deadline = $deadline;
+                    $task->save();
+                }
             }
 
             return $task;
