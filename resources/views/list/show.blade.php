@@ -56,7 +56,7 @@
     <!-- List-Title Area -->
     <div class="title">
         <h1>{{ $list->name }}</h1>
-        <button type="button" name="priorities">Priorities</button>
+        <span class="priorities btn orange">Priorities</span>
     </div>
 
     <!-- Action Menu (Secondary Menu) -->

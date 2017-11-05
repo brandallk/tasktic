@@ -2,6 +2,8 @@
 body.list-view {
     background-color: $darkBlue;
     position: relative;
+    max-width: 75em;
+    margin: 0 auto;
 
     div.main-menu {
         transition-property: all;
@@ -40,6 +42,8 @@ body.list-view {
                             margin-bottom: 0.2em;
                             background-color: $lightBlue;
                             padding: 0.5em 0;
+                            opacity: 0.9;
+                            border-radius: 0.2em;
 
                             &:hover {
                                 background-color: $mediumBlue;
@@ -75,6 +79,25 @@ body.list-view {
             &:hover {
                 color: $mediumBlue;
                 cursor: pointer;
+            }
+        }
+    }
+
+    div.title {
+        padding: 0 3em;
+
+        h1 {
+            display: inline-block;
+        }
+
+        .priorities.btn {
+            float: right;
+            transition-property: background-color;
+            transition-duration: 0.4s;
+
+            &:hover {
+                background-color: $mutedOrange;
+                box-shadow: 0 0 0.5em 0.1em $darkGrey;
             }
         }
     }

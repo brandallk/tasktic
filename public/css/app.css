@@ -3583,6 +3583,10 @@ a {
   background-color: #e98696;
 }
 
+.orange {
+  background-color: #e4b46f;
+}
+
 .white {
   background-color: #ffffff;
   border: solid #cccccc thin;
@@ -3668,6 +3672,8 @@ body.welcome-page div.greeting div.authLinks {
 body.list-view {
   background-color: #4a5376;
   position: relative;
+  max-width: 75em;
+  margin: 0 auto;
 }
 
 body.list-view div.main-menu {
@@ -3716,6 +3722,8 @@ body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown li {
   margin-bottom: 0.2em;
   background-color: #86c7e6;
   padding: 0.5em 0;
+  opacity: 0.9;
+  border-radius: 0.2em;
 }
 
 body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown li:hover {
@@ -3750,5 +3758,27 @@ body.list-view span.menu-toggle i.fa {
 body.list-view span.menu-toggle i.fa:hover {
   color: #697cae;
   cursor: pointer;
+}
+
+body.list-view div.title {
+  padding: 0 3em;
+}
+
+body.list-view div.title h1 {
+  display: inline-block;
+}
+
+body.list-view div.title .priorities.btn {
+  float: right;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+}
+
+body.list-view div.title .priorities.btn:hover {
+  background-color: #dc9c76;
+  -webkit-box-shadow: 0 0 0.5em 0.1em #4d4d4d;
+          box-shadow: 0 0 0.5em 0.1em #4d4d4d;
 }
 
