@@ -49,7 +49,7 @@
 
     </div>
     <!-- Main-Menu Toggle Button -->
-    <span class="menu-toggle closed">
+    <span class="menu-toggle down">
         <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
     </span>
 

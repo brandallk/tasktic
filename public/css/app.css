@@ -3570,10 +3570,70 @@ a {
   font-size: 1em;
   border-radius: 0.5em;
   margin: 1em;
+  text-align: center;
+}
+
+.btn:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 0.5em 0.1em #cccccc;
+          box-shadow: 0 0 0.5em 0.1em #cccccc;
 }
 
 .pink {
   background-color: #e98696;
+}
+
+.white {
+  background-color: #ffffff;
+  border: solid #cccccc thin;
+  color: #86c7e6;
+}
+
+div.modal div.shadow-back {
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+}
+
+div.modal div.shadow-back form {
+  position: absolute;
+  top: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 80%;
+  left: 10%;
+  height: 18em;
+  padding: 2em;
+  border-radius: 1em;
+}
+
+div.modal div.shadow-back form label {
+  color: #86c7e6;
+  margin-left: 3em;
+}
+
+div.modal div.shadow-back form input {
+  border: none;
+  padding: 0.5em 1em;
+  background: #cfe9f5;
+  border-radius: 0.2em;
+  color: #697cae;
+  width: 76.5%;
+  margin-left: 0.5em;
+}
+
+div.modal div.shadow-back form div.form-buttons {
+  position: absolute;
+  bottom: 1em;
+  right: 2em;
+}
+
+.modal-heading {
+  display: block;
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 1em;
 }
 
 body.welcome-page {
@@ -3607,6 +3667,14 @@ body.welcome-page div.greeting div.authLinks {
 
 body.list-view {
   background-color: #4a5376;
+  position: relative;
+}
+
+body.list-view div.main-menu {
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.5s;
+          transition-duration: 0.5s;
 }
 
 body.list-view div.main-menu.up {
@@ -3626,6 +3694,36 @@ body.list-view div.main-menu ul.menu-list li.action {
   margin-right: -0.27em;
   text-align: center;
   padding: 2.5em;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
+  -webkit-transition-duration: 0.6s;
+          transition-duration: 0.6s;
+}
+
+body.list-view div.main-menu ul.menu-list li.action.load {
+  position: relative;
+}
+
+body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown {
+  padding-left: 0;
+  position: absolute;
+  top: 6.35em;
+  left: 3%;
+  width: 94%;
+}
+
+body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown li {
+  margin-bottom: 0.2em;
+  background-color: #86c7e6;
+  padding: 0.5em 0;
+}
+
+body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown li:hover {
+  background-color: #697cae;
+}
+
+body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown a {
+  color: white;
 }
 
 body.list-view div.main-menu ul.menu-list li.action.logout {
@@ -3634,10 +3732,23 @@ body.list-view div.main-menu ul.menu-list li.action.logout {
 
 body.list-view div.main-menu ul.menu-list li.action:hover {
   background-color: #697cae;
+  cursor: pointer;
 }
 
 body.list-view span.menu-toggle {
   display: block;
   text-align: center;
+}
+
+body.list-view span.menu-toggle i.fa {
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+}
+
+body.list-view span.menu-toggle i.fa:hover {
+  color: #697cae;
+  cursor: pointer;
 }
 

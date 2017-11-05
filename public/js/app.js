@@ -31640,6 +31640,7 @@ module.exports = function(module) {
  */
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
+__webpack_require__("./resources/assets/js/menu.js");
 
 // window.Vue = require('vue');
 
@@ -31713,6 +31714,84 @@ if (token) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+/***/ }),
+
+/***/ "./resources/assets/js/menu.js":
+/***/ (function(module, exports) {
+
+(function () {
+
+    var mainMenu = document.querySelector('div.main-menu');
+    var menuToggle = document.querySelector('span.menu-toggle');
+    var menuToggleIcon = document.querySelector('span.menu-toggle i.fa');
+
+    var saveButton = document.querySelector('li.action.save');
+    var saveFormModal = document.querySelector('div.modal.main-menu.save');
+    var saveForm = document.querySelector('div.modal.main-menu.save form');
+    var saveFormCancel = document.querySelector('div.modal.main-menu.save .form-buttons .cancel.btn');
+    var saveFormSubmit = document.querySelector('div.modal.main-menu.save .form-buttons .submit.btn');
+
+    var newButton = document.querySelector('li.action.new');
+    var createFormModal = document.querySelector('div.modal.main-menu.new');
+    var createForm = document.querySelector('div.modal.main-menu.new form');
+    var createFormCancel = document.querySelector('div.modal.main-menu.new .form-buttons .cancel.btn');
+    var createFormSubmit = document.querySelector('div.modal.main-menu.new .form-buttons .submit.btn');
+
+    var loadButton = document.querySelector('li.action.load');
+    var loadDropdown = document.querySelector('ul.menu-list ul.dropdown');
+
+    var logoutButton = document.querySelector('li.action.logout');
+    var logoutForm = document.querySelector('li.action.logout form');
+
+    var outsideLoadButton = [saveButton, newButton, logoutButton, menuToggleIcon];
+
+    menuToggle.addEventListener('click', function () {
+        mainMenu.classList.toggle('up');
+        menuToggle.classList.toggle('down');
+        menuToggle.classList.toggle('up');
+        menuToggleIcon.classList.toggle('fa-caret-down');
+        menuToggleIcon.classList.toggle('fa-caret-up');
+    });
+
+    saveButton.addEventListener('click', function () {
+        saveFormModal.classList.toggle('hidden');
+    });
+
+    saveFormCancel.addEventListener('click', function () {
+        saveFormModal.classList.toggle('hidden');
+    });
+
+    saveFormSubmit.addEventListener('click', function () {
+        saveForm.submit();
+    });
+
+    newButton.addEventListener('click', function () {
+        createFormModal.classList.toggle('hidden');
+    });
+
+    createFormCancel.addEventListener('click', function () {
+        createFormModal.classList.toggle('hidden');
+    });
+
+    createFormSubmit.addEventListener('click', function () {
+        createForm.submit();
+    });
+
+    loadButton.addEventListener('click', function () {
+        loadDropdown.classList.toggle('hidden');
+    });
+
+    logoutButton.addEventListener('click', function () {
+        logoutForm.submit();
+    });
+
+    outsideLoadButton.forEach(function (item) {
+        item.addEventListener('mouseover', function () {
+            loadDropdown.classList.add('hidden');
+        });
+    });
+})();
 
 /***/ }),
 
