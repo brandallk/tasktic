@@ -49,7 +49,9 @@
 
     </div>
     <!-- Main-Menu Toggle Button -->
-    <span class="menu-toggle closed">{menu-toggle icon}</span>
+    <span class="menu-toggle closed">
+        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+    </span>
 
     <!-- List-Title Area -->
     <div class="title">
