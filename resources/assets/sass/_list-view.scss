@@ -1,0 +1,39 @@
+
+body.list-view {
+    background-color: $darkBlue;
+
+    div.main-menu {
+        &.up {
+            margin-top: -5.5em;
+        }
+
+        ul.menu-list {
+            padding: 0;
+            margin: 0;
+
+            li.action {
+                display: inline-block;
+                color: white;
+                background-color: $lightBlue;
+                width: 25%;
+                margin-right: -0.27em;
+                text-align: center;
+                padding: 2.5em;
+
+                &.logout {
+                    margin-right: 0;
+                }
+
+                &:hover {
+                    background-color: $mediumBlue;
+                }
+            }
+        }
+    }
+
+    span.menu-toggle {
+        display: block;
+        text-align: center;
+    }
+
+}

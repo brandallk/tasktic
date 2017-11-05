@@ -13,11 +13,11 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="list-view">
 
     <!-- Main Menu (Top Menu) -->
-    <div class="main-menu hidden">
-        <ul>
+    <div class="main-menu up">
+        <ul class="menu-list">
             <li class="action save">Save</li>
             <li class="action new">New</li>
             <li class="action load">Load
@@ -37,9 +37,9 @@
                 </ul>
             </li>
             <li class="action logout">
+                Logout
                 <form method="post" action="{{ route('logout') }}">
                     {{ csrf_field() }}
-                    <input type="submit" value="Logout">
                 </form>
             </li>
         </ul>
@@ -50,7 +50,7 @@
     </div>
     <!-- Main-Menu Toggle Button -->
     <span class="menu-toggle closed">
-        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
     </span>
 
     <!-- List-Title Area -->
