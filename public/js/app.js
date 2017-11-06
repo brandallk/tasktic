@@ -31680,6 +31680,7 @@ __webpack_require__("./resources/assets/js/bootstrap.js");
 __webpack_require__("./resources/assets/js/menu.js");
 __webpack_require__("./resources/assets/js/task-borders.js");
 __webpack_require__("./resources/assets/js/add-listElement.js");
+__webpack_require__("./resources/assets/js/task-dropdowns.js");
 
 // window.Vue = require('vue');
 
@@ -31863,6 +31864,34 @@ if (token) {
 
     window.onload = drawTaskBorders;
     window.onresize = drawTaskBorders;
+})();
+
+/***/ }),
+
+/***/ "./resources/assets/js/task-dropdowns.js":
+/***/ (function(module, exports) {
+
+
+(function () {
+    var toggleControls = document.querySelectorAll('span.task-toggle');
+
+    toggleControls.forEach(function (toggler) {
+        toggler.addEventListener('click', function (event) {
+            var icon = toggler.querySelector('i');
+            var task = toggler.parentElement;
+            var taskItems = task.querySelectorAll('div.selectable');
+
+            icon.classList.toggle('fa-caret-down');
+            icon.classList.toggle('fa-caret-up');
+
+            toggler.classList.toggle('down');
+            toggler.classList.toggle('up');
+
+            taskItems.forEach(function (item) {
+                item.classList.toggle('hidden');
+            });
+        });
+    });
 })();
 
 /***/ }),

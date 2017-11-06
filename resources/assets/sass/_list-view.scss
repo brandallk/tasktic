@@ -220,6 +220,7 @@ body.list-view {
                     padding: 1em 0 0.5em 1em;
                     transition-property: all;
                     transition-duration: 0.4s;
+                    border-bottom: solid thin;
 
                     &:hover {
                         background-color: $veryLightBlue;
@@ -231,8 +232,7 @@ body.list-view {
             }
 
             div.task {
-                border-top: solid thin;
-                border-bottom: solid thin;
+                border-bottom: solid $veryLightGrey thin;
                 padding: 0.5em 1em;
                 position: relative;
                 transition-property: all;
@@ -288,10 +288,12 @@ body.list-view {
                     }                
                 }
 
-                div.deadline,
-                div.link,
-                div.detail {
+                div.selectable {
                     margin: 0 0 0.5em 0.5em;
+
+                    span:not(.deadline-content) {
+                        margin-left: 36%;
+                    }
                 }
 
                 span.deadline-content,

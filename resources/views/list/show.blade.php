@@ -122,9 +122,15 @@
                                     else {echo 'incomplete';}
                                     ?>">
                                     <canvas class="task-border top-border hidden" width="0" height="0"></canvas>
+
                                     <span class="task-toggle down">
-                                        <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+                                        @if ($task->taskItems->first())
+                                            <i class="fa fa-caret-down fa-2x"></i>
+                                        @else
+                                            <i class="fa fa-caret-down fa-2x" style="opacity:0" aria-hidden="true"></i>
+                                        @endif
                                     </span>
+
                                     <span class="task-title">{{ $task->name }}</span>
                                     <canvas class="task-border bottom-border hidden" width="0" height="0"></canvas>
 

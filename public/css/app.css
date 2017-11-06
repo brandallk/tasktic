@@ -4011,6 +4011,7 @@ body.list-view main div.theList div.subcategory:not(.no-display) span.subcategor
   transition-property: all;
   -webkit-transition-duration: 0.4s;
           transition-duration: 0.4s;
+  border-bottom: solid thin;
 }
 
 body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title:hover {
@@ -4021,8 +4022,7 @@ body.list-view main div.theList div.subcategory:not(.no-display) span.subcategor
 }
 
 body.list-view main div.theList div.task {
-  border-top: solid thin;
-  border-bottom: solid thin;
+  border-bottom: solid #dfdfdf thin;
   padding: 0.5em 1em;
   position: relative;
   -webkit-transition-property: all;
@@ -4082,10 +4082,12 @@ body.list-view main div.theList div.task span.task-toggle i {
   color: #86c7e6;
 }
 
-body.list-view main div.theList div.task div.deadline,
-body.list-view main div.theList div.task div.link,
-body.list-view main div.theList div.task div.detail {
+body.list-view main div.theList div.task div.selectable {
   margin: 0 0 0.5em 0.5em;
+}
+
+body.list-view main div.theList div.task div.selectable span:not(.deadline-content) {
+  margin-left: 36%;
 }
 
 body.list-view main div.theList div.task span.deadline-content,
