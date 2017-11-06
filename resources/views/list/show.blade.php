@@ -121,10 +121,12 @@
                                     elseif ($task->status == 'complete') {echo 'complete';}
                                     else {echo 'incomplete';}
                                     ?>">
+                                    <canvas class="task-border top-border hidden" width="0" height="0"></canvas>
                                     <span class="task-toggle down">
                                         <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
                                     </span>
                                     <span class="task-title">{{ $task->name }}</span>
+                                    <canvas class="task-border bottom-border hidden" width="0" height="0"></canvas>
 
                                     <!-- Deadline Items -->
                                     @if ($task->deadlineItem)

@@ -189,11 +189,14 @@ body.list-view {
                     margin-top: -0.5em;
                     font-size: 1.3em;
                     padding: 1em 0 0.5em 1em;
+                    transition-property: all;
+                    transition-duration: 0.4s;
 
                     &:hover {
                         background-color: $veryLightBlue;
                         color: $mediumBlue;
                         cursor: pointer;
+                        font-weight: 500;
                     }
                 }
             }
@@ -209,11 +212,14 @@ body.list-view {
                 span.subcategory-title {
                     font-size: 1.2em;
                     padding: 1em 0 0.5em 1em;
+                    transition-property: all;
+                    transition-duration: 0.4s;
 
                     &:hover {
                         background-color: $veryLightBlue;
                         color: $mediumBlue;
                         cursor: pointer;
+                        font-weight: 500;
                     }
                 }
             }
@@ -222,6 +228,9 @@ body.list-view {
                 border-top: solid thin;
                 border-bottom: solid thin;
                 padding: 0.5em 1em;
+                position: relative;
+                transition-property: all;
+                transition-duration: 0.4s;
 
                 &.null-cat {
                     padding: 0.5em 2em;
@@ -231,6 +240,27 @@ body.list-view {
                     background-color: $veryLightBlue;
                     border-color: $mediumBlue;
                     cursor: pointer;
+
+                    span.task-title {
+                        font-weight: 500;
+                    }
+
+                    canvas {
+                        display: inherit;
+                    } 
+                }
+
+                canvas {
+                    position: absolute;
+                    left: 0;
+
+                    &.top-border {
+                        top: -0.18em;
+                    }
+
+                    &.bottom-border {
+                        bottom: -0.18em;
+                    }
                 }
 
                 span, span i {

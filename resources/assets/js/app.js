@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 require('./menu');
+require('./task-borders');
 
 // window.Vue = require('vue');
 

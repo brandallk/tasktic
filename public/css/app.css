@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Fira+Sans);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,500);@charset "UTF-8";
 
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 
@@ -3931,12 +3931,17 @@ body.list-view main div.theList div.category:not(.no-display) span.category-titl
   margin-top: -0.5em;
   font-size: 1.3em;
   padding: 1em 0 0.5em 1em;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
 }
 
 body.list-view main div.theList div.category:not(.no-display) span.category-title:hover {
   background-color: #cfe9f5;
   color: #697cae;
   cursor: pointer;
+  font-weight: 500;
 }
 
 body.list-view main div.theList div.category.no-display {
@@ -3951,18 +3956,28 @@ body.list-view main div.theList div.subcategory:not(.no-display) {
 body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title {
   font-size: 1.2em;
   padding: 1em 0 0.5em 1em;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
 }
 
 body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title:hover {
   background-color: #cfe9f5;
   color: #697cae;
   cursor: pointer;
+  font-weight: 500;
 }
 
 body.list-view main div.theList div.task {
   border-top: solid thin;
   border-bottom: solid thin;
   padding: 0.5em 1em;
+  position: relative;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
 }
 
 body.list-view main div.theList div.task.null-cat {
@@ -3973,6 +3988,27 @@ body.list-view main div.theList div.task:hover {
   background-color: #cfe9f5;
   border-color: #697cae;
   cursor: pointer;
+}
+
+body.list-view main div.theList div.task:hover span.task-title {
+  font-weight: 500;
+}
+
+body.list-view main div.theList div.task:hover canvas {
+  display: inherit;
+}
+
+body.list-view main div.theList div.task canvas {
+  position: absolute;
+  left: 0;
+}
+
+body.list-view main div.theList div.task canvas.top-border {
+  top: -0.18em;
+}
+
+body.list-view main div.theList div.task canvas.bottom-border {
+  bottom: -0.18em;
 }
 
 body.list-view main div.theList div.task span,

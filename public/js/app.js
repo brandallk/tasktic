@@ -31641,6 +31641,7 @@ module.exports = function(module) {
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
 __webpack_require__("./resources/assets/js/menu.js");
+__webpack_require__("./resources/assets/js/task-borders.js");
 
 // window.Vue = require('vue');
 
@@ -31791,6 +31792,39 @@ if (token) {
             loadDropdown.classList.add('hidden');
         });
     });
+})();
+
+/***/ }),
+
+/***/ "./resources/assets/js/task-borders.js":
+/***/ (function(module, exports) {
+
+
+(function () {
+    var canvasElements = document.querySelectorAll('canvas.task-border');
+
+    function drawTaskBorders() {
+        canvasElements.forEach(function (canvas) {
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                var taskDiv = canvas.parentElement;
+                var width = taskDiv.clientWidth;
+                var height = 5;
+                ctx.canvas.width = width;
+                ctx.canvas.height = height;
+                ctx.fillStyle = '#697cae';
+
+                ctx.beginPath();
+                ctx.moveTo(0, height / 2);
+                ctx.quadraticCurveTo(width / 2, 0, width, height / 2);
+                ctx.quadraticCurveTo(width / 2, height, 0, height / 2);
+                ctx.fill();
+            }
+        });
+    }
+
+    window.onload = drawTaskBorders;
+    window.onresize = drawTaskBorders;
 })();
 
 /***/ }),
