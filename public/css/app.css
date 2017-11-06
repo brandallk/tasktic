@@ -3602,42 +3602,56 @@ div.modal div.shadow-back {
 }
 
 div.modal div.shadow-back form {
-  position: absolute;
-  top: 50%;
+  z-index: 1;
+  position: fixed;
+  top: 43%;
   background-color: rgba(255, 255, 255, 0.9);
-  width: 80%;
-  left: 10%;
-  height: 18em;
+  width: 93%;
+  left: 3%;
+  height: 22.3em;
   padding: 2em;
   border-radius: 1em;
 }
 
-div.modal div.shadow-back form label {
-  color: #86c7e6;
-  margin-left: 3em;
+div.modal div.shadow-back form .modal-heading {
+  display: block;
+  font-size: 2em;
+  width: 70%;
+  float: right;
+  margin-right: 2em;
+  margin-top: 0.5em;
 }
 
-div.modal div.shadow-back form input {
+div.modal div.shadow-back form div.input {
+  position: absolute;
+  right: 3em;
+  width: 70%;
+}
+
+div.modal div.shadow-back form div.input.first {
+  top: 7em;
+}
+
+div.modal div.shadow-back form div.input label {
+  color: #86c7e6;
+  float: left;
+  padding: 0.5em 0;
+}
+
+div.modal div.shadow-back form div.input input {
   border: none;
   padding: 0.5em 1em;
   background: #cfe9f5;
   border-radius: 0.2em;
   color: #697cae;
-  width: 76.5%;
-  margin-left: 0.5em;
+  float: right;
+  width: 90%;
 }
 
 div.modal div.shadow-back form div.form-buttons {
   position: absolute;
   bottom: 1em;
   right: 2em;
-}
-
-.modal-heading {
-  display: block;
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 1em;
 }
 
 body.welcome-page {
@@ -3672,7 +3686,6 @@ body.welcome-page div.greeting div.authLinks {
 body.list-view {
   background-color: #4a5376;
   position: relative;
-  max-width: 75em;
   margin: 0 auto;
 }
 
@@ -3761,7 +3774,7 @@ body.list-view span.menu-toggle i.fa:hover {
 }
 
 body.list-view div.title {
-  padding: 0 3em;
+  padding: 0 3em 0 4em;
 }
 
 body.list-view div.title h1 {
@@ -3777,8 +3790,129 @@ body.list-view div.title .priorities.btn {
 }
 
 body.list-view div.title .priorities.btn:hover {
-  background-color: #dc9c76;
+  background-color: #bf995e;
   -webkit-box-shadow: 0 0 0.5em 0.1em #4d4d4d;
           box-shadow: 0 0 0.5em 0.1em #4d4d4d;
+}
+
+body.list-view div.action-menu {
+  width: 20%;
+  position: fixed;
+  top: 20.2em;
+  left: 4em;
+}
+
+body.list-view div.action-menu ul {
+  margin: 0;
+  padding: 0;
+}
+
+body.list-view div.action-menu ul li {
+  margin: 1em 0;
+}
+
+body.list-view div.action-menu ul li.delete i {
+  color: #d57282;
+}
+
+body.list-view div.action-menu ul li.edit i {
+  color: #ffffff;
+}
+
+body.list-view div.action-menu ul li.status i {
+  color: #87e6b3;
+}
+
+body.list-view div.action-menu ul li.priority i {
+  color: #e4b46f;
+}
+
+body.list-view div.action-menu ul li i {
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+}
+
+body.list-view div.action-menu ul li:hover {
+  cursor: pointer;
+}
+
+body.list-view div.action-menu ul li:hover.create i {
+  color: #697cae;
+}
+
+body.list-view div.action-menu ul li:hover.delete i {
+  color: #b15e6d;
+}
+
+body.list-view div.action-menu ul li:hover.edit i {
+  color: #cccccc;
+}
+
+body.list-view div.action-menu ul li:hover.status i {
+  color: #7cb193;
+}
+
+body.list-view div.action-menu ul li:hover.priority i {
+  color: #bf995e;
+}
+
+body.list-view div.action-menu.fake {
+  padding: 0;
+  position: fixed;
+  top: 20.2em;
+  left: 4em;
+}
+
+body.list-view div.action-menu.fake ul li i:not(.highlighted) {
+  color: #cccccc;
+}
+
+body.list-view div.action-menu.fake ul li:hover {
+  cursor: default;
+}
+
+body.list-view div.action-menu.fake ul li:hover.create i.highlighted {
+  color: #86c7e6;
+}
+
+body.list-view div.action-menu.fake ul li:hover.delete i.highlighted {
+  color: #b15e6d;
+}
+
+body.list-view div.action-menu.fake ul li:hover.edit i.highlighted {
+  color: #ffffff;
+}
+
+body.list-view div.action-menu.fake ul li:hover.status i.highlighted {
+  color: #87e6b3;
+}
+
+body.list-view div.action-menu.fake ul li:hover.priority i.highlighted {
+  color: #e4b46f;
+}
+
+body.list-view div.action-menu.fake ul li:hover i:not(.highlighted) {
+  color: #cccccc;
+}
+
+body.list-view main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding-top: 2em;
+  border-top: solid #697cae thin;
+  margin-top: 1em;
+}
+
+body.list-view main div.theList {
+  padding: 1em;
+  margin-right: 4em;
+  width: 95%;
+  background-color: white;
+  min-height: 34em;
+  margin-left: 10em;
 }
 

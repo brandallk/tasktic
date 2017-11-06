@@ -56,28 +56,49 @@ div.modal {
         height: 100%;
 
         form {
-            position: absolute;
-            top: 50%;
-            background-color: rgba(255, 255, 255, .9);
-            width: 80%;
-            left: 10%;
-            height: 18em;
+            z-index: 1;
+            position: fixed;
+            top: 43%;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 93%;
+            left: 3%;
+            height: 22.3em;
             padding: 2em;
             border-radius: 1em;
 
-            label {
-                color: $lightBlue;
-                margin-left: 3em;
+            .modal-heading {
+                display: block;
+                font-size: 2em;
+                width: 70%;
+                float: right;
+                margin-right: 2em;
+                margin-top: 0.5em;
             }
 
-            input {
-                border: none;
-                padding: 0.5em 1em;
-                background: $veryLightBlue;
-                border-radius: 0.2em;
-                color: $mediumBlue;
-                width: 76.5%;
-                margin-left: 0.5em;
+            div.input {
+                position: absolute;
+                right: 3em;
+                width: 70%;
+
+                &.first {
+                    top: 7em;
+                }
+
+                label {
+                    color: $lightBlue;
+                    float: left;
+                    padding: 0.5em 0;
+                }
+
+                input {
+                    border: none;
+                    padding: 0.5em 1em;
+                    background: $veryLightBlue;
+                    border-radius: 0.2em;
+                    color: $mediumBlue;
+                    float: right;
+                    width: 90%;
+                }
             }
 
             div.form-buttons {
@@ -87,11 +108,4 @@ div.modal {
             }
         }
     }
-}
-
-.modal-heading {
-    display: block;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 1em;
 }

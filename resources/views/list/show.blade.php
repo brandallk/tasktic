@@ -59,131 +59,143 @@
         <span class="priorities btn orange">Priorities</span>
     </div>
 
-    <!-- Action Menu (Secondary Menu) -->
-    <div class="action-menu">
-        <ul>
-            <li class="action-button create">{create icon}</li>
-            <li class="action-button delete">{delete icon}</li>
-            <li class="action-button edit">{edit icon}</li>
-            <li class="action-button status">{status icon}</li>
-            <li class="action-button priority">{priority icon}</li>
-        </ul>
-    </div>
-
-    <!-- The List -->
     <main>
+        <!-- Action Menu (Secondary Menu) -->
+        <div class="action-menu">
+            <ul>
+                <li class="action-button create">
+                    <i class="fa fa-plus-square fa-3x" aria-hidden="true"></i>
+                </li>
+                <li class="action-button delete">
+                    <i class="fa fa-minus-square fa-3x" aria-hidden="true"></i>
+                </li>
+                <li class="action-button edit">
+                    <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>
+                </li>
+                <li class="action-button status">
+                    <i class="fa fa-check-square-o fa-3x" aria-hidden="true"></i>
+                </li>
+                <li class="action-button priority">
+                    <i class="fa fa-star fa-3x" aria-hidden="true"></i>
+                </li>
+            </ul>
+        </div>
 
-        <!-- Validation Error Messages Display -->
-        @if ($errors->any())
-            <div class="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        <!-- The List -->
+        <div class="theList">
 
-        <!-- List categories -->
-        @if ($list->categories)
-        @foreach ($list->categories as $category)
-
-            <div id="{{ $category->list_element_id }}" class="selectable category">
-                <span>{{ $category->name }}</span>
-
-                <!-- List subcategories -->
-                @if ($category->subcategories)
-                @foreach ($category->subcategories as $subcategory)
-
-                    <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory">
-                        <span>{{ $subcategory->name }}</span>
-
-                        <!-- List tasks -->
-                        @if ($subcategory->tasks)
-                        @foreach ($subcategory->tasks as $task)
-
-                            <div id="{{ $task->list_element_id }}" class="selectable task">
-                                <span>{{ $task->name }}</span>
-
-                                <!-- Deadline Items -->
-                                @if ($task->deadlineItem)
-
-                                    <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
-                                        if ($task->status == 'priority') {echo 'priority';}
-                                        elseif ($task->status == 'complete') {echo 'complete';}
-                                        else {echo 'incomplete';}
-                                    ?>">
-                                        <span>{alarm-clock icon}</span>
-                                        <span>{{ $task->deadlineItem->deadline }}</span>
-                                    </div>
-
-                                    @include('list.partials.item.deadline.delete')
-
-                                @endif
-
-                                <!-- Link Items -->
-                                @if ($task->linkItems)
-                                @foreach ($task->linkItems as $link)
-
-                                    <div id="{{ $link->list_element_id }}" class="selectable link">
-                                        <span>{{ $link->link }}</span>
-                                    </div>
-
-                                    @include('list.partials.item.link.edit')
-                                    @include('list.partials.item.link.delete')
-
-                                @endforeach
-                                @endif
-
-                                <!-- Detail Items -->
-                                @if ($task->detailItems)
-                                @foreach ($task->detailItems as $detail)
-
-                                    <div id="{{ $detail->list_element_id }}" class="selectable detail">
-                                        <span>{{ $detail->detail }}</span>
-                                    </div>
-
-                                    @include('list.partials.item.detail.edit')
-                                    @include('list.partials.item.detail.delete')
-
-                                @endforeach
-                                @endif
-
-                                @include('list.partials.item.create')
-                                @include('list.partials.task.edit.details')
-                                @include('list.partials.task.edit.status')
-                                @include('list.partials.task.edit.priority')
-                                @include('list.partials.task.delete')
-                                
-                            </div> <!-- end Tasks div -->
-
+            <!-- Validation Error Messages Display -->
+            @if ($errors->any())
+                <div class="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
                         @endforeach
-                        @endif
+                    </ul>
+                </div>
+            @endif
 
-                        @include('list.partials.task.create')
-                        @include('list.partials.subcategory.edit')
-                        @include('list.partials.subcategory.delete')
+            <!-- List categories -->
+            @if ($list->categories)
+            @foreach ($list->categories as $category)
 
-                    </div> <!-- end Subcategories div -->
+                <div id="{{ $category->list_element_id }}" class="selectable category">
+                    <span>{{ $category->name }}</span>
 
-                @endforeach
-                @endif
+                    <!-- List subcategories -->
+                    @if ($category->subcategories)
+                    @foreach ($category->subcategories as $subcategory)
 
-                @include('list.partials.subcategory.create')
-                @include('list.partials.category.edit')
-                @include('list.partials.category.delete')
+                        <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory">
+                            <span>{{ $subcategory->name }}</span>
 
-            </div> <!-- end Categories div -->
+                            <!-- List tasks -->
+                            @if ($subcategory->tasks)
+                            @foreach ($subcategory->tasks as $task)
 
-        @endforeach
-        @endif
+                                <div id="{{ $task->list_element_id }}" class="selectable task">
+                                    <span>{{ $task->name }}</span>
 
-        @include('list.partials.category.create')
+                                    <!-- Deadline Items -->
+                                    @if ($task->deadlineItem)
 
-        <!-- Add-A-Task Button -->
-        <button type="button" name="add-task">Add A Task</button>
-        @include('list.partials.listElement.create')
+                                        <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
+                                            if ($task->status == 'priority') {echo 'priority';}
+                                            elseif ($task->status == 'complete') {echo 'complete';}
+                                            else {echo 'incomplete';}
+                                        ?>">
+                                            <span>{alarm-clock icon}</span>
+                                            <span>{{ $task->deadlineItem->deadline }}</span>
+                                        </div>
 
+                                        @include('list.partials.item.deadline.delete')
+
+                                    @endif
+
+                                    <!-- Link Items -->
+                                    @if ($task->linkItems)
+                                    @foreach ($task->linkItems as $link)
+
+                                        <div id="{{ $link->list_element_id }}" class="selectable link">
+                                            <span>{{ $link->link }}</span>
+                                        </div>
+
+                                        @include('list.partials.item.link.edit')
+                                        @include('list.partials.item.link.delete')
+
+                                    @endforeach
+                                    @endif
+
+                                    <!-- Detail Items -->
+                                    @if ($task->detailItems)
+                                    @foreach ($task->detailItems as $detail)
+
+                                        <div id="{{ $detail->list_element_id }}" class="selectable detail">
+                                            <span>{{ $detail->detail }}</span>
+                                        </div>
+
+                                        @include('list.partials.item.detail.edit')
+                                        @include('list.partials.item.detail.delete')
+
+                                    @endforeach
+                                    @endif
+
+                                    @include('list.partials.item.create')
+                                    @include('list.partials.task.edit.details')
+                                    @include('list.partials.task.edit.status')
+                                    @include('list.partials.task.edit.priority')
+                                    @include('list.partials.task.delete')
+                                    
+                                </div> <!-- end Tasks div -->
+
+                            @endforeach
+                            @endif
+
+                            @include('list.partials.task.create')
+                            @include('list.partials.subcategory.edit')
+                            @include('list.partials.subcategory.delete')
+
+                        </div> <!-- end Subcategories div -->
+
+                    @endforeach
+                    @endif
+
+                    @include('list.partials.subcategory.create')
+                    @include('list.partials.category.edit')
+                    @include('list.partials.category.delete')
+
+                </div> <!-- end Categories div -->
+
+            @endforeach
+            @endif
+
+            @include('list.partials.category.create')
+
+            <!-- Add-A-Task Button -->
+            <button type="button" name="add-task">Add A Task</button>
+            @include('list.partials.listElement.create')
+
+        </div> <!-- end theList div -->
     </main>
 
     <!-- Scripts -->

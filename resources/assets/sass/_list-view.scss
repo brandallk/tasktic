@@ -2,7 +2,6 @@
 body.list-view {
     background-color: $darkBlue;
     position: relative;
-    max-width: 75em;
     margin: 0 auto;
 
     div.main-menu {
@@ -84,7 +83,7 @@ body.list-view {
     }
 
     div.title {
-        padding: 0 3em;
+        padding: 0 3em 0 4em;
 
         h1 {
             display: inline-block;
@@ -99,6 +98,82 @@ body.list-view {
                 background-color: $mutedOrange;
                 box-shadow: 0 0 0.5em 0.1em $darkGrey;
             }
+        }
+    }
+
+    div.action-menu {
+        width: 20%;
+            position: fixed;
+            top: 20.2em;
+            left: 4em;
+
+        ul {
+            margin: 0;
+            padding: 0;
+
+            li {
+                margin: 1em 0;
+
+                &.delete i { color: $mediumPink; }
+                &.edit i { color: $white; }
+                &.status i { color: $green; }
+                &.priority i { color: $orange; }
+
+                i {                    
+                    transition-property: all;
+                    transition-duration: 0.4s;
+                }
+
+                &:hover {
+                    cursor: pointer;
+
+                    &.create i { color: $mediumBlue; }
+                    &.delete i { color: $darkPink; }
+                    &.edit i { color: $lightGrey; }
+                    &.status i { color: $mutedGreen; }
+                    &.priority i { color: $mutedOrange; }
+                }
+            }
+        }
+
+        &.fake {
+            padding: 0;
+            position: fixed;
+            top: 20.2em;
+            left: 4em;
+
+            ul li {
+                i:not(.highlighted) { color: $lightGrey }
+
+                &:hover {
+                    cursor: default;
+
+                    &.create i.highlighted { color: $lightBlue; }
+                    &.delete i.highlighted { color: $darkPink; }
+                    &.edit i.highlighted { color: $white; }
+                    &.status i.highlighted { color: $green; }
+                    &.priority i.highlighted { color: $orange; }
+
+                    i:not(.highlighted) { color: $lightGrey }
+                }
+            }
+        }
+    }
+
+    main {
+        display: flex;
+        width: 100%;
+        padding-top: 2em;
+        border-top: solid $mediumBlue thin;
+        margin-top: 1em;
+
+        div.theList {
+            padding: 1em;
+            margin-right: 4em;
+            width: 95%;
+            background-color: white;
+            min-height: 34em;
+            margin-left: 10em;
         }
     }
 
