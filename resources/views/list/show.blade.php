@@ -97,7 +97,7 @@
 
             <!-- List categories -->
             @if ($list->categories)
-            @foreach ($list->categories as $category)
+            @foreach ($list->categories->sortBy('id') as $category)
 
                 <div id="{{ $category->list_element_id }}" class="selectable category <?php
                     if (is_null($category->name)) { echo "no-display"; } ?>">
@@ -105,7 +105,7 @@
 
                     <!-- List subcategories -->
                     @if ($category->subcategories)
-                    @foreach ($category->subcategories as $subcategory)
+                    @foreach ($category->subcategories->sortBy('id') as $subcategory)
 
                         <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory <?php
                             if (is_null($subcategory->name)) { echo "no-display"; } ?>">
@@ -113,7 +113,7 @@
 
                             <!-- List tasks -->
                             @if ($subcategory->tasks)
-                            @foreach ($subcategory->tasks as $task)
+                            @foreach ($subcategory->tasks->sortBy('id') as $task)
 
                                 <div id="{{ $task->list_element_id }}" class="selectable task <?php
                                     if (is_null($subcategory->name)) { echo "null-cat "; }
@@ -148,7 +148,7 @@
 
                                     <!-- Link Items -->
                                     @if ($task->linkItems)
-                                    @foreach ($task->linkItems as $link)
+                                    @foreach ($task->linkItems->sortBy('id') as $link)
 
                                         <div id="{{ $link->list_element_id }}" class="selectable link hidden">
                                             <span class="link-content">{{ $link->link }}</span>
@@ -162,7 +162,7 @@
 
                                     <!-- Detail Items -->
                                     @if ($task->detailItems)
-                                    @foreach ($task->detailItems as $detail)
+                                    @foreach ($task->detailItems->sortBy('id') as $detail)
 
                                         <div id="{{ $detail->list_element_id }}" class="selectable detail hidden">
                                             <span class="detail-content">{{ $detail->detail }}</span>
@@ -206,7 +206,7 @@
             @include('list.partials.category.create')
 
             <!-- Add-A-Task Button -->
-            <button type="button" name="add-task">Add A Task</button>
+            <span class="add-listElement btn pink">Add to list</span>
             @include('list.partials.listElement.create')
 
         </div> <!-- end theList div -->

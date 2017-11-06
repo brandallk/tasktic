@@ -3550,6 +3550,28 @@ template {
   color: #86c7e6;
 }
 
+::-webkit-input-placeholder {
+  /* Chrome */
+  color: #cccccc;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #cccccc;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #cccccc;
+  opacity: 1;
+}
+
+:-moz-placeholder {
+  /* Firefox 4 - 18 */
+  color: #cccccc;
+  opacity: 1;
+}
+
 ul {
   list-style: none;
 }
@@ -3596,6 +3618,7 @@ a {
 div.modal div.shadow-back {
   position: absolute;
   top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.25);
   width: 100%;
   height: 100%;
@@ -3605,7 +3628,7 @@ div.modal div.shadow-back form {
   z-index: 1;
   position: fixed;
   top: 43%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   width: 93%;
   left: 3%;
   height: 22.3em;
@@ -3613,13 +3636,22 @@ div.modal div.shadow-back form {
   border-radius: 1em;
 }
 
-div.modal div.shadow-back form .modal-heading {
+div.modal div.shadow-back form span.modal-heading {
   display: block;
   font-size: 2em;
   width: 70%;
   float: right;
   margin-right: 2em;
   margin-top: 0.5em;
+}
+
+div.modal div.shadow-back form select#listElement-create-type {
+  position: absolute;
+  top: 2.55em;
+  left: 34%;
+  font-size: 1.3em;
+  font-family: inherit;
+  padding-left: 0.4em;
 }
 
 div.modal div.shadow-back form div.input {
@@ -3630,6 +3662,14 @@ div.modal div.shadow-back form div.input {
 
 div.modal div.shadow-back form div.input.first {
   top: 7em;
+}
+
+div.modal div.shadow-back form div.input.second {
+  top: 11em;
+}
+
+div.modal div.shadow-back form div.input.third {
+  top: 13em;
 }
 
 div.modal div.shadow-back form div.input label {
@@ -3646,6 +3686,10 @@ div.modal div.shadow-back form div.input input {
   color: #697cae;
   float: right;
   width: 90%;
+}
+
+div.modal div.shadow-back form div.input input#listElement-create-deadline {
+  width: 85%;
 }
 
 div.modal div.shadow-back form div.form-buttons {
@@ -3724,11 +3768,14 @@ body.list-view div.main-menu ul.menu-list li.action.load {
 }
 
 body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown {
-  padding-left: 0;
   position: absolute;
-  top: 6.35em;
-  left: 3%;
-  width: 94%;
+  top: 6.15em;
+  left: 0;
+  width: 100%;
+  background-color: #4a5376;
+  padding: 2% 3%;
+  -webkit-box-shadow: 0 2.5px 6px 0px #4a5376;
+          box-shadow: 0 2.5px 6px 0px #4a5376;
 }
 
 body.list-view div.main-menu ul.menu-list li.action.load ul.dropdown li {
@@ -3921,6 +3968,10 @@ body.list-view main div.theList span {
   width: 100%;
 }
 
+body.list-view main div.theList span.btn {
+  width: 10em;
+}
+
 body.list-view main div.theList div.category:not(.no-display) {
   margin: 1em;
 }
@@ -4040,5 +4091,11 @@ body.list-view main div.theList div.task div.detail {
 body.list-view main div.theList div.task span.deadline-content,
 body.list-view main div.theList div.task span.deadline-icon {
   width: auto;
+}
+
+body.list-view main div.theList span.add-listElement {
+  width: 90%;
+  display: block;
+  margin: 1em auto;
 }
 

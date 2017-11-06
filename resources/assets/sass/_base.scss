@@ -5,6 +5,21 @@
     color: $lightBlue;
 }
 
+::-webkit-input-placeholder { /* Chrome */
+  color: $lightGrey;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $lightGrey;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $lightGrey;
+  opacity: 1;
+}
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: $lightGrey;
+  opacity: 1;
+}
+
 ul {
     list-style: none;
 }
@@ -51,6 +66,7 @@ div.modal {
     div.shadow-back {
         position: absolute;
         top: 0;
+        left: 0;
         background-color: rgba(0, 0, 0, 0.25);
         width: 100%;
         height: 100%;
@@ -59,20 +75,29 @@ div.modal {
             z-index: 1;
             position: fixed;
             top: 43%;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             width: 93%;
             left: 3%;
             height: 22.3em;
             padding: 2em;
             border-radius: 1em;
 
-            .modal-heading {
+            span.modal-heading {
                 display: block;
                 font-size: 2em;
                 width: 70%;
                 float: right;
                 margin-right: 2em;
                 margin-top: 0.5em;
+            }
+
+            select#listElement-create-type {
+                position: absolute;
+                top: 2.55em;
+                left: 34%;
+                font-size: 1.3em;
+                font-family: inherit;
+                padding-left: 0.4em;
             }
 
             div.input {
@@ -82,6 +107,14 @@ div.modal {
 
                 &.first {
                     top: 7em;
+                }
+
+                &.second {
+                    top: 11em;
+                }
+
+                &.third {
+                    top: 13em;
                 }
 
                 label {
@@ -98,6 +131,10 @@ div.modal {
                     color: $mediumBlue;
                     float: right;
                     width: 90%;
+
+                    &#listElement-create-deadline {
+                        width: 85%;
+                    }
                 }
             }
 

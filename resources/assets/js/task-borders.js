@@ -5,10 +5,10 @@
     function drawTaskBorders() {
         canvasElements.forEach(function(canvas) {
             if (canvas.getContext) {
-                let ctx = canvas.getContext('2d');
+                const ctx = canvas.getContext('2d');
                 const taskDiv = canvas.parentElement;
-                let width = taskDiv.clientWidth;
-                let height = 5;
+                const width = taskDiv.clientWidth;
+                const height = 5;
                 ctx.canvas.width = width;
                 ctx.canvas.height = height;
                 ctx.fillStyle = '#697cae';

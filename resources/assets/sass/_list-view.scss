@@ -31,11 +31,13 @@ body.list-view {
                     position: relative;
 
                     ul.dropdown {
-                        padding-left: 0;
                         position: absolute;
-                        top: 6.35em;
-                        left: 3%;
-                        width: 94%;
+                        top: 6.15em;
+                        left: 0;
+                        width: 100%;
+                        background-color: $darkBlue;
+                        padding: 2% 3%;
+                        box-shadow: 0 2.5px 6px 0px $darkBlue;
 
                         li {
                             margin-bottom: 0.2em;
@@ -178,6 +180,10 @@ body.list-view {
             span {
                 display: inline-block;
                 width: 100%;
+
+                &.btn {
+                    width: 10em;
+                }
             }
 
             div.category:not(.no-display) {
@@ -292,6 +298,12 @@ body.list-view {
                 span.deadline-icon {
                     width: auto;
                 }
+            }
+
+            span.add-listElement {
+                width: 90%;
+                display: block;
+                margin: 1em auto;
             }
         }
     }

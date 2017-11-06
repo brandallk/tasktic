@@ -8,6 +8,7 @@
 require('./bootstrap');
 require('./menu');
 require('./task-borders');
+require('./add-listElement');
 
 // window.Vue = require('vue');
 

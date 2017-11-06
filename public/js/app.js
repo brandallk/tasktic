@@ -31629,6 +31629,43 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/add-listElement.js":
+/***/ (function(module, exports) {
+
+
+(function () {
+
+    var addButton = document.querySelector('.add-listElement.btn');
+    var createFormModal = document.querySelector('div.modal.create-listElement');
+    var createForm = document.querySelector('div.modal.create-listElement form');
+    var createFormCancel = document.querySelector('div.modal.create-listElement .form-buttons .cancel.btn');
+    var createFormSubmit = document.querySelector('div.modal.create-listElement .form-buttons .submit.btn');
+    var typeSelector = document.querySelector('select#listElement-create-type');
+    var deadlineInput = document.querySelector('div.modal.create-listElement div.second.input');
+
+    addButton.addEventListener('click', function () {
+        createFormModal.classList.toggle('hidden');
+    });
+
+    createFormCancel.addEventListener('click', function () {
+        createFormModal.classList.toggle('hidden');
+    });
+
+    createFormSubmit.addEventListener('click', function () {
+        createForm.submit();
+    });
+
+    typeSelector.addEventListener('change', function (event) {
+        if (typeSelector.value == "task") {
+            deadlineInput.classList.remove('hidden');
+        } else {
+            deadlineInput.classList.add('hidden');
+        }
+    });
+})();
+
+/***/ }),
+
 /***/ "./resources/assets/js/app.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31642,6 +31679,7 @@ module.exports = function(module) {
 __webpack_require__("./resources/assets/js/bootstrap.js");
 __webpack_require__("./resources/assets/js/menu.js");
 __webpack_require__("./resources/assets/js/task-borders.js");
+__webpack_require__("./resources/assets/js/add-listElement.js");
 
 // window.Vue = require('vue');
 
