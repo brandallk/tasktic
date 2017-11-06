@@ -64,10 +64,10 @@
         <div class="action-menu">
             <ul>
                 <li class="action-button create">
-                    <i class="fa fa-plus-square fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
                 </li>
                 <li class="action-button delete">
-                    <i class="fa fa-minus-square fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
                 </li>
                 <li class="action-button edit">
                     <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>
@@ -99,33 +99,45 @@
             @if ($list->categories)
             @foreach ($list->categories as $category)
 
-                <div id="{{ $category->list_element_id }}" class="selectable category">
-                    <span>{{ $category->name }}</span>
+                <div id="{{ $category->list_element_id }}" class="selectable category <?php
+                    if (is_null($category->name)) { echo "no-display"; } ?>">
+                    <span class="category-title">{{ $category->name }}</span>
 
                     <!-- List subcategories -->
                     @if ($category->subcategories)
                     @foreach ($category->subcategories as $subcategory)
 
-                        <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory">
-                            <span>{{ $subcategory->name }}</span>
+                        <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory <?php
+                            if (is_null($subcategory->name)) { echo "no-display"; } ?>">
+                            <span class="subcategory-title">{{ $subcategory->name }}</span>
 
                             <!-- List tasks -->
                             @if ($subcategory->tasks)
                             @foreach ($subcategory->tasks as $task)
 
-                                <div id="{{ $task->list_element_id }}" class="selectable task">
-                                    <span>{{ $task->name }}</span>
+                                <div id="{{ $task->list_element_id }}" class="selectable task <?php
+                                    if (is_null($subcategory->name)) { echo "null-cat "; }
+                                    if ($task->status == 'priority') {echo 'priority';}
+                                    elseif ($task->status == 'complete') {echo 'complete';}
+                                    else {echo 'incomplete';}
+                                    ?>">
+                                    <span class="task-toggle down">
+                                        <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="task-title">{{ $task->name }}</span>
 
                                     <!-- Deadline Items -->
                                     @if ($task->deadlineItem)
 
-                                        <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline <?php
+                                        <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline hidden <?php
                                             if ($task->status == 'priority') {echo 'priority';}
                                             elseif ($task->status == 'complete') {echo 'complete';}
                                             else {echo 'incomplete';}
                                         ?>">
-                                            <span>{alarm-clock icon}</span>
-                                            <span>{{ $task->deadlineItem->deadline }}</span>
+                                            <span class="deadline-icon">
+                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                            </span>
+                                            <span class="deadline-content">{{ $task->deadlineItem->deadline }}</span>
                                         </div>
 
                                         @include('list.partials.item.deadline.delete')
@@ -136,8 +148,8 @@
                                     @if ($task->linkItems)
                                     @foreach ($task->linkItems as $link)
 
-                                        <div id="{{ $link->list_element_id }}" class="selectable link">
-                                            <span>{{ $link->link }}</span>
+                                        <div id="{{ $link->list_element_id }}" class="selectable link hidden">
+                                            <span class="link-content">{{ $link->link }}</span>
                                         </div>
 
                                         @include('list.partials.item.link.edit')
@@ -150,8 +162,8 @@
                                     @if ($task->detailItems)
                                     @foreach ($task->detailItems as $detail)
 
-                                        <div id="{{ $detail->list_element_id }}" class="selectable detail">
-                                            <span>{{ $detail->detail }}</span>
+                                        <div id="{{ $detail->list_element_id }}" class="selectable detail hidden">
+                                            <span class="detail-content">{{ $detail->detail }}</span>
                                         </div>
 
                                         @include('list.partials.item.detail.edit')

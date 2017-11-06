@@ -22,10 +22,10 @@
             <div class="fake action-menu">
                 <ul>
                     <li class="action-button create">
-                        <i class="fa fa-plus-square fa-3x highlighted" aria-hidden="true"></i>
+                        <i class="fa fa-plus-circle fa-3x highlighted" aria-hidden="true"></i>
                     </li>
                     <li class="action-button delete">
-                        <i class="fa fa-minus-square fa-3x" aria-hidden="true"></i>
+                        <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
                     </li>
                     <li class="action-button edit">
                         <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>

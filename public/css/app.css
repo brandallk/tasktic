@@ -3908,11 +3908,101 @@ body.list-view main {
 }
 
 body.list-view main div.theList {
-  padding: 1em;
+  padding: 1em 0;
   margin-right: 4em;
   width: 95%;
   background-color: white;
   min-height: 34em;
   margin-left: 10em;
+}
+
+body.list-view main div.theList span {
+  display: inline-block;
+  width: 100%;
+}
+
+body.list-view main div.theList div.category:not(.no-display) {
+  margin: 1em;
+}
+
+body.list-view main div.theList div.category:not(.no-display) span.category-title {
+  border-bottom: solid thin;
+  margin-bottom: 0.5em;
+  margin-top: -0.5em;
+  font-size: 1.3em;
+  padding: 1em 0 0.5em 1em;
+}
+
+body.list-view main div.theList div.category:not(.no-display) span.category-title:hover {
+  background-color: #cfe9f5;
+  color: #697cae;
+  cursor: pointer;
+}
+
+body.list-view main div.theList div.category.no-display {
+  margin-top: -2em;
+}
+
+body.list-view main div.theList div.subcategory:not(.no-display) {
+  border: solid thin;
+  padding-bottom: 1em;
+}
+
+body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title {
+  font-size: 1.2em;
+  padding: 1em 0 0.5em 1em;
+}
+
+body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title:hover {
+  background-color: #cfe9f5;
+  color: #697cae;
+  cursor: pointer;
+}
+
+body.list-view main div.theList div.task {
+  border-top: solid thin;
+  border-bottom: solid thin;
+  padding: 0.5em 1em;
+}
+
+body.list-view main div.theList div.task.null-cat {
+  padding: 0.5em 2em;
+}
+
+body.list-view main div.theList div.task:hover {
+  background-color: #cfe9f5;
+  border-color: #697cae;
+  cursor: pointer;
+}
+
+body.list-view main div.theList div.task span,
+body.list-view main div.theList div.task span i {
+  color: #697cae;
+}
+
+body.list-view main div.theList div.task span.task-title {
+  margin-bottom: 0.5em;
+  font-size: 1.2em;
+  width: auto;
+}
+
+body.list-view main div.theList div.task span.task-toggle {
+  width: auto;
+  margin: 0 6em;
+}
+
+body.list-view main div.theList div.task span.task-toggle i {
+  color: #86c7e6;
+}
+
+body.list-view main div.theList div.task div.deadline,
+body.list-view main div.theList div.task div.link,
+body.list-view main div.theList div.task div.detail {
+  margin: 0 0 0.5em 0.5em;
+}
+
+body.list-view main div.theList div.task span.deadline-content,
+body.list-view main div.theList div.task span.deadline-icon {
+  width: auto;
 }
 

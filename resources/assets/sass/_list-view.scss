@@ -168,12 +168,101 @@ body.list-view {
         margin-top: 1em;
 
         div.theList {
-            padding: 1em;
+            padding: 1em 0;
             margin-right: 4em;
             width: 95%;
             background-color: white;
             min-height: 34em;
             margin-left: 10em;
+
+            span {
+                display: inline-block;
+                width: 100%;
+            }
+
+            div.category:not(.no-display) {
+                margin: 1em;
+
+                span.category-title {
+                    border-bottom: solid thin;
+                    margin-bottom: 0.5em;
+                    margin-top: -0.5em;
+                    font-size: 1.3em;
+                    padding: 1em 0 0.5em 1em;
+
+                    &:hover {
+                        background-color: $veryLightBlue;
+                        color: $mediumBlue;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            div.category.no-display {
+                margin-top: -2em;
+            }
+
+            div.subcategory:not(.no-display) {
+                border: solid thin;
+                padding-bottom: 1em;
+
+                span.subcategory-title {
+                    font-size: 1.2em;
+                    padding: 1em 0 0.5em 1em;
+
+                    &:hover {
+                        background-color: $veryLightBlue;
+                        color: $mediumBlue;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            div.task {
+                border-top: solid thin;
+                border-bottom: solid thin;
+                padding: 0.5em 1em;
+
+                &.null-cat {
+                    padding: 0.5em 2em;
+                }
+
+                &:hover {
+                    background-color: $veryLightBlue;
+                    border-color: $mediumBlue;
+                    cursor: pointer;
+                }
+
+                span, span i {
+                    color: $mediumBlue; 
+                }
+
+                span.task-title {
+                    margin-bottom: 0.5em;
+                    font-size: 1.2em;
+                    width: auto;
+                }
+
+                span.task-toggle {
+                    width: auto;
+                    margin: 0 6em;
+
+                    i {
+                        color: $lightBlue;
+                    }                
+                }
+
+                div.deadline,
+                div.link,
+                div.detail {
+                    margin: 0 0 0.5em 0.5em;
+                }
+
+                span.deadline-content,
+                span.deadline-icon {
+                    width: auto;
+                }
+            }
         }
     }
 
