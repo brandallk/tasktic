@@ -4035,6 +4035,18 @@ body.list-view main div.theList div.task.null-cat {
   padding: 0.5em 2em;
 }
 
+body.list-view main div.theList div.task.complete span.task-title {
+  text-decoration: line-through;
+}
+
+body.list-view main div.theList div.task.priority {
+  background-color: #f4dfc3;
+}
+
+body.list-view main div.theList div.task.priority span.task-toggle i {
+  color: #697cae;
+}
+
 body.list-view main div.theList div.task:hover {
   background-color: #cfe9f5;
   border-color: #697cae;

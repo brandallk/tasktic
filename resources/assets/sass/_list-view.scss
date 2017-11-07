@@ -242,6 +242,18 @@ body.list-view {
                     padding: 0.5em 2em;
                 }
 
+                &.complete {
+                    span.task-title {
+                        text-decoration: line-through;
+                    }
+                }
+
+                &.priority {
+                    background-color: $lightOrange;
+
+                    span.task-toggle i { color: $mediumBlue; }
+                }
+
                 &:hover {
                     background-color: $veryLightBlue;
                     border-color: $mediumBlue;
