@@ -6,10 +6,13 @@
  */
 
 require('./bootstrap');
-require('./menu');
-require('./task-borders');
-require('./add-listElement');
-require('./task-dropdowns');
+require('./lib/arrayHelpers');
+require('./mainMenu/menu');
+require('./taskList/taskBorders');
+require('./taskList/addElement');
+require('./taskList/dropdowns');
+require('./taskList/listener');
+require('./taskList/taskList');
 
 // window.Vue = require('vue');
 

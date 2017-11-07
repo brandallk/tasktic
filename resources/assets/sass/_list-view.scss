@@ -189,6 +189,13 @@ body.list-view {
             div.category:not(.no-display) {
                 margin: 1em;
 
+                &.selected span.category-title {
+                    background-color: $veryLightBlue;
+                    color: $mediumBlue;
+                    cursor: pointer;
+                    font-weight: 500;
+                }
+
                 span.category-title {
                     border-bottom: solid thin;
                     margin-bottom: 0.5em;
@@ -214,6 +221,13 @@ body.list-view {
             div.subcategory:not(.no-display) {
                 border: solid thin;
                 padding-bottom: 1em;
+
+                &.selected span.subcategory-title {
+                    background-color: $veryLightBlue;
+                    color: $mediumBlue;
+                    cursor: pointer;
+                    font-weight: 500;
+                }
 
                 span.subcategory-title {
                     font-size: 1.2em;
@@ -254,7 +268,8 @@ body.list-view {
                     span.task-toggle i { color: $mediumBlue; }
                 }
 
-                &:hover {
+                &:hover,
+                &.selected {
                     background-color: $veryLightBlue;
                     border-color: $mediumBlue;
                     cursor: pointer;
@@ -302,6 +317,31 @@ body.list-view {
 
                 div.selectable {
                     margin: 0 0 0.5em 0.5em;
+
+                    &.selected {
+                        font-weight: 500;
+
+                        span { 
+                            color: $pink;
+                            position: relative;
+                        }
+
+                        span.deadline-icon::before, 
+                        span.link-content::before,
+                        span.detail-content::before {
+                            content: "«";
+                            color: $pink;
+                            position: absolute;
+                            left: -1em;
+                        }
+
+                        span.deadline-content::after, 
+                        span.link-content::after,
+                        span.detail-content::after {
+                            content: " »";
+                            color: $pink;
+                        }
+                    }
 
                     span:not(.deadline-content) {
                         margin-left: 36%;

@@ -63,20 +63,20 @@
         <!-- Action Menu (Secondary Menu) -->
         <div class="action-menu">
             <ul>
-                <li class="action-button create">
-                    <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
+                <li class="create action-button">
+                    <i class="fa fa-plus-circle fa-3x action-icon" aria-hidden="true"></i>
                 </li>
-                <li class="action-button delete">
-                    <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
+                <li class="delete action-button">
+                    <i class="fa fa-times-circle fa-3x action-icon" aria-hidden="true"></i>
                 </li>
-                <li class="action-button edit">
-                    <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>
+                <li class="edit action-button">
+                    <i class="fa fa-pencil-square-o fa-3x action-icon" aria-hidden="true"></i>
                 </li>
-                <li class="action-button status">
-                    <i class="fa fa-check-square-o fa-3x" aria-hidden="true"></i>
+                <li class="status action-button">
+                    <i class="fa fa-check-square-o fa-3x action-icon" aria-hidden="true"></i>
                 </li>
-                <li class="action-button priority">
-                    <i class="fa fa-star fa-3x" aria-hidden="true"></i>
+                <li class="priority action-button">
+                    <i class="fa fa-star fa-3x action-icon" aria-hidden="true"></i>
                 </li>
             </ul>
         </div>
@@ -99,7 +99,7 @@
             @if ($list->categories)
             @foreach ($list->categories->sortBy('id') as $category)
 
-                <div id="{{ $category->list_element_id }}" class="selectable category <?php
+                <div id="{{ $category->list_element_id }}" class="category selectable <?php
                     if (is_null($category->name)) { echo "no-display"; } ?>">
                     <span class="category-title">{{ $category->name }}</span>
 
@@ -107,7 +107,7 @@
                     @if ($category->subcategories)
                     @foreach ($category->subcategories->sortBy('id') as $subcategory)
 
-                        <div id="{{ $subcategory->list_element_id }}" class="selectable subcategory <?php
+                        <div id="{{ $subcategory->list_element_id }}" class="subcategory selectable <?php
                             if (is_null($subcategory->name)) { echo "no-display"; } ?>">
                             <span class="subcategory-title">{{ $subcategory->name }}</span>
 
@@ -115,7 +115,7 @@
                             @if ($subcategory->tasks)
                             @foreach ($subcategory->tasks->sortBy('id') as $task)
 
-                                <div id="{{ $task->list_element_id }}" class="selectable task <?php
+                                <div id="{{ $task->list_element_id }}" class="task selectable <?php
                                     if (is_null($subcategory->name)) { echo "null-cat "; }
                                     if ($task->status == 'priority') {echo 'priority';}
                                     elseif ($task->status == 'complete') {echo 'complete';}
@@ -137,7 +137,7 @@
                                     <!-- Deadline Items -->
                                     @if ($task->deadlineItem)
 
-                                        <div id="{{ $task->deadlineItem->list_element_id }}" class="selectable deadline hidden <?php
+                                        <div id="{{ $task->deadlineItem->list_element_id }}" class="deadline selectable hidden <?php
                                             if ($task->status == 'priority') {echo 'priority';}
                                             elseif ($task->status == 'complete') {echo 'complete';}
                                             else {echo 'incomplete';}
@@ -156,7 +156,7 @@
                                     @if ($task->linkItems)
                                     @foreach ($task->linkItems->sortBy('id') as $link)
 
-                                        <div id="{{ $link->list_element_id }}" class="selectable link hidden">
+                                        <div id="{{ $link->list_element_id }}" class="link selectable hidden">
                                             <span class="link-content">{{ $link->link }}</span>
                                         </div>
 
@@ -170,7 +170,7 @@
                                     @if ($task->detailItems)
                                     @foreach ($task->detailItems->sortBy('id') as $detail)
 
-                                        <div id="{{ $detail->list_element_id }}" class="selectable detail hidden">
+                                        <div id="{{ $detail->list_element_id }}" class="detail selectable hidden">
                                             <span class="detail-content">{{ $detail->detail }}</span>
                                         </div>
 

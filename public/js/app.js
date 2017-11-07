@@ -31629,43 +31629,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/add-listElement.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var addButton = document.querySelector('.add-listElement.btn');
-    var createFormModal = document.querySelector('div.modal.create-listElement');
-    var createForm = document.querySelector('div.modal.create-listElement form');
-    var createFormCancel = document.querySelector('div.modal.create-listElement .form-buttons .cancel.btn');
-    var createFormSubmit = document.querySelector('div.modal.create-listElement .form-buttons .submit.btn');
-    var typeSelector = document.querySelector('select#listElement-create-type');
-    var deadlineInput = document.querySelector('div.modal.create-listElement div.second.input');
-
-    addButton.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormCancel.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormSubmit.addEventListener('click', function () {
-        createForm.submit();
-    });
-
-    typeSelector.addEventListener('change', function (event) {
-        if (typeSelector.value == "task") {
-            deadlineInput.classList.remove('hidden');
-        } else {
-            deadlineInput.classList.add('hidden');
-        }
-    });
-})();
-
-/***/ }),
-
 /***/ "./resources/assets/js/app.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31677,10 +31640,13 @@ module.exports = function(module) {
  */
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
-__webpack_require__("./resources/assets/js/menu.js");
-__webpack_require__("./resources/assets/js/task-borders.js");
-__webpack_require__("./resources/assets/js/add-listElement.js");
-__webpack_require__("./resources/assets/js/task-dropdowns.js");
+__webpack_require__("./resources/assets/js/lib/arrayHelpers.js");
+__webpack_require__("./resources/assets/js/mainMenu/menu.js");
+__webpack_require__("./resources/assets/js/taskList/taskBorders.js");
+__webpack_require__("./resources/assets/js/taskList/addElement.js");
+__webpack_require__("./resources/assets/js/taskList/dropdowns.js");
+__webpack_require__("./resources/assets/js/taskList/listener.js");
+__webpack_require__("./resources/assets/js/taskList/taskList.js");
 
 // window.Vue = require('vue');
 
@@ -31757,7 +31723,34 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/menu.js":
+/***/ "./resources/assets/js/lib/arrayHelpers.js":
+/***/ (function(module, exports) {
+
+
+(function (exports) {
+
+    function anyInArray(arrayToSearch, arrayOfValuesToMatchAgainst) {
+        return arrayToSearch.reduce(function (acc, val) {
+            return !!(acc + arrayOfValuesToMatchAgainst.includes(val) ? 1 : 0);
+        }, 0);
+    }
+
+    function noneInArray(arrayToSearch, arrayOfValuesToMatchAgainst) {
+        return !anyInArray(arrayToSearch, arrayOfValuesToMatchAgainst);
+    }
+
+    exports.anyInArray = function (arrayToSearch, arrayOfValuesToMatchAgainst) {
+        return anyInArray(arrayToSearch, arrayOfValuesToMatchAgainst);
+    };
+
+    exports.noneInArray = function (arrayToSearch, arrayOfValuesToMatchAgainst) {
+        return noneInArray(arrayToSearch, arrayOfValuesToMatchAgainst);
+    };
+})(window.arrayHelpers = {});
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/menu.js":
 /***/ (function(module, exports) {
 
 (function () {
@@ -31835,7 +31828,111 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/task-borders.js":
+/***/ "./resources/assets/js/taskList/addElement.js":
+/***/ (function(module, exports) {
+
+
+(function () {
+
+    var addButton = document.querySelector('.add-listElement.btn');
+    var createFormModal = document.querySelector('div.modal.create-listElement');
+    var createForm = document.querySelector('div.modal.create-listElement form');
+    var createFormCancel = document.querySelector('div.modal.create-listElement .form-buttons .cancel.btn');
+    var createFormSubmit = document.querySelector('div.modal.create-listElement .form-buttons .submit.btn');
+    var typeSelector = document.querySelector('select#listElement-create-type');
+    var deadlineInput = document.querySelector('div.modal.create-listElement div.second.input');
+
+    addButton.addEventListener('click', function () {
+        createFormModal.classList.toggle('hidden');
+    });
+
+    createFormCancel.addEventListener('click', function () {
+        createFormModal.classList.toggle('hidden');
+    });
+
+    createFormSubmit.addEventListener('click', function () {
+        createForm.submit();
+    });
+
+    typeSelector.addEventListener('change', function (event) {
+        if (typeSelector.value == "task") {
+            deadlineInput.classList.remove('hidden');
+        } else {
+            deadlineInput.classList.add('hidden');
+        }
+    });
+})();
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/dropdowns.js":
+/***/ (function(module, exports) {
+
+
+(function () {
+    var toggleControls = document.querySelectorAll('span.task-toggle');
+
+    toggleControls.forEach(function (toggler) {
+        toggler.addEventListener('click', function (event) {
+            var icon = toggler.querySelector('i');
+            var task = toggler.parentElement;
+            var taskItems = task.querySelectorAll('div.selectable');
+
+            icon.classList.toggle('fa-caret-down');
+            icon.classList.toggle('fa-caret-up');
+
+            toggler.classList.toggle('down');
+            toggler.classList.toggle('up');
+
+            taskItems.forEach(function (item) {
+                item.classList.toggle('hidden');
+            });
+        });
+    });
+})();
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listener.js":
+/***/ (function(module, exports) {
+
+
+(function () {
+
+    var listElements = document.querySelectorAll('div.selectable');
+    var actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
+    var body = document.querySelector('body');
+
+    // Capture a click event on a selectable task-list element
+    listElements.forEach(function (listElement) {
+        var elementType = listElement.classList[0];
+        var uniqueID = listElement.id;
+
+        listElement.addEventListener('click', function (event) {
+            // Prevent the click event bubbling up to any parent 'selectable' elements
+            event.stopPropagation();
+
+            taskList.selectElement(elementType, uniqueID, listElements, actionMenuButtons);
+        });
+    });
+
+    // Cancel any current selection if a click happens outside the selectable
+    // area (the task list) or Action Menu (the 2ndary menu)
+    body.addEventListener('click', function (event) {
+        clickedClassList = Array.from(event.target.classList);
+
+        var exemptClasses = ['selectable', 'action-button', 'action-icon'];
+
+        if (arrayHelpers.noneInArray(clickedClassList, exemptClasses)) {
+            taskList.clearLastSelection(listElements);
+            taskList.selectedElement = null;
+        }
+    });
+})();
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/taskBorders.js":
 /***/ (function(module, exports) {
 
 
@@ -31868,31 +31965,85 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/task-dropdowns.js":
+/***/ "./resources/assets/js/taskList/taskList.js":
 /***/ (function(module, exports) {
 
 
-(function () {
-    var toggleControls = document.querySelectorAll('span.task-toggle');
+(function (exports) {
 
-    toggleControls.forEach(function (toggler) {
-        toggler.addEventListener('click', function (event) {
-            var icon = toggler.querySelector('i');
-            var task = toggler.parentElement;
-            var taskItems = task.querySelectorAll('div.selectable');
+    function selectedElement(elementType, uniqueID, listElements, actionMenuButtons) {
+        var selected = document.getElementById(uniqueID);
+        markNewSelection(selected, listElements);
+        var availableActions = getActionsByElementType(elementType);
+        refreshTheActionMenu(availableActions, actionMenuButtons);
+        exports.selectedElement = selected;
+    };
 
-            icon.classList.toggle('fa-caret-down');
-            icon.classList.toggle('fa-caret-up');
+    function markNewSelection(selected, listElements) {
+        clearLastSelection(listElements);
+        selected.classList.add('selected');
+    }
 
-            toggler.classList.toggle('down');
-            toggler.classList.toggle('up');
-
-            taskItems.forEach(function (item) {
-                item.classList.toggle('hidden');
-            });
+    function clearLastSelection(listElements) {
+        listElements.forEach(function (listElement) {
+            if (listElement.classList.contains('selected')) {
+                listElement.classList.remove('selected');
+            }
         });
-    });
-})();
+    }
+
+    function getActionsByElementType(elementType) {
+        var actions = [];
+
+        // Get an array of (2ndary-menu) actions available to the element
+        switch (elementType) {
+            case 'category':
+                actions = ['create', 'delete', 'edit'];
+                break;
+            case 'subcategory':
+                actions = ['create', 'delete', 'edit'];
+                break;
+            case 'task':
+                actions = ['create', 'delete', 'edit', 'status', 'priority'];
+                break;
+            case 'deadline':
+                actions = ['delete'];
+                break;
+            case 'link':
+                actions = ['delete', 'edit'];
+                break;
+            case 'detail':
+                actions = ['delete', 'edit'];
+                break;
+        }
+
+        return actions;
+    }
+
+    function refreshTheActionMenu(availableActions, actionMenuButtons) {
+        actionMenuButtons.forEach(function (button) {
+            if (!availableActions.includes(button.classList[0])) {
+                if (!button.classList.contains('hidden')) {
+                    button.classList.add('hidden');
+                }
+            } else {
+                if (button.classList.contains('hidden')) {
+                    button.classList.remove('hidden');
+                }
+            }
+        });
+    }
+
+    exports.selectElement = function (elementType, uniqueID, listElements, actionMenuButtons) {
+        return selectedElement(elementType, uniqueID, listElements, actionMenuButtons);
+    };
+
+    exports.selectedElement = null;
+
+    exports.clearLastSelection = function (listElements) {
+        return clearLastSelection(listElements);
+    };
+})(window.taskList = {});
 
 /***/ }),
 
