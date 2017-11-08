@@ -1,26 +1,37 @@
 
 (function(exports) {
+    const actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
+    const listElements = document.querySelectorAll('div.selectable');
 
-    function selectedElement(elementType, uniqueID, listElements, actionMenuButtons) {
+    function selectTheGivenElement(elementType, uniqueID) {
         const selected = document.getElementById(uniqueID);
-        markNewSelection(selected, listElements);
+        markNewSelection(selected);
         const availableActions = getActionsByElementType(elementType);
-        refreshTheActionMenu(availableActions, actionMenuButtons);
+        refreshTheActionMenu(availableActions);
         exports.selectedElement = selected;
         exports.selectedElementType = elementType;
     };
 
-    function markNewSelection(selected, listElements) {
+    function markNewSelection(selected) {
         clearLastSelection(listElements);
         selected.classList.add('selected');
     }
 
-    function clearLastSelection(listElements) {
+    function clearLastSelection() {
         listElements.forEach(function(listElement) {
             if (listElement.classList.contains('selected')) {
                 listElement.classList.remove('selected');
             }
         });
+
+        actionMenuButtons.forEach(function(button) {
+            if (button.classList.contains('hidden')) {
+                button.classList.remove('hidden');
+            }
+        });
+
+        exports.selectedElement = null;
+        exports.selectedElementType = null;
     }
 
     function getActionsByElementType(elementType) {
@@ -51,7 +62,7 @@
         return actions;
     }
 
-    function refreshTheActionMenu(availableActions, actionMenuButtons) {
+    function refreshTheActionMenu(availableActions) {
         actionMenuButtons.forEach(function(button) {
             if (!availableActions.includes(button.classList[0])) {
                 if (!button.classList.contains('hidden')) {
@@ -65,16 +76,16 @@
         });
     }
 
-    exports.selectElement = function(elementType, uniqueID, listElements, actionMenuButtons) {
-        return selectedElement(elementType, uniqueID, listElements, actionMenuButtons);
+    exports.selectElement = function(elementType, uniqueID) {
+        return selectTheGivenElement(elementType, uniqueID);
     };
 
     exports.selectedElement = null;
 
     exports.selectedElementType = null;
 
-    exports.clearLastSelection = function(listElements) {
-        return clearLastSelection(listElements);
+    exports.clearLastSelection = function() {
+        return clearLastSelection();
     };
     
 })(window.taskList = {});

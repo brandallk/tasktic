@@ -14,10 +14,7 @@ require('./taskList/dropdowns');
 require('./taskList/listener');
 require('./taskList/taskList');
 require('./actionMenu/listener');
-require('./taskList/formModals/listeners/errors/deleteError');
-require('./taskList/formModals/listeners/errors/editError');
-require('./taskList/formModals/listeners/errors/statusError');
-require('./taskList/formModals/listeners/errors/priorityError');
+require('./taskList/formModals/formModals');
 
 // window.Vue = require('vue');
 

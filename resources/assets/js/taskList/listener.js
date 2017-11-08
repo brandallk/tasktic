@@ -2,7 +2,6 @@
 (function() {
 
     const listElements = document.querySelectorAll('div.selectable');
-    const actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
     const body = document.querySelector('body');
 
     // Capture a click event on a selectable task-list element
@@ -14,7 +13,7 @@
             // Prevent the click event bubbling up to any parent 'selectable' elements
             event.stopPropagation();
 
-            taskList.selectElement(elementType, uniqueID, listElements, actionMenuButtons);
+            taskList.selectElement(elementType, uniqueID);
         });
     });
 
@@ -30,9 +29,7 @@
         ];
 
         if (arrayHelpers.noneInArray(clickedClassList, exemptClasses)) {
-            taskList.clearLastSelection(listElements);
-            taskList.selectedElement = null;
-            taskList.selectedElementType = null;
+            taskList.clearLastSelection();
         }
     });
     

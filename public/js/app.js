@@ -31636,63 +31636,57 @@ module.exports = function(module) {
 (function () {
 
     var menuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
-    var genericCreateFormModal = document.querySelector('div.modal.create-listElement');
-    var deleteErrorModal = document.querySelector('div.modal.error-deleteError');
-    var editErrorModal = document.querySelector('div.modal.error-editError');
-    var statusErrorModal = document.querySelector('div.modal.error-statusError');
-    var priorityErrorModal = document.querySelector('div.modal.error-priorityError');
-    var list = document.querySelector('div.theList');
 
     menuButtons.forEach(function (button) {
         button.addEventListener('click', function () {
             var listElement = taskList.selectedElement;
             var listElementType = taskList.selectedElementType;
-            var actionType = this.classList[0];
-            var form = null;
 
-            if (!listElement) {
-                switch (actionType) {
-                    case 'create':
-                        form = genericCreateFormModal;
-                        break;
-                    case 'delete':
-                        form = deleteErrorModal;
-                        break;
-                    case 'edit':
-                        form = editErrorModal;
-                        break;
-                    case 'status':
-                        form = statusErrorModal;
-                        break;
-                    case 'priority':
-                        form = priorityErrorModal;
-                        break;
-                }
-                form.classList.remove('hidden');
-            } else if (actionType !== 'status' && actionType !== 'priority') {
-                if (actionType == 'create') {
-                    switch (listElementType) {
-                        case 'category':
-                            form = listElement.querySelector('div.modal.subcategory.create');
-                            break;
-                        case 'subcategory':
-                            form = listElement.querySelector('div.modal.task.create');
-                            break;
-                        case 'task':
-                            form = listElement.querySelector('div.modal.item.create');
-                            break;
-                    }
-                } else {
-                    form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
-                }
+            var formModal = formModals.getModal(button, listElement, listElementType);
+            var actionType = formModals.getActionType(button);
 
-                form.classList.remove('hidden');
+            if (!listElement || actionType !== 'status' && actionType !== 'priority') {
+                formModal.classList.remove('hidden');
+                activateFormControls(formModal);
             } else {
-                form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
-                form.querySelector('form').submit();
+                formModal.querySelector('form').submit();
             }
         });
     });
+
+    function activateFormControls(formModal) {
+
+        var form = formModal.querySelector('form');
+        var cancelButton = form.querySelector('.cancel.btn');
+        var errorCancelButton = form.querySelector('.aknowledge.btn');
+        var submitButton = form.querySelector('.submit.btn');
+
+        function hideTheForm() {
+            formModal.classList.toggle('hidden');
+
+            // Prevent multiple event listeners being registered by repeat form loads
+            if (cancelButton) {
+                cancelButton.removeEventListener('click', hideTheForm);
+            }
+            if (errorCancelButton) {
+                errorCancelButton.removeEventListener('click', hideTheForm);
+            }
+        };
+
+        if (cancelButton) {
+            cancelButton.addEventListener('click', hideTheForm);
+        }
+
+        if (errorCancelButton) {
+            errorCancelButton.addEventListener('click', hideTheForm);
+        }
+
+        if (submitButton) {
+            submitButton.addEventListener('click', function () {
+                form.submit();
+            });
+        }
+    };
 })();
 
 /***/ }),
@@ -31716,10 +31710,7 @@ __webpack_require__("./resources/assets/js/taskList/dropdowns.js");
 __webpack_require__("./resources/assets/js/taskList/listener.js");
 __webpack_require__("./resources/assets/js/taskList/taskList.js");
 __webpack_require__("./resources/assets/js/actionMenu/listener.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/listeners/errors/deleteError.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/listeners/errors/editError.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/listeners/errors/statusError.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/listeners/errors/priorityError.js");
+__webpack_require__("./resources/assets/js/taskList/formModals/formModals.js");
 
 // window.Vue = require('vue');
 
@@ -31929,6 +31920,81 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/taskList/formModals/formModals.js":
+/***/ (function(module, exports) {
+
+
+(function (exports) {
+
+    var genericCreateFormModal = document.querySelector('div.modal.create-listElement');
+    var deleteErrorModal = document.querySelector('div.modal.error-deleteError');
+    var editErrorModal = document.querySelector('div.modal.error-editError');
+    var statusErrorModal = document.querySelector('div.modal.error-statusError');
+    var priorityErrorModal = document.querySelector('div.modal.error-priorityError');
+    var list = document.querySelector('div.theList');
+
+    function getActionType(button) {
+        return button.classList[0];
+    }
+
+    function getModal(button, listElement, listElementType) {
+        var form = null;
+        var actionType = getActionType(button);
+
+        if (!listElement) {
+
+            switch (actionType) {
+                case 'create':
+                    form = genericCreateFormModal;
+                    break;
+                case 'delete':
+                    form = deleteErrorModal;
+                    break;
+                case 'edit':
+                    form = editErrorModal;
+                    break;
+                case 'status':
+                    form = statusErrorModal;
+                    break;
+                case 'priority':
+                    form = priorityErrorModal;
+                    break;
+            }
+        } else if (actionType !== 'status' && actionType !== 'priority') {
+
+            if (actionType == 'create') {
+                switch (listElementType) {
+                    case 'category':
+                        form = listElement.querySelector('div.modal.subcategory.create');
+                        break;
+                    case 'subcategory':
+                        form = listElement.querySelector('div.modal.task.create');
+                        break;
+                    case 'task':
+                        form = listElement.querySelector('div.modal.item.create');
+                        break;
+                }
+            } else {
+                form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
+            }
+        } else {
+            form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
+        }
+
+        return form;
+    };
+
+    exports.getModal = function (button, listElement, listElementType) {
+        return getModal(button, listElement, listElementType);
+    };
+
+    exports.getActionType = function (button) {
+        return getActionType(button);
+    };
+})(window.formModals = {});
+
+/***/ }),
+
 /***/ "./resources/assets/js/taskList/formModals/listeners/addElement.js":
 /***/ (function(module, exports) {
 
@@ -31966,70 +32032,6 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/formModals/listeners/errors/deleteError.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var deleteErrorModal = document.querySelector('div.modal.error-deleteError');
-    var deleteErrorCancel = deleteErrorModal.querySelector('.aknowledge.btn');
-
-    deleteErrorCancel.addEventListener('click', function () {
-        deleteErrorModal.classList.toggle('hidden');
-    });
-})();
-
-/***/ }),
-
-/***/ "./resources/assets/js/taskList/formModals/listeners/errors/editError.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var editErrorModal = document.querySelector('div.modal.error-editError');
-    var editErrorCancel = editErrorModal.querySelector('.aknowledge.btn');
-
-    editErrorCancel.addEventListener('click', function () {
-        editErrorModal.classList.toggle('hidden');
-    });
-})();
-
-/***/ }),
-
-/***/ "./resources/assets/js/taskList/formModals/listeners/errors/priorityError.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var priorityErrorModal = document.querySelector('div.modal.error-priorityError');
-    var priorityErrorCancel = priorityErrorModal.querySelector('.aknowledge.btn');
-
-    priorityErrorCancel.addEventListener('click', function () {
-        priorityErrorModal.classList.toggle('hidden');
-    });
-})();
-
-/***/ }),
-
-/***/ "./resources/assets/js/taskList/formModals/listeners/errors/statusError.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var statusErrorModal = document.querySelector('div.modal.error-statusError');
-    var statusErrorCancel = statusErrorModal.querySelector('.aknowledge.btn');
-
-    statusErrorCancel.addEventListener('click', function () {
-        statusErrorModal.classList.toggle('hidden');
-    });
-})();
-
-/***/ }),
-
 /***/ "./resources/assets/js/taskList/listener.js":
 /***/ (function(module, exports) {
 
@@ -32037,7 +32039,6 @@ if (token) {
 (function () {
 
     var listElements = document.querySelectorAll('div.selectable');
-    var actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
     var body = document.querySelector('body');
 
     // Capture a click event on a selectable task-list element
@@ -32049,7 +32050,7 @@ if (token) {
             // Prevent the click event bubbling up to any parent 'selectable' elements
             event.stopPropagation();
 
-            taskList.selectElement(elementType, uniqueID, listElements, actionMenuButtons);
+            taskList.selectElement(elementType, uniqueID);
         });
     });
 
@@ -32061,9 +32062,7 @@ if (token) {
         var exemptClasses = ['selectable', 'action-button', 'action-icon'];
 
         if (arrayHelpers.noneInArray(clickedClassList, exemptClasses)) {
-            taskList.clearLastSelection(listElements);
-            taskList.selectedElement = null;
-            taskList.selectedElementType = null;
+            taskList.clearLastSelection();
         }
     });
 })();
@@ -32108,27 +32107,38 @@ if (token) {
 
 
 (function (exports) {
+    var actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
+    var listElements = document.querySelectorAll('div.selectable');
 
-    function selectedElement(elementType, uniqueID, listElements, actionMenuButtons) {
+    function selectTheGivenElement(elementType, uniqueID) {
         var selected = document.getElementById(uniqueID);
-        markNewSelection(selected, listElements);
+        markNewSelection(selected);
         var availableActions = getActionsByElementType(elementType);
-        refreshTheActionMenu(availableActions, actionMenuButtons);
+        refreshTheActionMenu(availableActions);
         exports.selectedElement = selected;
         exports.selectedElementType = elementType;
     };
 
-    function markNewSelection(selected, listElements) {
+    function markNewSelection(selected) {
         clearLastSelection(listElements);
         selected.classList.add('selected');
     }
 
-    function clearLastSelection(listElements) {
+    function clearLastSelection() {
         listElements.forEach(function (listElement) {
             if (listElement.classList.contains('selected')) {
                 listElement.classList.remove('selected');
             }
         });
+
+        actionMenuButtons.forEach(function (button) {
+            if (button.classList.contains('hidden')) {
+                button.classList.remove('hidden');
+            }
+        });
+
+        exports.selectedElement = null;
+        exports.selectedElementType = null;
     }
 
     function getActionsByElementType(elementType) {
@@ -32159,7 +32169,7 @@ if (token) {
         return actions;
     }
 
-    function refreshTheActionMenu(availableActions, actionMenuButtons) {
+    function refreshTheActionMenu(availableActions) {
         actionMenuButtons.forEach(function (button) {
             if (!availableActions.includes(button.classList[0])) {
                 if (!button.classList.contains('hidden')) {
@@ -32173,16 +32183,16 @@ if (token) {
         });
     }
 
-    exports.selectElement = function (elementType, uniqueID, listElements, actionMenuButtons) {
-        return selectedElement(elementType, uniqueID, listElements, actionMenuButtons);
+    exports.selectElement = function (elementType, uniqueID) {
+        return selectTheGivenElement(elementType, uniqueID);
     };
 
     exports.selectedElement = null;
 
     exports.selectedElementType = null;
 
-    exports.clearLastSelection = function (listElements) {
-        return clearLastSelection(listElements);
+    exports.clearLastSelection = function () {
+        return clearLastSelection();
     };
 })(window.taskList = {});
 
