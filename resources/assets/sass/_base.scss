@@ -92,13 +92,19 @@ div.modal {
                 margin-top: 0.5em;
             }
 
-            select#listElement-create-type {
+            select.modal-selectBox {
                 position: absolute;
                 top: 2.55em;
                 left: 34%;
                 font-size: 1.3em;
                 font-family: inherit;
                 padding-left: 0.4em;
+            }
+
+            div.message {
+                margin-left: 21%;
+                margin-top: 5em;
+                font-size: 1.2em;
             }
 
             div.input {

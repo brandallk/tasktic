@@ -1,28 +1,30 @@
-<div class="hidden modal create subcategory">
+<div class="hidden modal error-statusError">
     <div class="shadow-back">
-        <form method="post" action="{{ route('subcategories.store') }}">
+        <form method="post" action="{{ route('lists.create.element', ['list' => $list->id]) }}">
             {{ csrf_field() }}
 
             <span class="modal-heading">
-                Add a new subcategory
+                Oops! No selection.
             </span>
 
-            <div class="first input">
-                <label for="subcategory-create-name">Name:</label>
-                <input id="subcategory-create-name" type="text" name="name">
+            <div class="message">
+                <p>
+                    This button marks a task as complete or incomplete.
+                </p>
+                <p>
+                    Click a task on your List first.
+                    <i class="fa fa-smile-o" aria-hidden="true"></i>
+                </p>
             </div>
 
-            <input type="hidden" name="categoryID" value="{{ $category->id }}">
-
             <div class="form-buttons">
-                <span class="cancel btn white">Cancel</span>
-                <span class="submit btn pink">Submit</span>
+                <span class="aknowledge btn white">OK</span>
             </div>
 
             <div class="fake action-menu">
                 <ul>
                     <li class="action-button create">
-                        <i class="fa fa-plus-circle fa-3x highlighted" aria-hidden="true"></i>
+                        <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
                     </li>
                     <li class="action-button delete">
                         <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
@@ -31,7 +33,7 @@
                         <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>
                     </li>
                     <li class="action-button status">
-                        <i class="fa fa-check-square-o fa-3x" aria-hidden="true"></i>
+                        <i class="fa fa-check-square-o fa-3x highlighted" aria-hidden="true"></i>
                     </li>
                     <li class="action-button priority">
                         <i class="fa fa-star fa-3x" aria-hidden="true"></i>

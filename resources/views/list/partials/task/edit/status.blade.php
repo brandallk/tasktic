@@ -1,4 +1,4 @@
-<div class="hidden edit-status">
+<div class="hidden modal status task">
     <form method="post" action="{{ route('tasks.update.status', ['task' => $task->id]) }}">
         {{ csrf_field() }}
 

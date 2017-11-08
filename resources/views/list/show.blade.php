@@ -146,9 +146,9 @@
                                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                                             </span>
                                             <span class="deadline-content">{{ $task->deadlineItem->deadline }}</span>
-                                        </div>
 
-                                        @include('list.partials.item.deadline.delete')
+                                            @include('list.partials.item.deadline.delete')
+                                        </div>
 
                                     @endif
 
@@ -158,10 +158,10 @@
 
                                         <div id="{{ $link->list_element_id }}" class="link selectable hidden">
                                             <span class="link-content">{{ $link->link }}</span>
-                                        </div>
 
-                                        @include('list.partials.item.link.edit')
-                                        @include('list.partials.item.link.delete')
+                                            @include('list.partials.item.link.edit')
+                                            @include('list.partials.item.link.delete')
+                                        </div>
 
                                     @endforeach
                                     @endif
@@ -172,10 +172,10 @@
 
                                         <div id="{{ $detail->list_element_id }}" class="detail selectable hidden">
                                             <span class="detail-content">{{ $detail->detail }}</span>
-                                        </div>
 
-                                        @include('list.partials.item.detail.edit')
-                                        @include('list.partials.item.detail.delete')
+                                            @include('list.partials.item.detail.edit')
+                                            @include('list.partials.item.detail.delete')
+                                        </div>
 
                                     @endforeach
                                     @endif
@@ -209,11 +209,15 @@
             @endforeach
             @endif
 
-            @include('list.partials.category.create')
+            <!-- Unused form: @include('list.partials.category.create') -->
 
             <!-- Add-A-Task Button -->
             <span class="add-listElement btn pink">Add to list</span>
             @include('list.partials.listElement.create')
+            @include('list.partials.errors.deleteError')
+            @include('list.partials.errors.editError')
+            @include('list.partials.errors.statusError')
+            @include('list.partials.errors.priorityError')
 
         </div> <!-- end theList div -->
     </main>

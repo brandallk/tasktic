@@ -1,4 +1,4 @@
-<div class="hidden modal create">
+<div class="hidden modal create category">
     <form method="post" action="{{ route('categories.store') }}">
         {{ csrf_field() }}
 

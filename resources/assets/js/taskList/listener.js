@@ -32,6 +32,7 @@
         if (arrayHelpers.noneInArray(clickedClassList, exemptClasses)) {
             taskList.clearLastSelection(listElements);
             taskList.selectedElement = null;
+            taskList.selectedElementType = null;
         }
     });
     

@@ -7,6 +7,7 @@
         const availableActions = getActionsByElementType(elementType);
         refreshTheActionMenu(availableActions, actionMenuButtons);
         exports.selectedElement = selected;
+        exports.selectedElementType = elementType;
     };
 
     function markNewSelection(selected, listElements) {
@@ -69,6 +70,8 @@
     };
 
     exports.selectedElement = null;
+
+    exports.selectedElementType = null;
 
     exports.clearLastSelection = function(listElements) {
         return clearLastSelection(listElements);

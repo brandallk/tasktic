@@ -1,4 +1,4 @@
-<div class="hidden edit-priority">
+<div class="hidden modal priority task">
     <form method="post" action="{{ route('tasks.update.priority', ['task' => $task->id]) }}">
         {{ csrf_field() }}
 

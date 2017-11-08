@@ -6,7 +6,7 @@
     const createForm = document.querySelector('div.modal.create-listElement form');
     const createFormCancel = document.querySelector('div.modal.create-listElement .form-buttons .cancel.btn');
     const createFormSubmit = document.querySelector('div.modal.create-listElement .form-buttons .submit.btn');
-    const typeSelector = document.querySelector('select#listElement-create-type');
+    const typeSelector = document.querySelector('div.modal.create-listElement select.modal-selectBox');
     const deadlineInput = document.querySelector('div.modal.create-listElement div.second.input');
 
     addButton.addEventListener('click', function() {

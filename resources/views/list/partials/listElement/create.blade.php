@@ -6,7 +6,7 @@
             <span class="modal-heading">
                 New:
             </span>
-            <select id="listElement-create-type" name="elementType" size="1">
+            <select class="modal-selectBox" name="elementType" size="1">
                 <option selected="selected" value="task">Task</option>
                 <option value="subcategory">Task Subcategory</option>
                 <option value="category">Task Category</option>

@@ -3646,13 +3646,19 @@ div.modal div.shadow-back form span.modal-heading {
   margin-top: 0.5em;
 }
 
-div.modal div.shadow-back form select#listElement-create-type {
+div.modal div.shadow-back form select.modal-selectBox {
   position: absolute;
   top: 2.55em;
   left: 34%;
   font-size: 1.3em;
   font-family: inherit;
   padding-left: 0.4em;
+}
+
+div.modal div.shadow-back form div.message {
+  margin-left: 21%;
+  margin-top: 5em;
+  font-size: 1.2em;
 }
 
 div.modal div.shadow-back form div.input {
