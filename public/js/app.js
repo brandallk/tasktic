@@ -31629,68 +31629,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/actionMenu/listener.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var menuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
-
-    menuButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            var listElement = taskList.selectedElement;
-            var listElementType = taskList.selectedElementType;
-
-            var formModal = formModals.getModal(button, listElement, listElementType);
-            var actionType = formModals.getActionType(button);
-
-            if (!listElement || actionType !== 'status' && actionType !== 'priority') {
-                formModal.classList.remove('hidden');
-                activateFormControls(formModal);
-            } else {
-                formModal.querySelector('form').submit();
-            }
-        });
-    });
-
-    function activateFormControls(formModal) {
-
-        var form = formModal.querySelector('form');
-        var cancelButton = form.querySelector('.cancel.btn');
-        var errorCancelButton = form.querySelector('.aknowledge.btn');
-        var submitButton = form.querySelector('.submit.btn');
-
-        function hideTheForm() {
-            formModal.classList.toggle('hidden');
-
-            // Prevent multiple event listeners being registered by repeat form loads
-            if (cancelButton) {
-                cancelButton.removeEventListener('click', hideTheForm);
-            }
-            if (errorCancelButton) {
-                errorCancelButton.removeEventListener('click', hideTheForm);
-            }
-        };
-
-        if (cancelButton) {
-            cancelButton.addEventListener('click', hideTheForm);
-        }
-
-        if (errorCancelButton) {
-            errorCancelButton.addEventListener('click', hideTheForm);
-        }
-
-        if (submitButton) {
-            submitButton.addEventListener('click', function () {
-                form.submit();
-            });
-        }
-    };
-})();
-
-/***/ }),
-
 /***/ "./resources/assets/js/app.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31703,14 +31641,7 @@ module.exports = function(module) {
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
 __webpack_require__("./resources/assets/js/lib/arrayHelpers.js");
-__webpack_require__("./resources/assets/js/mainMenu/menu.js");
-__webpack_require__("./resources/assets/js/taskList/taskBorders.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/listeners/addElement.js");
-__webpack_require__("./resources/assets/js/taskList/dropdowns.js");
-__webpack_require__("./resources/assets/js/taskList/listener.js");
-__webpack_require__("./resources/assets/js/taskList/taskList.js");
-__webpack_require__("./resources/assets/js/actionMenu/listener.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/formModals.js");
+__webpack_require__("./resources/assets/js/main.js");
 
 // window.Vue = require('vue');
 
@@ -31787,6 +31718,56 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/formModal/FormModal.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FormModal = function () {
+    function FormModal(formModal) {
+        _classCallCheck(this, FormModal);
+
+        this.formModal = formModal;
+        this.form = formModal.querySelector('form');
+        this.cancelButton = formModal.querySelector('.cancel.btn');
+        this.submitButton = formModal.querySelector('.submit.btn');
+    }
+
+    _createClass(FormModal, [{
+        key: 'activate',
+        value: function activate() {
+            if (this.cancelButton) {
+                this.cancelButton.addEventListener('click', this.hideModal.bind(this));
+            }
+
+            if (this.submitButton) {
+                this.submitButton.addEventListener('click', this.submitForm.bind(this));
+            }
+        }
+    }, {
+        key: 'hideModal',
+        value: function hideModal() {
+            if (!this.formModal.classList.contains('hidden')) {
+                this.formModal.classList.add('hidden');
+            }
+        }
+    }, {
+        key: 'submitForm',
+        value: function submitForm() {
+            this.form.submit();
+        }
+    }]);
+
+    return FormModal;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (FormModal);
+
+/***/ }),
+
 /***/ "./resources/assets/js/lib/arrayHelpers.js":
 /***/ (function(module, exports) {
 
@@ -31814,387 +31795,267 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/mainMenu/menu.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/main.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-(function () {
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__ = __webpack_require__("./resources/assets/js/mainMenu/MainMenu.js");
 
-    var mainMenu = document.querySelector('div.main-menu');
-    var menuToggle = document.querySelector('span.menu-toggle');
-    var menuToggleIcon = document.querySelector('span.menu-toggle i.fa');
 
-    var saveButton = document.querySelector('li.action.save');
-    var saveFormModal = document.querySelector('div.modal.main-menu.save');
-    var saveForm = document.querySelector('div.modal.main-menu.save form');
-    var saveFormCancel = document.querySelector('div.modal.main-menu.save .form-buttons .cancel.btn');
-    var saveFormSubmit = document.querySelector('div.modal.main-menu.save .form-buttons .submit.btn');
-
-    var newButton = document.querySelector('li.action.new');
-    var createFormModal = document.querySelector('div.modal.main-menu.new');
-    var createForm = document.querySelector('div.modal.main-menu.new form');
-    var createFormCancel = document.querySelector('div.modal.main-menu.new .form-buttons .cancel.btn');
-    var createFormSubmit = document.querySelector('div.modal.main-menu.new .form-buttons .submit.btn');
-
-    var loadButton = document.querySelector('li.action.load');
-    var loadDropdown = document.querySelector('ul.menu-list ul.dropdown');
-
-    var logoutButton = document.querySelector('li.action.logout');
-    var logoutForm = document.querySelector('li.action.logout form');
-
-    var outsideLoadButton = [saveButton, newButton, logoutButton, menuToggleIcon];
-
-    menuToggle.addEventListener('click', function () {
-        mainMenu.classList.toggle('up');
-        menuToggle.classList.toggle('down');
-        menuToggle.classList.toggle('up');
-        menuToggleIcon.classList.toggle('fa-caret-down');
-        menuToggleIcon.classList.toggle('fa-caret-up');
-    });
-
-    saveButton.addEventListener('click', function () {
-        saveFormModal.classList.toggle('hidden');
-    });
-
-    saveFormCancel.addEventListener('click', function () {
-        saveFormModal.classList.toggle('hidden');
-    });
-
-    saveFormSubmit.addEventListener('click', function () {
-        saveForm.submit();
-    });
-
-    newButton.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormCancel.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormSubmit.addEventListener('click', function () {
-        createForm.submit();
-    });
-
-    loadButton.addEventListener('click', function () {
-        loadDropdown.classList.toggle('hidden');
-    });
-
-    logoutButton.addEventListener('click', function () {
-        logoutForm.submit();
-    });
-
-    outsideLoadButton.forEach(function (item) {
-        item.addEventListener('mouseover', function () {
-            loadDropdown.classList.add('hidden');
-        });
-    });
-})();
+var mainMenu = new __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__["a" /* default */]();
+mainMenu.activate();
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/dropdowns.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/mainMenu/LoadButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-(function () {
-    var toggleControls = document.querySelectorAll('span.task-toggle');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    toggleControls.forEach(function (toggler) {
-        toggler.addEventListener('click', function (event) {
-            var icon = toggler.querySelector('i');
-            var task = toggler.parentElement;
-            var taskItems = task.querySelectorAll('div.selectable');
+var LoadButton = function () {
+    function LoadButton(mainMenu) {
+        _classCallCheck(this, LoadButton);
 
-            icon.classList.toggle('fa-caret-down');
-            icon.classList.toggle('fa-caret-up');
+        this.menu = mainMenu;
+        this.loadButton = this.menu.querySelector('li.load');
+        this.dropdown = this.loadButton.querySelector('ul.dropdown');
+        this.hideDropdownContext = [this.menu.querySelector('li.save'), this.menu.querySelector('li.new'), this.menu.querySelector('li.logout'), document.querySelector('.menu-toggle')];
+    }
 
-            toggler.classList.toggle('down');
-            toggler.classList.toggle('up');
+    _createClass(LoadButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-            taskItems.forEach(function (item) {
-                item.classList.toggle('hidden');
+            this.loadButton.addEventListener('click', function () {
+                _this.dropdown.classList.toggle('hidden');
             });
-        });
-    });
-})();
+
+            this.hideDropdownContext.forEach(function (contextItem) {
+                contextItem.addEventListener('mouseover', function () {
+                    _this.dropdown.classList.add('hidden');
+                });
+            });
+        }
+    }]);
+
+    return LoadButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (LoadButton);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/formModals/formModals.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/mainMenu/LogoutButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-(function (exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    var genericCreateFormModal = document.querySelector('div.modal.create-listElement');
-    var deleteErrorModal = document.querySelector('div.modal.error-deleteError');
-    var editErrorModal = document.querySelector('div.modal.error-editError');
-    var statusErrorModal = document.querySelector('div.modal.error-statusError');
-    var priorityErrorModal = document.querySelector('div.modal.error-priorityError');
-    var list = document.querySelector('div.theList');
+var LogoutButton = function () {
+    function LogoutButton(mainMenu) {
+        _classCallCheck(this, LogoutButton);
 
-    function getActionType(button) {
-        return button.classList[0];
+        this.menu = mainMenu;
+        this.logoutButton = this.menu.querySelector('li.logout');
+        this.form = this.logoutButton.querySelector('form');
     }
 
-    function getModal(button, listElement, listElementType) {
-        var form = null;
-        var actionType = getActionType(button);
+    _createClass(LogoutButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-        if (!listElement) {
+            this.logoutButton.addEventListener('click', function () {
+                _this.form.submit();
+            });
+        }
+    }]);
 
-            switch (actionType) {
-                case 'create':
-                    form = genericCreateFormModal;
-                    break;
-                case 'delete':
-                    form = deleteErrorModal;
-                    break;
-                case 'edit':
-                    form = editErrorModal;
-                    break;
-                case 'status':
-                    form = statusErrorModal;
-                    break;
-                case 'priority':
-                    form = priorityErrorModal;
-                    break;
-            }
-        } else if (actionType !== 'status' && actionType !== 'priority') {
+    return LogoutButton;
+}();
 
-            if (actionType == 'create') {
-                switch (listElementType) {
-                    case 'category':
-                        form = listElement.querySelector('div.modal.subcategory.create');
-                        break;
-                    case 'subcategory':
-                        form = listElement.querySelector('div.modal.task.create');
-                        break;
-                    case 'task':
-                        form = listElement.querySelector('div.modal.item.create');
-                        break;
+/* harmony default export */ __webpack_exports__["a"] = (LogoutButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/MainMenu.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SaveButton__ = __webpack_require__("./resources/assets/js/mainMenu/SaveButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NewButton__ = __webpack_require__("./resources/assets/js/mainMenu/NewButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LoadButton__ = __webpack_require__("./resources/assets/js/mainMenu/LoadButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LogoutButton__ = __webpack_require__("./resources/assets/js/mainMenu/LogoutButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ToggleButton__ = __webpack_require__("./resources/assets/js/mainMenu/ToggleButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+
+
+var MainMenu = function () {
+    function MainMenu() {
+        _classCallCheck(this, MainMenu);
+
+        this.DOMelement = document.querySelector('div.main-menu');
+        this.saveButton = new __WEBPACK_IMPORTED_MODULE_0__SaveButton__["a" /* default */](this.DOMelement);
+        this.newButton = new __WEBPACK_IMPORTED_MODULE_1__NewButton__["a" /* default */](this.DOMelement);
+        this.loadButton = new __WEBPACK_IMPORTED_MODULE_2__LoadButton__["a" /* default */](this.DOMelement);
+        this.logoutButton = new __WEBPACK_IMPORTED_MODULE_3__LogoutButton__["a" /* default */](this.DOMelement);
+        this.toggleButton = new __WEBPACK_IMPORTED_MODULE_4__ToggleButton__["a" /* default */](this.DOMelement);
+    }
+
+    _createClass(MainMenu, [{
+        key: 'activate',
+        value: function activate() {
+            this.saveButton.activate();
+            this.newButton.activate();
+            this.loadButton.activate();
+            this.logoutButton.activate();
+            this.toggleButton.activate();
+        }
+    }]);
+
+    return MainMenu;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (MainMenu);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/NewButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var NewButton = function () {
+    function NewButton(mainMenu) {
+        _classCallCheck(this, NewButton);
+
+        this.menu = mainMenu;
+        this.newButton = this.menu.querySelector('li.new');
+        this.formModal = document.querySelector('div.modal.main-menu.new');
+    }
+
+    _createClass(NewButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.newButton.addEventListener('click', function () {
+                if (_this.formModal.classList.contains('hidden')) {
+                    _this.formModal.classList.remove('hidden');
                 }
-            } else {
-                form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
-            }
-        } else {
-            form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
+
+                var newForm = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](_this.formModal);
+                newForm.activate();
+            });
         }
+    }]);
 
-        return form;
-    };
+    return NewButton;
+}();
 
-    exports.getModal = function (button, listElement, listElementType) {
-        return getModal(button, listElement, listElementType);
-    };
-
-    exports.getActionType = function (button) {
-        return getActionType(button);
-    };
-})(window.formModals = {});
+/* harmony default export */ __webpack_exports__["a"] = (NewButton);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/formModals/listeners/addElement.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/mainMenu/SaveButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
-(function () {
 
-    var addButton = document.querySelector('.add-listElement.btn');
-    var createFormModal = document.querySelector('div.modal.create-listElement');
-    var createForm = document.querySelector('div.modal.create-listElement form');
-    var createFormCancel = document.querySelector('div.modal.create-listElement .form-buttons .cancel.btn');
-    var createFormSubmit = document.querySelector('div.modal.create-listElement .form-buttons .submit.btn');
-    var typeSelector = document.querySelector('div.modal.create-listElement select.modal-selectBox');
-    var deadlineInput = document.querySelector('div.modal.create-listElement div.second.input');
+var saveButton = function () {
+    function saveButton(mainMenu) {
+        _classCallCheck(this, saveButton);
 
-    addButton.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormCancel.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormSubmit.addEventListener('click', function () {
-        createForm.submit();
-    });
-
-    typeSelector.addEventListener('change', function (event) {
-        if (typeSelector.value == "task") {
-            deadlineInput.classList.remove('hidden');
-        } else {
-            deadlineInput.classList.add('hidden');
-        }
-    });
-})();
-
-/***/ }),
-
-/***/ "./resources/assets/js/taskList/listener.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var listElements = document.querySelectorAll('div.selectable');
-    var body = document.querySelector('body');
-
-    // Capture a click event on a selectable task-list element
-    listElements.forEach(function (listElement) {
-        var elementType = listElement.classList[0];
-        var uniqueID = listElement.id;
-
-        listElement.addEventListener('click', function (event) {
-            // Prevent the click event bubbling up to any parent 'selectable' elements
-            event.stopPropagation();
-
-            taskList.selectElement(elementType, uniqueID);
-        });
-    });
-
-    // Cancel any current selection if a click happens outside the selectable
-    // area (the task list) or Action Menu (the 2ndary menu)
-    body.addEventListener('click', function (event) {
-        clickedClassList = Array.from(event.target.classList);
-
-        var exemptClasses = ['selectable', 'action-button', 'action-icon'];
-
-        if (arrayHelpers.noneInArray(clickedClassList, exemptClasses)) {
-            taskList.clearLastSelection();
-        }
-    });
-})();
-
-/***/ }),
-
-/***/ "./resources/assets/js/taskList/taskBorders.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-    var canvasElements = document.querySelectorAll('canvas.task-border');
-
-    function drawTaskBorders() {
-        canvasElements.forEach(function (canvas) {
-            if (canvas.getContext) {
-                var ctx = canvas.getContext('2d');
-                var taskDiv = canvas.parentElement;
-                var width = taskDiv.clientWidth;
-                var height = 5;
-                ctx.canvas.width = width;
-                ctx.canvas.height = height;
-                ctx.fillStyle = '#697cae';
-
-                ctx.beginPath();
-                ctx.moveTo(0, height / 2);
-                ctx.quadraticCurveTo(width / 2, 0, width, height / 2);
-                ctx.quadraticCurveTo(width / 2, height, 0, height / 2);
-                ctx.fill();
-            }
-        });
+        this.menu = mainMenu;
+        this.saveButton = this.menu.querySelector('li.save');
+        this.formModal = document.querySelector('div.modal.main-menu.save');
     }
 
-    window.onload = drawTaskBorders;
-    window.onresize = drawTaskBorders;
-})();
+    _createClass(saveButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-/***/ }),
-
-/***/ "./resources/assets/js/taskList/taskList.js":
-/***/ (function(module, exports) {
-
-
-(function (exports) {
-    var actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
-    var listElements = document.querySelectorAll('div.selectable');
-
-    function selectTheGivenElement(elementType, uniqueID) {
-        var selected = document.getElementById(uniqueID);
-        markNewSelection(selected);
-        var availableActions = getActionsByElementType(elementType);
-        refreshTheActionMenu(availableActions);
-        exports.selectedElement = selected;
-        exports.selectedElementType = elementType;
-    };
-
-    function markNewSelection(selected) {
-        clearLastSelection(listElements);
-        selected.classList.add('selected');
-    }
-
-    function clearLastSelection() {
-        listElements.forEach(function (listElement) {
-            if (listElement.classList.contains('selected')) {
-                listElement.classList.remove('selected');
-            }
-        });
-
-        actionMenuButtons.forEach(function (button) {
-            if (button.classList.contains('hidden')) {
-                button.classList.remove('hidden');
-            }
-        });
-
-        exports.selectedElement = null;
-        exports.selectedElementType = null;
-    }
-
-    function getActionsByElementType(elementType) {
-        var actions = [];
-
-        // Get an array of (2ndary-menu) actions available to the element
-        switch (elementType) {
-            case 'category':
-                actions = ['create', 'delete', 'edit'];
-                break;
-            case 'subcategory':
-                actions = ['create', 'delete', 'edit'];
-                break;
-            case 'task':
-                actions = ['create', 'delete', 'edit', 'status', 'priority'];
-                break;
-            case 'deadline':
-                actions = ['delete'];
-                break;
-            case 'link':
-                actions = ['delete', 'edit'];
-                break;
-            case 'detail':
-                actions = ['delete', 'edit'];
-                break;
-        }
-
-        return actions;
-    }
-
-    function refreshTheActionMenu(availableActions) {
-        actionMenuButtons.forEach(function (button) {
-            if (!availableActions.includes(button.classList[0])) {
-                if (!button.classList.contains('hidden')) {
-                    button.classList.add('hidden');
+            this.saveButton.addEventListener('click', function () {
+                if (_this.formModal.classList.contains('hidden')) {
+                    _this.formModal.classList.remove('hidden');
                 }
-            } else {
-                if (button.classList.contains('hidden')) {
-                    button.classList.remove('hidden');
-                }
-            }
-        });
+
+                var saveForm = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](_this.formModal);
+                saveForm.activate();
+            });
+        }
+    }]);
+
+    return saveButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (saveButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/ToggleButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ToggleButton = function () {
+    function ToggleButton(mainMenu) {
+        _classCallCheck(this, ToggleButton);
+
+        this.menu = mainMenu;
+        this.toggleButton = document.querySelector('.menu-toggle');
+        this.toggleIcon = this.toggleButton.querySelector('.fa');
     }
 
-    exports.selectElement = function (elementType, uniqueID) {
-        return selectTheGivenElement(elementType, uniqueID);
-    };
+    _createClass(ToggleButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-    exports.selectedElement = null;
+            this.toggleButton.addEventListener('click', function () {
+                _this.menu.classList.toggle('up');
+                _this.toggleButton.classList.toggle('down');
+                _this.toggleButton.classList.toggle('up');
+                _this.toggleIcon.classList.toggle('fa-caret-down');
+                _this.toggleIcon.classList.toggle('fa-caret-up');
+            });
+        }
+    }]);
 
-    exports.selectedElementType = null;
+    return ToggleButton;
+}();
 
-    exports.clearLastSelection = function () {
-        return clearLastSelection();
-    };
-})(window.taskList = {});
+/* harmony default export */ __webpack_exports__["a"] = (ToggleButton);
 
 /***/ }),
 
