@@ -3902,7 +3902,7 @@ body.list-view .modal.edit ul li.edit i {
 */
 
 div.modal div.shadow-back {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.25);
@@ -4141,6 +4141,10 @@ body.list-view main div.theList div.task.selected span.task-title {
 body.list-view main div.theList div.task:hover canvas,
 body.list-view main div.theList div.task.selected canvas {
   display: inherit;
+}
+
+body.list-view main div.theList div.task div.modal:hover {
+  cursor: default;
 }
 
 body.list-view main div.theList div.task canvas {

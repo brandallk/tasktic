@@ -44,6 +44,10 @@ body.list-view {
                 } 
             }
 
+            div.modal:hover {
+                cursor: default;
+            }
+
             canvas {
                 position: absolute;
                 left: 0;
