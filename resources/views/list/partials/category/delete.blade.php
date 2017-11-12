@@ -12,7 +12,6 @@
             <div class="message">
                 <p>
                     ...and everything in it! &nbsp;
-                    <img src="{{ asset('img/mushroomcloud.png') }}" alt="mushroom cloud">
                 </p>
             </div>
 

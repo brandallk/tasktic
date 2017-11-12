@@ -34,6 +34,19 @@ export default class ActionMenu {
     }
 
     activateDefaultBehavior() {
+        // Deactivate any activated menu buttons...
+        this.buttons.forEach( (button) => {
+            button.deactivate();
+        });
+
+        // But show them all...
+        this.buttons.forEach( (button) => {
+            if (button.domElement.classList.contains('hidden')) {
+                button.domElement.classList.remove('hidden');
+            }
+        });
+
+        // And activate the createButton's default behavior
         this.createButton.activateDefaultBehavior();
     }
 

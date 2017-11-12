@@ -19,11 +19,11 @@ class CategoryController extends Controller
     private function showListView(TaskList $list)
     {
         $data = [
-                'user' => Auth::user(),
-                'list' => $list
-            ];
+            'user' => Auth::user(),
+            'list' => $list
+        ];
 
-            return view('list.show', $data);
+        return view('list.show', $data);
     }
 
     /**

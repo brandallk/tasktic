@@ -80,10 +80,6 @@ div.modal {
                     top: 11em;
                 }
 
-                &.third {
-                    top: 13em;
-                }
-
                 label {
                     color: $lightBlue;
                     float: left;
@@ -103,6 +99,12 @@ div.modal {
                         width: 85%;
                     }
                 }
+            }
+
+            i.img {
+                position: absolute;
+                top: 36%;
+                left: 72%;
             }
 
             div.form-buttons {

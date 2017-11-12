@@ -3953,10 +3953,6 @@ div.modal div.shadow-back form div.input.second {
   top: 11em;
 }
 
-div.modal div.shadow-back form div.input.third {
-  top: 13em;
-}
-
 div.modal div.shadow-back form div.input label {
   color: #86c7e6;
   float: left;
@@ -3975,6 +3971,12 @@ div.modal div.shadow-back form div.input input {
 
 div.modal div.shadow-back form div.input input#listElement-create-deadline {
   width: 85%;
+}
+
+div.modal div.shadow-back form i.img {
+  position: absolute;
+  top: 36%;
+  left: 72%;
 }
 
 div.modal div.shadow-back form div.form-buttons {

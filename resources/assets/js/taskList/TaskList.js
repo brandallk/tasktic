@@ -69,6 +69,7 @@ export default class TaskList {
     activateClearSelectionContext() {
         this.clearSelectionContext.addEventListener('click', () => {
             this.clearSelected();
+            this.actionMenu.activateDefaultBehavior();
         });
     }
 
