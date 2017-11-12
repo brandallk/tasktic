@@ -31629,68 +31629,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/actionMenu/listener.js":
-/***/ (function(module, exports) {
-
-
-(function () {
-
-    var menuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
-
-    menuButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            var listElement = taskList.selectedElement;
-            var listElementType = taskList.selectedElementType;
-
-            var formModal = formModals.getModal(button, listElement, listElementType);
-            var actionType = formModals.getActionType(button);
-
-            if (!listElement || actionType !== 'status' && actionType !== 'priority') {
-                formModal.classList.remove('hidden');
-                activateFormControls(formModal);
-            } else {
-                formModal.querySelector('form').submit();
-            }
-        });
-    });
-
-    function activateFormControls(formModal) {
-
-        var form = formModal.querySelector('form');
-        var cancelButton = form.querySelector('.cancel.btn');
-        var errorCancelButton = form.querySelector('.aknowledge.btn');
-        var submitButton = form.querySelector('.submit.btn');
-
-        function hideTheForm() {
-            formModal.classList.toggle('hidden');
-
-            // Prevent multiple event listeners being registered by repeat form loads
-            if (cancelButton) {
-                cancelButton.removeEventListener('click', hideTheForm);
-            }
-            if (errorCancelButton) {
-                errorCancelButton.removeEventListener('click', hideTheForm);
-            }
-        };
-
-        if (cancelButton) {
-            cancelButton.addEventListener('click', hideTheForm);
-        }
-
-        if (errorCancelButton) {
-            errorCancelButton.addEventListener('click', hideTheForm);
-        }
-
-        if (submitButton) {
-            submitButton.addEventListener('click', function () {
-                form.submit();
-            });
-        }
-    };
-})();
-
-/***/ }),
-
 /***/ "./resources/assets/js/app.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31702,15 +31640,7 @@ module.exports = function(module) {
  */
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
-__webpack_require__("./resources/assets/js/lib/arrayHelpers.js");
-__webpack_require__("./resources/assets/js/mainMenu/menu.js");
-__webpack_require__("./resources/assets/js/taskList/taskBorders.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/listeners/addElement.js");
-__webpack_require__("./resources/assets/js/taskList/dropdowns.js");
-__webpack_require__("./resources/assets/js/taskList/listener.js");
-__webpack_require__("./resources/assets/js/taskList/taskList.js");
-__webpack_require__("./resources/assets/js/actionMenu/listener.js");
-__webpack_require__("./resources/assets/js/taskList/formModals/formModals.js");
+__webpack_require__("./resources/assets/js/main.js");
 
 // window.Vue = require('vue');
 
@@ -31787,414 +31717,1500 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/lib/arrayHelpers.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/formModal/FormModal.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-(function (exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    function anyInArray(arrayToSearch, arrayOfValuesToMatchAgainst) {
-        return arrayToSearch.reduce(function (acc, val) {
-            return !!(acc + arrayOfValuesToMatchAgainst.includes(val) ? 1 : 0);
-        }, 0);
+var FormModal = function () {
+    function FormModal(formModal) {
+        _classCallCheck(this, FormModal);
+
+        this.domElement = formModal;
+        this.form = this.domElement.querySelector('form');
+        this.submitButton = this.domElement.querySelector('.submit.btn');
+
+        // (A form can have multiple cancel buttons with differing behavior.)
+        this.cancelButtons = this.domElement.querySelectorAll('.cancel.btn');
     }
 
-    function noneInArray(arrayToSearch, arrayOfValuesToMatchAgainst) {
-        return !anyInArray(arrayToSearch, arrayOfValuesToMatchAgainst);
-    }
+    _createClass(FormModal, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-    exports.anyInArray = function (arrayToSearch, arrayOfValuesToMatchAgainst) {
-        return anyInArray(arrayToSearch, arrayOfValuesToMatchAgainst);
-    };
+            if (this.cancelButtons) {
+                this.cancelButtons.forEach(function (button) {
+                    button.addEventListener('click', _this.hide.bind(_this));
+                });
+            }
 
-    exports.noneInArray = function (arrayToSearch, arrayOfValuesToMatchAgainst) {
-        return noneInArray(arrayToSearch, arrayOfValuesToMatchAgainst);
-    };
-})(window.arrayHelpers = {});
+            if (this.submitButton) {
+                this.submitButton.addEventListener('click', this.submitForm.bind(this));
+            }
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            if (this.domElement.classList.contains('hidden')) {
+                this.domElement.classList.remove('hidden');
+            }
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            if (!this.domElement.classList.contains('hidden')) {
+                this.domElement.classList.add('hidden');
+
+                // Prevent bubbling the event up to a parent selectable element
+                event.stopPropagation();
+            }
+        }
+    }, {
+        key: 'submitForm',
+        value: function submitForm() {
+            this.form.submit();
+        }
+    }]);
+
+    return FormModal;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (FormModal);
 
 /***/ }),
 
-/***/ "./resources/assets/js/mainMenu/menu.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/main.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-(function () {
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__ = __webpack_require__("./resources/assets/js/mainMenu/MainMenu.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__taskList_TaskList__ = __webpack_require__("./resources/assets/js/taskList/TaskList.js");
 
-    var mainMenu = document.querySelector('div.main-menu');
-    var menuToggle = document.querySelector('span.menu-toggle');
-    var menuToggleIcon = document.querySelector('span.menu-toggle i.fa');
 
-    var saveButton = document.querySelector('li.action.save');
-    var saveFormModal = document.querySelector('div.modal.main-menu.save');
-    var saveForm = document.querySelector('div.modal.main-menu.save form');
-    var saveFormCancel = document.querySelector('div.modal.main-menu.save .form-buttons .cancel.btn');
-    var saveFormSubmit = document.querySelector('div.modal.main-menu.save .form-buttons .submit.btn');
 
-    var newButton = document.querySelector('li.action.new');
-    var createFormModal = document.querySelector('div.modal.main-menu.new');
-    var createForm = document.querySelector('div.modal.main-menu.new form');
-    var createFormCancel = document.querySelector('div.modal.main-menu.new .form-buttons .cancel.btn');
-    var createFormSubmit = document.querySelector('div.modal.main-menu.new .form-buttons .submit.btn');
+var mainMenu = new __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__["a" /* default */]();
+var taskList = new __WEBPACK_IMPORTED_MODULE_1__taskList_TaskList__["a" /* default */]();
 
-    var loadButton = document.querySelector('li.action.load');
-    var loadDropdown = document.querySelector('ul.menu-list ul.dropdown');
+mainMenu.activate();
+taskList.activate();
 
-    var logoutButton = document.querySelector('li.action.logout');
-    var logoutForm = document.querySelector('li.action.logout form');
-
-    var outsideLoadButton = [saveButton, newButton, logoutButton, menuToggleIcon];
-
-    menuToggle.addEventListener('click', function () {
-        mainMenu.classList.toggle('up');
-        menuToggle.classList.toggle('down');
-        menuToggle.classList.toggle('up');
-        menuToggleIcon.classList.toggle('fa-caret-down');
-        menuToggleIcon.classList.toggle('fa-caret-up');
-    });
-
-    saveButton.addEventListener('click', function () {
-        saveFormModal.classList.toggle('hidden');
-    });
-
-    saveFormCancel.addEventListener('click', function () {
-        saveFormModal.classList.toggle('hidden');
-    });
-
-    saveFormSubmit.addEventListener('click', function () {
-        saveForm.submit();
-    });
-
-    newButton.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormCancel.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
-
-    createFormSubmit.addEventListener('click', function () {
-        createForm.submit();
-    });
-
-    loadButton.addEventListener('click', function () {
-        loadDropdown.classList.toggle('hidden');
-    });
-
-    logoutButton.addEventListener('click', function () {
-        logoutForm.submit();
-    });
-
-    outsideLoadButton.forEach(function (item) {
-        item.addEventListener('mouseover', function () {
-            loadDropdown.classList.add('hidden');
-        });
-    });
-})();
+window.onresize = taskList.redrawEnhancedTaskBorders.bind(taskList);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/dropdowns.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/mainMenu/LoadButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-(function () {
-    var toggleControls = document.querySelectorAll('span.task-toggle');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    toggleControls.forEach(function (toggler) {
-        toggler.addEventListener('click', function (event) {
-            var icon = toggler.querySelector('i');
-            var task = toggler.parentElement;
-            var taskItems = task.querySelectorAll('div.selectable');
+var LoadButton = function () {
+    function LoadButton(mainMenu) {
+        _classCallCheck(this, LoadButton);
 
-            icon.classList.toggle('fa-caret-down');
-            icon.classList.toggle('fa-caret-up');
+        this.menu = mainMenu;
+        this.domElement = this.menu.domElement.querySelector('li.load');
+        this.dropdown = this.domElement.querySelector('ul.dropdown');
+        this.hideDropdownContext = {
+            mainMenuSaveButton: this.menu.domElement.querySelector('li.save'),
+            mainMenuNewButton: this.menu.domElement.querySelector('li.new'),
+            mainMenuLogoutButton: this.menu.domElement.querySelector('li.logout'),
+            mainMenuToggleButton: document.querySelector('.menu-toggle')
+        };
+    }
 
-            toggler.classList.toggle('down');
-            toggler.classList.toggle('up');
+    _createClass(LoadButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-            taskItems.forEach(function (item) {
-                item.classList.toggle('hidden');
+            this.domElement.addEventListener('click', function () {
+                _this.dropdown.classList.toggle('hidden');
             });
-        });
-    });
-})();
+
+            for (var ctxElt in this.hideDropdownContext) {
+                this.hideDropdownContext[ctxElt].addEventListener('mouseover', function () {
+                    _this.dropdown.classList.add('hidden');
+                });
+            }
+        }
+    }]);
+
+    return LoadButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (LoadButton);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/formModals/formModals.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/mainMenu/LogoutButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-(function (exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    var genericCreateFormModal = document.querySelector('div.modal.create-listElement');
-    var deleteErrorModal = document.querySelector('div.modal.error-deleteError');
-    var editErrorModal = document.querySelector('div.modal.error-editError');
-    var statusErrorModal = document.querySelector('div.modal.error-statusError');
-    var priorityErrorModal = document.querySelector('div.modal.error-priorityError');
-    var list = document.querySelector('div.theList');
+var LogoutButton = function () {
+    function LogoutButton(mainMenu) {
+        _classCallCheck(this, LogoutButton);
 
-    function getActionType(button) {
-        return button.classList[0];
+        this.menu = mainMenu;
+        this.domElement = this.menu.domElement.querySelector('li.logout');
+        this.form = this.domElement.querySelector('form');
     }
 
-    function getModal(button, listElement, listElementType) {
-        var form = null;
-        var actionType = getActionType(button);
+    _createClass(LogoutButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
 
-        if (!listElement) {
+            this.domElement.addEventListener('click', function () {
+                _this.form.submit();
+            });
+        }
+    }]);
 
-            switch (actionType) {
-                case 'create':
-                    form = genericCreateFormModal;
-                    break;
-                case 'delete':
-                    form = deleteErrorModal;
-                    break;
-                case 'edit':
-                    form = editErrorModal;
-                    break;
-                case 'status':
-                    form = statusErrorModal;
-                    break;
-                case 'priority':
-                    form = priorityErrorModal;
-                    break;
+    return LogoutButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (LogoutButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/MainMenu.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SaveButton__ = __webpack_require__("./resources/assets/js/mainMenu/SaveButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NewButton__ = __webpack_require__("./resources/assets/js/mainMenu/NewButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LoadButton__ = __webpack_require__("./resources/assets/js/mainMenu/LoadButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LogoutButton__ = __webpack_require__("./resources/assets/js/mainMenu/LogoutButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ToggleButton__ = __webpack_require__("./resources/assets/js/mainMenu/ToggleButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+
+
+var MainMenu = function () {
+    function MainMenu() {
+        _classCallCheck(this, MainMenu);
+
+        this.domElement = document.querySelector('div.main-menu');
+        this.buttons = {
+            save: new __WEBPACK_IMPORTED_MODULE_0__SaveButton__["a" /* default */](this),
+            new: new __WEBPACK_IMPORTED_MODULE_1__NewButton__["a" /* default */](this),
+            load: new __WEBPACK_IMPORTED_MODULE_2__LoadButton__["a" /* default */](this),
+            logout: new __WEBPACK_IMPORTED_MODULE_3__LogoutButton__["a" /* default */](this),
+            toggle: new __WEBPACK_IMPORTED_MODULE_4__ToggleButton__["a" /* default */](this)
+        };
+    }
+
+    _createClass(MainMenu, [{
+        key: 'activate',
+        value: function activate() {
+            for (var button in this.buttons) {
+                this.buttons[button].activate();
             }
-        } else if (actionType !== 'status' && actionType !== 'priority') {
+        }
+    }]);
 
-            if (actionType == 'create') {
-                switch (listElementType) {
-                    case 'category':
-                        form = listElement.querySelector('div.modal.subcategory.create');
-                        break;
-                    case 'subcategory':
-                        form = listElement.querySelector('div.modal.task.create');
-                        break;
-                    case 'task':
-                        form = listElement.querySelector('div.modal.item.create');
-                        break;
+    return MainMenu;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (MainMenu);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/NewButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var NewButton = function () {
+    function NewButton(mainMenu) {
+        _classCallCheck(this, NewButton);
+
+        this.menu = mainMenu;
+        this.domElement = this.menu.domElement.querySelector('li.new');
+        this.formModal = document.querySelector('div.modal.main-menu.new');
+    }
+
+    _createClass(NewButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](_this.formModal);
+                formModal.show();
+                formModal.activate();
+            });
+        }
+    }]);
+
+    return NewButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (NewButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/SaveButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var saveButton = function () {
+    function saveButton(mainMenu) {
+        _classCallCheck(this, saveButton);
+
+        this.menu = mainMenu;
+        this.domElement = this.menu.domElement.querySelector('li.save');
+        this.formModal = document.querySelector('div.modal.main-menu.save');
+    }
+
+    _createClass(saveButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](_this.formModal);
+                formModal.show();
+                formModal.activate();
+            });
+        }
+    }]);
+
+    return saveButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (saveButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/mainMenu/ToggleButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ToggleButton = function () {
+    function ToggleButton(mainMenu) {
+        _classCallCheck(this, ToggleButton);
+
+        this.menu = mainMenu;
+        this.domElement = document.querySelector('.menu-toggle');
+        this.toggleIcon = this.domElement.querySelector('.fa');
+    }
+
+    _createClass(ToggleButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                _this.menu.domElement.classList.toggle('up');
+                _this.domElement.classList.toggle('down');
+                _this.domElement.classList.toggle('up');
+                _this.toggleIcon.classList.toggle('fa-caret-down');
+                _this.toggleIcon.classList.toggle('fa-caret-up');
+            });
+        }
+    }]);
+
+    return ToggleButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ToggleButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/AddToListButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var AddToListButton = function () {
+    function AddToListButton(taskList) {
+        _classCallCheck(this, AddToListButton);
+
+        this.taskList = taskList;
+        this.domElement = this.taskList.domElement.querySelector('.add-listElement.btn');
+        this.formModal = document.querySelector('.modal.create-listElement');
+    }
+
+    _createClass(AddToListButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](_this.formModal);
+
+                formModal.show();
+                formModal.activate();
+
+                // Prevent bubbling the event up to a parent element
+                event.stopPropagation();
+            });
+        }
+    }]);
+
+    return AddToListButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (AddToListButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/TaskList.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__listElements_category_Category__ = __webpack_require__("./resources/assets/js/taskList/listElements/category/Category.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__listElements_subcategory_Subcategory__ = __webpack_require__("./resources/assets/js/taskList/listElements/subcategory/Subcategory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listElements_task_Task__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/Task.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/ActionMenu.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__AddToListButton__ = __webpack_require__("./resources/assets/js/taskList/AddToListButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+
+
+var TaskList = function () {
+    function TaskList() {
+        _classCallCheck(this, TaskList);
+
+        this.domElement = document.querySelector('.theList');
+        this.categories = this.getCategories();
+        this.subcategories = this.getSubcategories();
+        this.tasks = this.getTasks();
+        this.listElements = this.getListElements();
+        this.selected = null;
+        this.actionMenu = new __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__["a" /* default */](this);
+        this.addToListButton = new __WEBPACK_IMPORTED_MODULE_4__AddToListButton__["a" /* default */](this);
+        this.clearSelectionContext = document.querySelector('body');
+    }
+
+    _createClass(TaskList, [{
+        key: 'getCategories',
+        value: function getCategories() {
+            var _this = this;
+
+            var categories = [];
+
+            this.domElement.querySelectorAll('div.category.selectable').forEach(function (category) {
+                categories.push(new __WEBPACK_IMPORTED_MODULE_0__listElements_category_Category__["a" /* default */](_this, category));
+            });
+
+            return categories;
+        }
+    }, {
+        key: 'getSubcategories',
+        value: function getSubcategories() {
+            var _this2 = this;
+
+            var subcategories = [];
+
+            this.domElement.querySelectorAll('div.subcategory.selectable').forEach(function (subcategory) {
+                subcategories.push(new __WEBPACK_IMPORTED_MODULE_1__listElements_subcategory_Subcategory__["a" /* default */](_this2, subcategory));
+            });
+
+            return subcategories;
+        }
+    }, {
+        key: 'getTasks',
+        value: function getTasks() {
+            var _this3 = this;
+
+            var tasks = [];
+
+            this.domElement.querySelectorAll('div.task.selectable').forEach(function (task) {
+                tasks.push(new __WEBPACK_IMPORTED_MODULE_2__listElements_task_Task__["a" /* default */](_this3, task));
+            });
+
+            return tasks;
+        }
+    }, {
+        key: 'getListElements',
+        value: function getListElements() {
+            return this.categories.concat(this.subcategories, this.tasks);
+        }
+    }, {
+        key: 'activate',
+        value: function activate() {
+            this.listElements.forEach(function (listElement) {
+                listElement.activate();
+            });
+
+            this.activateClearSelectionContext();
+            this.addToListButton.activate();
+            this.actionMenu.activateDefaultBehavior();
+        }
+
+        // Clear the List's current 'selected' element if user clicks off the List
+
+    }, {
+        key: 'activateClearSelectionContext',
+        value: function activateClearSelectionContext() {
+            var _this4 = this;
+
+            this.clearSelectionContext.addEventListener('click', function () {
+                _this4.clearSelected();
+            });
+        }
+
+        // Clear the List's current 'selected' element
+
+    }, {
+        key: 'clearSelected',
+        value: function clearSelected() {
+            this.selected = null;
+
+            this.listElements.forEach(function (listElement) {
+                if (listElement.domElement.classList.contains('selected')) {
+                    listElement.domElement.classList.remove('selected');
                 }
-            } else {
-                form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
+            });
+
+            if (this.tasks) {
+                this.tasks.forEach(function (task) {
+                    task.clearSelected();
+                });
             }
-        } else {
-            form = listElement.querySelector('div.modal.' + actionType + '.' + listElementType);
         }
 
-        return form;
-    };
+        // Set the List's current 'selected' element
 
-    exports.getModal = function (button, listElement, listElementType) {
-        return getModal(button, listElement, listElementType);
-    };
+    }, {
+        key: 'setSelected',
+        value: function setSelected(element) {
+            this.selected = element;
+        }
 
-    exports.getActionType = function (button) {
-        return getActionType(button);
-    };
-})(window.formModals = {});
+        // (This is called whenever the window is resized.)
+
+    }, {
+        key: 'redrawEnhancedTaskBorders',
+        value: function redrawEnhancedTaskBorders() {
+            this.tasks.forEach(function (task) {
+                task.drawEnhancedBorders();
+            });
+        }
+    }]);
+
+    return TaskList;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (TaskList);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/formModals/listeners/addElement.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/taskList/actionMenu/ActionMenu.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__buttons_CreateButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/CreateButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__buttons_DeleteButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/DeleteButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__buttons_EditButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/EditButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__buttons_StatusButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/StatusButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__buttons_PriorityButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/PriorityButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
-(function () {
 
-    var addButton = document.querySelector('.add-listElement.btn');
-    var createFormModal = document.querySelector('div.modal.create-listElement');
-    var createForm = document.querySelector('div.modal.create-listElement form');
-    var createFormCancel = document.querySelector('div.modal.create-listElement .form-buttons .cancel.btn');
-    var createFormSubmit = document.querySelector('div.modal.create-listElement .form-buttons .submit.btn');
-    var typeSelector = document.querySelector('div.modal.create-listElement select.modal-selectBox');
-    var deadlineInput = document.querySelector('div.modal.create-listElement div.second.input');
 
-    addButton.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
 
-    createFormCancel.addEventListener('click', function () {
-        createFormModal.classList.toggle('hidden');
-    });
 
-    createFormSubmit.addEventListener('click', function () {
-        createForm.submit();
-    });
 
-    typeSelector.addEventListener('change', function (event) {
-        if (typeSelector.value == "task") {
-            deadlineInput.classList.remove('hidden');
-        } else {
-            deadlineInput.classList.add('hidden');
+var ActionMenu = function () {
+    function ActionMenu(taskList) {
+        _classCallCheck(this, ActionMenu);
+
+        this.taskList = taskList;
+        this.domElement = document.querySelector('div.action-menu:not(.fake)');
+        this.createButton = new __WEBPACK_IMPORTED_MODULE_0__buttons_CreateButton__["a" /* default */](this, this.domElement.querySelector('li.create'));
+        this.deleteButton = new __WEBPACK_IMPORTED_MODULE_1__buttons_DeleteButton__["a" /* default */](this, this.domElement.querySelector('li.delete'));
+        this.editButton = new __WEBPACK_IMPORTED_MODULE_2__buttons_EditButton__["a" /* default */](this, this.domElement.querySelector('li.edit'));
+        this.statusButton = new __WEBPACK_IMPORTED_MODULE_3__buttons_StatusButton__["a" /* default */](this, this.domElement.querySelector('li.status'));
+        this.priorityButton = new __WEBPACK_IMPORTED_MODULE_4__buttons_PriorityButton__["a" /* default */](this, this.domElement.querySelector('li.priority'));
+        this.buttons = [this.createButton, this.deleteButton, this.editButton, this.statusButton, this.priorityButton];
+    }
+
+    _createClass(ActionMenu, [{
+        key: 'refresh',
+        value: function refresh(actions) {
+            this.buttons.forEach(function (button) {
+                if (actions.includes(button.action)) {
+                    button.activate();
+                } else {
+                    button.deactivate();
+                }
+            });
         }
-    });
-})();
+    }, {
+        key: 'activateDefaultBehavior',
+        value: function activateDefaultBehavior() {
+            this.createButton.activateDefaultBehavior();
+        }
+    }]);
+
+    return ActionMenu;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ActionMenu);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/listener.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/taskList/actionMenu/buttons/ActionMenuButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ActionMenuButton = function () {
+    function ActionMenuButton(actionMenu, domElement) {
+        _classCallCheck(this, ActionMenuButton);
+
+        this.actionMenu = actionMenu;
+        this.domElement = domElement;
+        this.action = null;
+    }
+
+    _createClass(ActionMenuButton, [{
+        key: 'activate',
+        value: function activate() {
+            if (this.domElement.classList.contains('hidden')) {
+                this.domElement.classList.remove('hidden');
+            }
+            this.domElement.parentClass = this;
+        }
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            if (!this.domElement.classList.contains('hidden')) {
+                this.domElement.classList.add('hidden');
+            }
+            this.domElement.parentClass = undefined;
+        }
+    }]);
+
+    return ActionMenuButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ActionMenuButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/actionMenu/buttons/CreateButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/ActionMenuButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
-(function () {
 
-    var listElements = document.querySelectorAll('div.selectable');
-    var body = document.querySelector('body');
 
-    // Capture a click event on a selectable task-list element
-    listElements.forEach(function (listElement) {
-        var elementType = listElement.classList[0];
-        var uniqueID = listElement.id;
+var CreateButton = function (_ActionMenuButton) {
+    _inherits(CreateButton, _ActionMenuButton);
 
-        listElement.addEventListener('click', function (event) {
-            // Prevent the click event bubbling up to any parent 'selectable' elements
+    function CreateButton(actionMenu, domElement) {
+        _classCallCheck(this, CreateButton);
+
+        var _this = _possibleConstructorReturn(this, (CreateButton.__proto__ || Object.getPrototypeOf(CreateButton)).call(this, actionMenu, domElement));
+
+        _this.action = 'createChild';
+        _this.defaultFormModal = document.querySelector('.modal.create-listElement');
+        return _this;
+    }
+
+    // Activated state when no List Element is selected
+
+
+    _createClass(CreateButton, [{
+        key: 'activateDefaultBehavior',
+        value: function activateDefaultBehavior() {
+            this.domElement.parentClass = this;
+            this.domElement.addEventListener('click', this.showDefaultModal);
+        }
+
+        // Activated state when a List Element has been selected
+
+    }, {
+        key: 'activate',
+        value: function activate() {
+            _get(CreateButton.prototype.__proto__ || Object.getPrototypeOf(CreateButton.prototype), 'activate', this).call(this);
+            this.domElement.removeEventListener('click', this.showDefaultModal);
+            this.domElement.addEventListener('click', this.showModal);
+        }
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            _get(CreateButton.prototype.__proto__ || Object.getPrototypeOf(CreateButton.prototype), 'deactivate', this).call(this);
+            this.domElement.removeEventListener('click', this.showModal);
+        }
+    }, {
+        key: 'showDefaultModal',
+        value: function showDefaultModal() {
+            // Note: 'this' == CreateButton.domElement and 'this.parentClass' == CreateButton.
+            var formModal = new __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__["a" /* default */](this.parentClass.defaultFormModal);
+
+            formModal.show();
+            formModal.activate();
+
+            // Prevent bubbling the event up to a parent element
             event.stopPropagation();
-
-            taskList.selectElement(elementType, uniqueID);
-        });
-    });
-
-    // Cancel any current selection if a click happens outside the selectable
-    // area (the task list) or Action Menu (the 2ndary menu)
-    body.addEventListener('click', function (event) {
-        clickedClassList = Array.from(event.target.classList);
-
-        var exemptClasses = ['selectable', 'action-button', 'action-icon'];
-
-        if (arrayHelpers.noneInArray(clickedClassList, exemptClasses)) {
-            taskList.clearLastSelection();
         }
-    });
-})();
+    }, {
+        key: 'showModal',
+        value: function showModal() {
+            // Note: 'this' == CreateButton.domElement and 'this.parentClass' == CreateButton.
+            var taskList = this.parentClass.actionMenu.taskList;
+            var selectedListElement = taskList.selected;
+
+            var formModal = new __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__["a" /* default */](selectedListElement.formModals.createChild);
+
+            formModal.show();
+            formModal.activate();
+
+            // Prevent bubbling the event up to a parent element
+            event.stopPropagation();
+        }
+    }]);
+
+    return CreateButton;
+}(__WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (CreateButton);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/taskBorders.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/taskList/actionMenu/buttons/DeleteButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/ActionMenuButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
-(function () {
-    var canvasElements = document.querySelectorAll('canvas.task-border');
 
-    function drawTaskBorders() {
-        canvasElements.forEach(function (canvas) {
-            if (canvas.getContext) {
-                var ctx = canvas.getContext('2d');
-                var taskDiv = canvas.parentElement;
-                var width = taskDiv.clientWidth;
-                var height = 5;
-                ctx.canvas.width = width;
-                ctx.canvas.height = height;
-                ctx.fillStyle = '#697cae';
 
-                ctx.beginPath();
-                ctx.moveTo(0, height / 2);
-                ctx.quadraticCurveTo(width / 2, 0, width, height / 2);
-                ctx.quadraticCurveTo(width / 2, height, 0, height / 2);
-                ctx.fill();
-            }
-        });
+var DeleteButton = function (_ActionMenuButton) {
+    _inherits(DeleteButton, _ActionMenuButton);
+
+    function DeleteButton(actionMenu, domElement) {
+        _classCallCheck(this, DeleteButton);
+
+        var _this = _possibleConstructorReturn(this, (DeleteButton.__proto__ || Object.getPrototypeOf(DeleteButton)).call(this, actionMenu, domElement));
+
+        _this.action = 'deleteSelf';
+        return _this;
     }
 
-    window.onload = drawTaskBorders;
-    window.onresize = drawTaskBorders;
-})();
+    _createClass(DeleteButton, [{
+        key: 'activate',
+        value: function activate() {
+            _get(DeleteButton.prototype.__proto__ || Object.getPrototypeOf(DeleteButton.prototype), 'activate', this).call(this);
+            this.domElement.addEventListener('click', this.showModal);
+        }
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            _get(DeleteButton.prototype.__proto__ || Object.getPrototypeOf(DeleteButton.prototype), 'deactivate', this).call(this);
+            this.domElement.removeEventListener('click', this.showModal);
+        }
+    }, {
+        key: 'showModal',
+        value: function showModal() {
+            // Note: 'this' == CreateButton.domElement and 'this.parentClass' == CreateButton.
+            var taskList = this.parentClass.actionMenu.taskList;
+            var selectedListElement = taskList.selected;
+
+            var formModal = new __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__["a" /* default */](selectedListElement.formModals.deleteSelf);
+
+            formModal.show();
+            formModal.activate();
+
+            // Prevent bubbling the event up to a parent element
+            event.stopPropagation();
+        }
+    }]);
+
+    return DeleteButton;
+}(__WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (DeleteButton);
 
 /***/ }),
 
-/***/ "./resources/assets/js/taskList/taskList.js":
-/***/ (function(module, exports) {
+/***/ "./resources/assets/js/taskList/actionMenu/buttons/EditButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/ActionMenuButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
-(function (exports) {
-    var actionMenuButtons = document.querySelectorAll('div.action-menu:not(.fake) li.action-button');
-    var listElements = document.querySelectorAll('div.selectable');
 
-    function selectTheGivenElement(elementType, uniqueID) {
-        var selected = document.getElementById(uniqueID);
-        markNewSelection(selected);
-        var availableActions = getActionsByElementType(elementType);
-        refreshTheActionMenu(availableActions);
-        exports.selectedElement = selected;
-        exports.selectedElementType = elementType;
-    };
 
-    function markNewSelection(selected) {
-        clearLastSelection(listElements);
-        selected.classList.add('selected');
+var EditButton = function (_ActionMenuButton) {
+    _inherits(EditButton, _ActionMenuButton);
+
+    function EditButton(actionMenu, domElement) {
+        _classCallCheck(this, EditButton);
+
+        var _this = _possibleConstructorReturn(this, (EditButton.__proto__ || Object.getPrototypeOf(EditButton)).call(this, actionMenu, domElement));
+
+        _this.action = 'editSelf';
+        return _this;
     }
 
-    function clearLastSelection() {
-        listElements.forEach(function (listElement) {
-            if (listElement.classList.contains('selected')) {
-                listElement.classList.remove('selected');
-            }
-        });
-
-        actionMenuButtons.forEach(function (button) {
-            if (button.classList.contains('hidden')) {
-                button.classList.remove('hidden');
-            }
-        });
-
-        exports.selectedElement = null;
-        exports.selectedElementType = null;
-    }
-
-    function getActionsByElementType(elementType) {
-        var actions = [];
-
-        // Get an array of (2ndary-menu) actions available to the element
-        switch (elementType) {
-            case 'category':
-                actions = ['create', 'delete', 'edit'];
-                break;
-            case 'subcategory':
-                actions = ['create', 'delete', 'edit'];
-                break;
-            case 'task':
-                actions = ['create', 'delete', 'edit', 'status', 'priority'];
-                break;
-            case 'deadline':
-                actions = ['delete'];
-                break;
-            case 'link':
-                actions = ['delete', 'edit'];
-                break;
-            case 'detail':
-                actions = ['delete', 'edit'];
-                break;
+    _createClass(EditButton, [{
+        key: 'activate',
+        value: function activate() {
+            _get(EditButton.prototype.__proto__ || Object.getPrototypeOf(EditButton.prototype), 'activate', this).call(this);
+            this.domElement.addEventListener('click', this.showModal);
         }
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            _get(EditButton.prototype.__proto__ || Object.getPrototypeOf(EditButton.prototype), 'deactivate', this).call(this);
+            this.domElement.removeEventListener('click', this.showModal);
+        }
+    }, {
+        key: 'showModal',
+        value: function showModal() {
+            // Note: 'this' == CreateButton.domElement and 'this.parentClass' == CreateButton.
+            var taskList = this.parentClass.actionMenu.taskList;
+            var selectedListElement = taskList.selected;
 
-        return actions;
+            var formModal = new __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__["a" /* default */](selectedListElement.formModals.editSelf);
+
+            formModal.show();
+            formModal.activate();
+
+            // Prevent bubbling the event up to a parent element
+            event.stopPropagation();
+        }
+    }]);
+
+    return EditButton;
+}(__WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (EditButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/actionMenu/buttons/PriorityButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/ActionMenuButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var PriorityButton = function (_ActionMenuButton) {
+    _inherits(PriorityButton, _ActionMenuButton);
+
+    function PriorityButton(actionMenu, domElement) {
+        _classCallCheck(this, PriorityButton);
+
+        var _this = _possibleConstructorReturn(this, (PriorityButton.__proto__ || Object.getPrototypeOf(PriorityButton)).call(this, actionMenu, domElement));
+
+        _this.action = 'togglePriorityStatus';
+        return _this;
     }
 
-    function refreshTheActionMenu(availableActions) {
-        actionMenuButtons.forEach(function (button) {
-            if (!availableActions.includes(button.classList[0])) {
-                if (!button.classList.contains('hidden')) {
-                    button.classList.add('hidden');
+    _createClass(PriorityButton, [{
+        key: 'activate',
+        value: function activate() {
+            _get(PriorityButton.prototype.__proto__ || Object.getPrototypeOf(PriorityButton.prototype), 'activate', this).call(this);
+            this.domElement.addEventListener('click', this.submitForm);
+        }
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            _get(PriorityButton.prototype.__proto__ || Object.getPrototypeOf(PriorityButton.prototype), 'deactivate', this).call(this);
+            this.domElement.removeEventListener('click', this.submitForm);
+        }
+    }, {
+        key: 'submitForm',
+        value: function submitForm() {
+            // Note: 'this' == CreateButton.domElement and 'this.parentClass' == CreateButton.
+            var taskList = this.parentClass.actionMenu.taskList;
+            var selectedListElement = taskList.selected;
+            var formModal = selectedListElement.formModals.togglePriorityStatus;
+
+            var form = formModal.querySelector('form');
+
+            form.submit();
+
+            // Prevent bubbling the event up to a parent element
+            event.stopPropagation();
+        }
+    }]);
+
+    return PriorityButton;
+}(__WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (PriorityButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/actionMenu/buttons/StatusButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/buttons/ActionMenuButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var StatusButton = function (_ActionMenuButton) {
+    _inherits(StatusButton, _ActionMenuButton);
+
+    function StatusButton(actionMenu, domElement) {
+        _classCallCheck(this, StatusButton);
+
+        var _this = _possibleConstructorReturn(this, (StatusButton.__proto__ || Object.getPrototypeOf(StatusButton)).call(this, actionMenu, domElement));
+
+        _this.action = 'toggleCompletionStatus';
+        return _this;
+    }
+
+    _createClass(StatusButton, [{
+        key: 'activate',
+        value: function activate() {
+            _get(StatusButton.prototype.__proto__ || Object.getPrototypeOf(StatusButton.prototype), 'activate', this).call(this);
+            this.domElement.addEventListener('click', this.submitForm);
+        }
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            _get(StatusButton.prototype.__proto__ || Object.getPrototypeOf(StatusButton.prototype), 'deactivate', this).call(this);
+            this.domElement.removeEventListener('click', this.submitForm);
+        }
+    }, {
+        key: 'submitForm',
+        value: function submitForm() {
+            // Note: 'this' == CreateButton.domElement and 'this.parentClass' == CreateButton.
+            var taskList = this.parentClass.actionMenu.taskList;
+            var selectedListElement = taskList.selected;
+            var formModal = selectedListElement.formModals.toggleCompletionStatus;
+
+            var form = formModal.querySelector('form');
+
+            form.submit();
+
+            // Prevent bubbling the event up to a parent element
+            event.stopPropagation();
+        }
+    }]);
+
+    return StatusButton;
+}(__WEBPACK_IMPORTED_MODULE_0__ActionMenuButton__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (StatusButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/ListElement.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TaskList__ = __webpack_require__("./resources/assets/js/taskList/TaskList.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var ListElement = function () {
+    function ListElement(taskList, domElement) {
+        _classCallCheck(this, ListElement);
+
+        this.taskList = taskList;
+        this.domElement = domElement;
+        this.actions = [];
+        this.formModals = {};
+    }
+
+    _createClass(ListElement, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                _this.markNewSelection();
+                _this.taskList.actionMenu.refresh(_this.actions);
+
+                // Prevent bubbling the event up to a parent selectable element
+                event.stopPropagation();
+            });
+        }
+    }, {
+        key: 'markNewSelection',
+        value: function markNewSelection() {
+            this.taskList.clearSelected();
+            this.taskList.setSelected(this);
+            this.domElement.classList.add('selected');
+        }
+    }]);
+
+    return ListElement;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ListElement);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/category/Category.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ListElement__ = __webpack_require__("./resources/assets/js/taskList/listElements/ListElement.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Category = function (_ListElement) {
+    _inherits(Category, _ListElement);
+
+    function Category(taskList, category) {
+        _classCallCheck(this, Category);
+
+        var _this = _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).call(this, taskList, category));
+
+        _this.actions = ['createChild', 'deleteSelf', 'editSelf'];
+        _this.formModals = {
+            createChild: _this.domElement.querySelector('.modal.subcategory.create'),
+            deleteSelf: _this.domElement.querySelector('.modal.category.delete'),
+            editSelf: _this.domElement.querySelector('.modal.category.edit')
+        };
+        return _this;
+    }
+
+    return Category;
+}(__WEBPACK_IMPORTED_MODULE_0__ListElement__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Category);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/subcategory/Subcategory.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ListElement__ = __webpack_require__("./resources/assets/js/taskList/listElements/ListElement.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Subcategory = function (_ListElement) {
+    _inherits(Subcategory, _ListElement);
+
+    function Subcategory(taskList, subcategory) {
+        _classCallCheck(this, Subcategory);
+
+        var _this = _possibleConstructorReturn(this, (Subcategory.__proto__ || Object.getPrototypeOf(Subcategory)).call(this, taskList, subcategory));
+
+        _this.actions = ['createChild', 'deleteSelf', 'editSelf'];
+        _this.formModals = {
+            createChild: _this.domElement.querySelector('.modal.task.create'),
+            deleteSelf: _this.domElement.querySelector('.modal.subcategory.delete'),
+            editSelf: _this.domElement.querySelector('.modal.subcategory.edit')
+        };
+        return _this;
+    }
+
+    return Subcategory;
+}(__WEBPACK_IMPORTED_MODULE_0__ListElement__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Subcategory);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/task/DropdownToggle.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DropdownToggle = function () {
+    function DropdownToggle(task) {
+        _classCallCheck(this, DropdownToggle);
+
+        this.task = task;
+        this.domElement = this.task.domElement.querySelector('.task-toggle');
+        this.icon = this.domElement.querySelector('i');
+    }
+
+    _createClass(DropdownToggle, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                _this.icon.classList.toggle('fa-caret-down');
+                _this.icon.classList.toggle('fa-caret-up');
+
+                _this.domElement.classList.toggle('down');
+                _this.domElement.classList.toggle('up');
+
+                if (_this.task.getTaskItems()) {
+                    _this.task.getTaskItems().forEach(function (item) {
+                        item.domElement.classList.toggle('hidden');
+                    });
                 }
-            } else {
-                if (button.classList.contains('hidden')) {
-                    button.classList.remove('hidden');
+            });
+        }
+    }]);
+
+    return DropdownToggle;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (DropdownToggle);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/task/Task.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ListElement__ = __webpack_require__("./resources/assets/js/taskList/listElements/ListElement.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__taskItems_Deadline__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/taskItems/Deadline.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__taskItems_Link__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/taskItems/Link.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__taskItems_Detail__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/taskItems/Detail.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__DropdownToggle__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/DropdownToggle.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+var Task = function (_ListElement) {
+    _inherits(Task, _ListElement);
+
+    function Task(taskList, task) {
+        _classCallCheck(this, Task);
+
+        var _this = _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).call(this, taskList, task));
+
+        _this.taskDeadlines = _this.getTaskDeadlines();
+        _this.taskLinks = _this.getTaskLinks();
+        _this.taskDetails = _this.getTaskDetails();
+        _this.taskItems = _this.getTaskItems();
+        _this.dropdownToggle = new __WEBPACK_IMPORTED_MODULE_4__DropdownToggle__["a" /* default */](_this);
+        _this.selected = null;
+        _this.enhancedBorders = _this.domElement.querySelectorAll('canvas');
+        _this.actions = ['createChild', 'deleteSelf', 'editSelf', 'toggleCompletionStatus', 'togglePriorityStatus'];
+        _this.formModals = {
+            createChild: _this.domElement.querySelector('.modal.item.create'),
+            deleteSelf: _this.domElement.querySelector('.modal.task.delete'),
+            editSelf: _this.domElement.querySelector('.modal.task.edit'),
+            toggleCompletionStatus: _this.domElement.querySelector('.modal.task.status'),
+            togglePriorityStatus: _this.domElement.querySelector('.modal.task.priority')
+        };
+        return _this;
+    }
+
+    _createClass(Task, [{
+        key: 'getTaskDeadlines',
+        value: function getTaskDeadlines() {
+            var _this2 = this;
+
+            var taskDeadlines = [];
+
+            this.domElement.querySelectorAll('div.deadline.selectable').forEach(function (taskDeadline) {
+                taskDeadlines.push(new __WEBPACK_IMPORTED_MODULE_1__taskItems_Deadline__["a" /* default */](_this2, taskDeadline));
+            });
+
+            return taskDeadlines;
+        }
+    }, {
+        key: 'getTaskLinks',
+        value: function getTaskLinks() {
+            var _this3 = this;
+
+            var taskLinks = [];
+
+            this.domElement.querySelectorAll('div.link.selectable').forEach(function (taskLink) {
+                taskLinks.push(new __WEBPACK_IMPORTED_MODULE_2__taskItems_Link__["a" /* default */](_this3, taskLink));
+            });
+
+            return taskLinks;
+        }
+    }, {
+        key: 'getTaskDetails',
+        value: function getTaskDetails() {
+            var _this4 = this;
+
+            var taskDetails = [];
+
+            this.domElement.querySelectorAll('div.detail.selectable').forEach(function (taskDetail) {
+                taskDetails.push(new __WEBPACK_IMPORTED_MODULE_3__taskItems_Detail__["a" /* default */](_this4, taskDetail));
+            });
+
+            return taskDetails;
+        }
+    }, {
+        key: 'getTaskItems',
+        value: function getTaskItems() {
+            var taskItems = [].concat(this.taskDeadlines, this.taskLinks, this.taskDetails);
+
+            return taskItems;
+        }
+    }, {
+        key: 'activate',
+        value: function activate() {
+            _get(Task.prototype.__proto__ || Object.getPrototypeOf(Task.prototype), 'activate', this).call(this);
+            this.drawEnhancedBorders();
+            this.dropdownToggle.activate();
+            this.activateTaskItems();
+        }
+    }, {
+        key: 'drawEnhancedBorders',
+        value: function drawEnhancedBorders() {
+            this.enhancedBorders.forEach(function (canvas) {
+                if (canvas.getContext) {
+                    var ctx = canvas.getContext('2d');
+                    var taskDiv = canvas.parentElement;
+                    var width = taskDiv.clientWidth;
+                    var height = 5;
+                    ctx.canvas.width = width;
+                    ctx.canvas.height = height;
+                    ctx.fillStyle = '#697cae';
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, height / 2);
+                    ctx.quadraticCurveTo(width / 2, 0, width, height / 2);
+                    ctx.quadraticCurveTo(width / 2, height, 0, height / 2);
+                    ctx.fill();
                 }
+            });
+        }
+    }, {
+        key: 'activateTaskItems',
+        value: function activateTaskItems() {
+            if (this.taskItems) {
+                this.taskItems.forEach(function (item) {
+                    item.activate();
+                });
             }
-        });
+        }
+    }, {
+        key: 'clearSelected',
+        value: function clearSelected() {
+            this.selected = null;
+            if (this.taskItems) {
+                this.taskItems.forEach(function (item) {
+                    if (item.domElement.classList.contains('selected')) {
+                        item.domElement.classList.remove('selected');
+                    }
+                });
+            }
+        }
+    }, {
+        key: 'setSelected',
+        value: function setSelected(element) {
+            this.selected = element;
+        }
+    }]);
+
+    return Task;
+}(__WEBPACK_IMPORTED_MODULE_0__ListElement__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Task);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/task/taskItems/Deadline.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TaskItem__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/taskItems/TaskItem.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Deadline = function (_TaskItem) {
+    _inherits(Deadline, _TaskItem);
+
+    function Deadline(task, deadline) {
+        _classCallCheck(this, Deadline);
+
+        var _this = _possibleConstructorReturn(this, (Deadline.__proto__ || Object.getPrototypeOf(Deadline)).call(this, task, deadline));
+
+        _this.actions = ['deleteSelf'];
+        _this.formModals = {
+            deleteSelf: _this.domElement.querySelector('.modal.deadline.delete')
+        };
+        return _this;
     }
 
-    exports.selectElement = function (elementType, uniqueID) {
-        return selectTheGivenElement(elementType, uniqueID);
-    };
+    return Deadline;
+}(__WEBPACK_IMPORTED_MODULE_0__TaskItem__["a" /* default */]);
 
-    exports.selectedElement = null;
+/* harmony default export */ __webpack_exports__["a"] = (Deadline);
 
-    exports.selectedElementType = null;
+/***/ }),
 
-    exports.clearLastSelection = function () {
-        return clearLastSelection();
-    };
-})(window.taskList = {});
+/***/ "./resources/assets/js/taskList/listElements/task/taskItems/Detail.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TaskItem__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/taskItems/TaskItem.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Detail = function (_TaskItem) {
+    _inherits(Detail, _TaskItem);
+
+    function Detail(task, detail) {
+        _classCallCheck(this, Detail);
+
+        var _this = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this, task, detail));
+
+        _this.actions = ['deleteSelf', 'editSelf'];
+        _this.formModals = {
+            deleteSelf: _this.domElement.querySelector('.modal.detail.delete'),
+            editSelf: _this.domElement.querySelector('.modal.detail.edit')
+        };
+        return _this;
+    }
+
+    return Detail;
+}(__WEBPACK_IMPORTED_MODULE_0__TaskItem__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Detail);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/task/taskItems/Link.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TaskItem__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/taskItems/TaskItem.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var Link = function (_TaskItem) {
+    _inherits(Link, _TaskItem);
+
+    function Link(task, link) {
+        _classCallCheck(this, Link);
+
+        var _this = _possibleConstructorReturn(this, (Link.__proto__ || Object.getPrototypeOf(Link)).call(this, task, link));
+
+        _this.actions = ['deleteSelf', 'editSelf'];
+        _this.formModals = {
+            deleteSelf: _this.domElement.querySelector('.modal.link.delete'),
+            editSelf: _this.domElement.querySelector('.modal.link.edit'),
+            URLvisitQuery: _this.domElement.querySelector('.modal.visitQuery')
+        };
+        return _this;
+    }
+
+    _createClass(Link, [{
+        key: 'activate',
+        value: function activate() {
+            var _this2 = this;
+
+            _get(Link.prototype.__proto__ || Object.getPrototypeOf(Link.prototype), 'activate', this).call(this);
+            this.domElement.addEventListener('click', function () {
+                console.log('clicking on ', _this2.domElement);
+                // Ask if user wants to visit the link URL
+                var formModal = new __WEBPACK_IMPORTED_MODULE_1__formModal_FormModal__["a" /* default */](_this2.formModals.URLvisitQuery);
+                formModal.show();
+                formModal.activate();
+
+                // Prevent bubbling the event up to a parent selectable element
+                event.stopPropagation();
+            });
+        }
+    }]);
+
+    return Link;
+}(__WEBPACK_IMPORTED_MODULE_0__TaskItem__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Link);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/listElements/task/taskItems/TaskItem.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TaskItem = function () {
+    function TaskItem(task, domElement) {
+        _classCallCheck(this, TaskItem);
+
+        this.task = task;
+        this.domElement = domElement;
+        this.actions = null;
+    }
+
+    _createClass(TaskItem, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                _this.markNewSelection();
+                _this.task.taskList.actionMenu.refresh(_this.actions);
+
+                // Prevent bubbling the event up to a parent selectable element
+                event.stopPropagation();
+            });
+        }
+    }, {
+        key: 'markNewSelection',
+        value: function markNewSelection() {
+            this.task.taskList.clearSelected();
+            this.task.taskList.setSelected(this);
+            this.task.clearSelected();
+            this.task.setSelected(this);
+            this.task.domElement.classList.add('selected');
+            this.domElement.classList.add('selected');
+        }
+    }]);
+
+    return TaskItem;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (TaskItem);
 
 /***/ }),
 
