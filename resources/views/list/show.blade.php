@@ -210,15 +210,9 @@
             @endforeach
             @endif
 
-            <!-- Unused form: @include('list.partials.category.create') -->
-
             <!-- Add-A-Task Button -->
             <span class="add-listElement btn pink">Add to list</span>
             @include('list.partials.listElement.create')
-            @include('list.partials.errors.deleteError')
-            @include('list.partials.errors.editError')
-            @include('list.partials.errors.statusError')
-            @include('list.partials.errors.priorityError')
 
         </div> <!-- end theList div -->
     </main>
