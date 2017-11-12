@@ -3835,6 +3835,10 @@ body.list-view div.action-menu.fake ul li i:not(.highlighted) {
   color: #cccccc;
 }
 
+body.list-view div.action-menu.fake ul li.edit i {
+  color: #4a5376;
+}
+
 body.list-view div.action-menu.fake ul li:hover {
   cursor: default;
 }
@@ -3844,11 +3848,11 @@ body.list-view div.action-menu.fake ul li:hover.create i.highlighted {
 }
 
 body.list-view div.action-menu.fake ul li:hover.delete i.highlighted {
-  color: #b15e6d;
+  color: #d57282;
 }
 
 body.list-view div.action-menu.fake ul li:hover.edit i.highlighted {
-  color: #ffffff;
+  color: #4a5376;
 }
 
 body.list-view div.action-menu.fake ul li:hover.status i.highlighted {

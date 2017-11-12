@@ -46,14 +46,16 @@ body.list-view {
             left: 4em;
 
             ul li {
-                i:not(.highlighted) { color: $lightGrey }
+                i:not(.highlighted) { color: $lightGrey; }
+
+                &.edit i { color: $darkBlue; }
 
                 &:hover {
                     cursor: default;
 
                     &.create i.highlighted { color: $lightBlue; }
-                    &.delete i.highlighted { color: $darkPink; }
-                    &.edit i.highlighted { color: $white; }
+                    &.delete i.highlighted { color: $mediumPink; }
+                    &.edit i.highlighted { color: $darkBlue; }
                     &.status i.highlighted { color: $green; }
                     &.priority i.highlighted { color: $orange; }
 
