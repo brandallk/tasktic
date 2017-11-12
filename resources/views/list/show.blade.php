@@ -159,6 +159,7 @@
                                         <div id="{{ $link->list_element_id }}" class="link selectable hidden">
                                             <span class="link-content">{{ $link->link }}</span>
 
+                                            @include('list.partials.item.link.visitQuery')
                                             @include('list.partials.item.link.edit')
                                             @include('list.partials.item.link.delete')
                                         </div>

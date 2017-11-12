@@ -1,27 +1,27 @@
 export default class LoadButton {
     
     constructor(mainMenu) {
-        this.menu = mainMenu;
-        this.loadButton = this.menu.querySelector('li.load');
-        this.dropdown = this.loadButton.querySelector('ul.dropdown');
-        this.hideDropdownContext = [
-            this.menu.querySelector('li.save'),
-            this.menu.querySelector('li.new'),
-            this.menu.querySelector('li.logout'),
-            document.querySelector('.menu-toggle')
-        ];
+        this.menu       = mainMenu;
+        this.domElement = this.menu.domElement.querySelector('li.load');
+        this.dropdown   = this.domElement.querySelector('ul.dropdown');
+        this.hideDropdownContext = {
+            mainMenuSaveButton:    this.menu.domElement.querySelector('li.save'),
+            mainMenuNewButton:     this.menu.domElement.querySelector('li.new'),
+            mainMenuLogoutButton:  this.menu.domElement.querySelector('li.logout'),
+            mainMenuToggleButton:  document.querySelector('.menu-toggle')
+        };
     }
 
     activate() {
-        this.loadButton.addEventListener('click', () => {
+        this.domElement.addEventListener('click', () => {
             this.dropdown.classList.toggle('hidden');
         });
 
-        this.hideDropdownContext.forEach( (contextItem) => {
-            contextItem.addEventListener('mouseover', () => {
+        for (const ctxElt in this.hideDropdownContext) {
+            this.hideDropdownContext[ctxElt].addEventListener('mouseover', () => {
                 this.dropdown.classList.add('hidden');
             });
-        });
+        }
     }
 
 }

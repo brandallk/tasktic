@@ -1,15 +1,19 @@
 export default class FormModal {
     
     constructor(formModal) {
-        this.formModal = formModal;
-        this.form = formModal.querySelector('form');
-        this.cancelButton = formModal.querySelector('.cancel.btn');
-        this.submitButton = formModal.querySelector('.submit.btn');
+        this.domElement    = formModal;
+        this.form          = this.domElement.querySelector('form');
+        this.submitButton  = this.domElement.querySelector('.submit.btn');
+
+        // (A form can have multiple cancel buttons with differing behavior.)
+        this.cancelButtons = this.domElement.querySelectorAll('.cancel.btn');
     }
 
     activate() {
-        if (this.cancelButton) {
-            this.cancelButton.addEventListener('click', this.hideModal.bind(this));
+        if (this.cancelButtons) {
+            this.cancelButtons.forEach( (button) => {
+                button.addEventListener('click', this.hide.bind(this));
+            });
         }
 
         if (this.submitButton) {
@@ -17,9 +21,18 @@ export default class FormModal {
         }
     }
 
-    hideModal() {
-        if (!this.formModal.classList.contains('hidden')) {
-            this.formModal.classList.add('hidden');
+    show() {
+        if (this.domElement.classList.contains('hidden')) {
+            this.domElement.classList.remove('hidden');
+        }
+    }
+
+    hide() {
+        if (!this.domElement.classList.contains('hidden')) {
+            this.domElement.classList.add('hidden');
+
+            // Prevent bubbling the event up to a parent selectable element
+            event.stopPropagation();
         }
     }
 

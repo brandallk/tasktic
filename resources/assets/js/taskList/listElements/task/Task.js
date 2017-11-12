@@ -8,19 +8,33 @@ export default class Task extends ListElement {
     
     constructor(taskList, task) {
         super(taskList, task);
-        this.taskDeadlines = this.getTaskDeadlines();
-        this.taskLinks = this.getTaskLinks();
-        this.taskDetails = this.getTaskDetails();
-        this.taskItems = this.getTaskItems();
-        this.enhancedBorders = this.DOMelement.querySelectorAll('canvas');
-        this.dropdownToggle = new DropdownToggle(this);
-        this.selected = null;
+        this.taskDeadlines   = this.getTaskDeadlines();
+        this.taskLinks       = this.getTaskLinks();
+        this.taskDetails     = this.getTaskDetails();
+        this.taskItems       = this.getTaskItems();
+        this.dropdownToggle  = new DropdownToggle(this);
+        this.selected        = null;
+        this.enhancedBorders = this.domElement.querySelectorAll('canvas');
+        this.actions = [
+            'createChild',
+            'deleteSelf',
+            'editSelf',
+            'toggleCompletionStatus',
+            'togglePriorityStatus'
+        ];
+        this.formModals = {
+            createChild:             this.domElement.querySelector('.modal.item.create'),
+            deleteSelf:              this.domElement.querySelector('.modal.task.delete'),
+            editSelf:                this.domElement.querySelector('.modal.task.edit'),
+            toggleCompletionStatus:  this.domElement.querySelector('.modal.task.status'),
+            togglePriorityStatus:    this.domElement.querySelector('.modal.task.priority')
+        };
     }
 
     getTaskDeadlines() {
         const taskDeadlines = [];
 
-        this.DOMelement.querySelectorAll('div.deadline.selectable').forEach( (taskDeadline) => {
+        this.domElement.querySelectorAll('div.deadline.selectable').forEach( (taskDeadline) => {
             taskDeadlines.push(new Deadline(this, taskDeadline));
         });
 
@@ -30,7 +44,7 @@ export default class Task extends ListElement {
     getTaskLinks() {
         const taskLinks = [];
 
-        this.DOMelement.querySelectorAll('div.link.selectable').forEach( (taskLink) => {
+        this.domElement.querySelectorAll('div.link.selectable').forEach( (taskLink) => {
             taskLinks.push(new Link(this, taskLink));
         });
 
@@ -40,7 +54,7 @@ export default class Task extends ListElement {
     getTaskDetails() {
         const taskDetails = [];
 
-        this.DOMelement.querySelectorAll('div.detail.selectable').forEach( (taskDetail) => {
+        this.domElement.querySelectorAll('div.detail.selectable').forEach( (taskDetail) => {
             taskDetails.push(new Detail(this, taskDetail));
         });
 
@@ -96,8 +110,8 @@ export default class Task extends ListElement {
         this.selected = null;
         if (this.taskItems) {
             this.taskItems.forEach( (item) => {
-                if (item.DOMelement.classList.contains('selected')) {
-                    item.DOMelement.classList.remove('selected');
+                if (item.domElement.classList.contains('selected')) {
+                    item.domElement.classList.remove('selected');
                 }
             });
         }

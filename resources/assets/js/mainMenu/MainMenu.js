@@ -7,20 +7,20 @@ import ToggleButton from './ToggleButton';
 export default class MainMenu {
     
     constructor() {
-        this.DOMelement = document.querySelector('div.main-menu');
-        this.saveButton = new SaveButton(this.DOMelement);
-        this.newButton = new NewButton(this.DOMelement);
-        this.loadButton = new LoadButton(this.DOMelement);
-        this.logoutButton = new LogoutButton(this.DOMelement);
-        this.toggleButton = new ToggleButton(this.DOMelement);
+        this.domElement = document.querySelector('div.main-menu');
+        this.buttons = {
+            save:    new SaveButton(this),
+            new:     new NewButton(this),
+            load:    new LoadButton(this),
+            logout:  new LogoutButton(this),
+            toggle:  new ToggleButton(this)
+        };
     }
 
     activate() {
-        this.saveButton.activate();
-        this.newButton.activate();
-        this.loadButton.activate();
-        this.logoutButton.activate();
-        this.toggleButton.activate();
+        for (const button in this.buttons) {
+            this.buttons[button].activate();
+        }
     }
 
 }

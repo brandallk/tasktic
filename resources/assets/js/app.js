@@ -6,7 +6,6 @@
  */
 
 require('./bootstrap');
-require('./lib/arrayHelpers');
 require('./main');
 
 // window.Vue = require('vue');
