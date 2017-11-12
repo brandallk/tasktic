@@ -1,7 +1,18 @@
 
 // Variables
-@import "normalize";
-@import "variables";
-@import "base";
-@import "welcome";
-@import "list-view";
+@import "partials/normalize";
+@import "partials/variables";
+@import "partials/base";
+@import "partials/buttons";
+@import "partials/pages/welcome";
+@import "partials/pages/list/base";
+@import "partials/pages/list/mainMenu";
+@import "partials/pages/list/titleArea";
+@import "partials/pages/list/actionMenu";
+@import "partials/pages/list/formModal";
+@import "partials/pages/list/list/base";
+@import "partials/pages/list/list/category";
+@import "partials/pages/list/list/subcategory";
+@import "partials/pages/list/list/task";
+@import "partials/pages/list/list/taskItems";
+@import "partials/pages/list/list/addToListButton";

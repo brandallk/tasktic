@@ -3550,28 +3550,6 @@ template {
   color: #86c7e6;
 }
 
-::-webkit-input-placeholder {
-  /* Chrome */
-  color: #cccccc;
-}
-
-:-ms-input-placeholder {
-  /* IE 10+ */
-  color: #cccccc;
-}
-
-::-moz-placeholder {
-  /* Firefox 19+ */
-  color: #cccccc;
-  opacity: 1;
-}
-
-:-moz-placeholder {
-  /* Firefox 4 - 18 */
-  color: #cccccc;
-  opacity: 1;
-}
-
 ul {
   list-style: none;
 }
@@ -3583,6 +3561,10 @@ a {
 .hidden {
   display: none;
 }
+
+/*
+  Buttons
+*/
 
 .btn {
   display: inline-block;
@@ -3601,109 +3583,23 @@ a {
           box-shadow: 0 0 0.5em 0.1em #cccccc;
 }
 
-.pink {
+.btn.pink {
   background-color: #e98696;
 }
 
-.orange {
+.btn.orange {
   background-color: #e4b46f;
 }
 
-.white {
+.btn.white {
   background-color: #ffffff;
   border: solid #cccccc thin;
   color: #86c7e6;
 }
 
-div.modal div.shadow-back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.25);
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-div.modal div.shadow-back form {
-  z-index: 1;
-  position: fixed;
-  top: 43%;
-  background-color: rgba(255, 255, 255, 0.95);
-  width: 93%;
-  left: 3%;
-  height: 22.3em;
-  padding: 2em;
-  border-radius: 1em;
-}
-
-div.modal div.shadow-back form span.modal-heading {
-  display: block;
-  font-size: 2em;
-  width: 70%;
-  float: right;
-  margin-right: 2em;
-  margin-top: 0.5em;
-}
-
-div.modal div.shadow-back form select.modal-selectBox {
-  position: absolute;
-  top: 2.55em;
-  left: 34%;
-  font-size: 1.3em;
-  font-family: inherit;
-  padding-left: 0.4em;
-}
-
-div.modal div.shadow-back form div.message {
-  margin-left: 21%;
-  margin-top: 5em;
-  font-size: 1.2em;
-}
-
-div.modal div.shadow-back form div.input {
-  position: absolute;
-  right: 3em;
-  width: 70%;
-}
-
-div.modal div.shadow-back form div.input.first {
-  top: 7em;
-}
-
-div.modal div.shadow-back form div.input.second {
-  top: 11em;
-}
-
-div.modal div.shadow-back form div.input.third {
-  top: 13em;
-}
-
-div.modal div.shadow-back form div.input label {
-  color: #86c7e6;
-  float: left;
-  padding: 0.5em 0;
-}
-
-div.modal div.shadow-back form div.input input {
-  border: none;
-  padding: 0.5em 1em;
-  background: #cfe9f5;
-  border-radius: 0.2em;
-  color: #697cae;
-  float: right;
-  width: 90%;
-}
-
-div.modal div.shadow-back form div.input input#listElement-create-deadline {
-  width: 85%;
-}
-
-div.modal div.shadow-back form div.form-buttons {
-  position: absolute;
-  bottom: 1em;
-  right: 2em;
-}
+/*
+ * Welcome-page style rules
+ */
 
 body.welcome-page {
   text-align: center;
@@ -3734,11 +3630,19 @@ body.welcome-page div.greeting div.authLinks {
   margin-top: 1em;
 }
 
+/*
+  List-view style rules: Base rules
+*/
+
 body.list-view {
   background-color: #4a5376;
   position: relative;
   margin: 0 auto;
 }
+
+/*
+  List-view style rules: Main Menu
+*/
 
 body.list-view div.main-menu {
   -webkit-transition-property: all;
@@ -3827,6 +3731,10 @@ body.list-view span.menu-toggle i.fa:hover {
   cursor: pointer;
 }
 
+/*
+  List-view style rules: Title Area
+*/
+
 body.list-view div.title {
   padding: 0 3em 0 4em;
 }
@@ -3848,6 +3756,10 @@ body.list-view div.title .priorities.btn:hover {
   -webkit-box-shadow: 0 0 0.5em 0.1em #4d4d4d;
           box-shadow: 0 0 0.5em 0.1em #4d4d4d;
 }
+
+/*
+  List-view style rules: Action Menu
+*/
 
 body.list-view div.action-menu {
   width: 20%;
@@ -3951,6 +3863,130 @@ body.list-view div.action-menu.fake ul li:hover i:not(.highlighted) {
   color: #cccccc;
 }
 
+/*
+  Forms: test-input placeholder color
+*/
+
+::-webkit-input-placeholder {
+  /* Chrome */
+  color: #cccccc;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #cccccc;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #cccccc;
+  opacity: 1;
+}
+
+:-moz-placeholder {
+  /* Firefox 4 - 18 */
+  color: #cccccc;
+  opacity: 1;
+}
+
+/*
+  Form Modal style rules
+*/
+
+div.modal div.shadow-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+div.modal div.shadow-back form {
+  z-index: 1;
+  position: fixed;
+  top: 43%;
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 93%;
+  left: 3%;
+  height: 22.3em;
+  padding: 2em;
+  border-radius: 1em;
+}
+
+div.modal div.shadow-back form span.modal-heading {
+  display: block;
+  font-size: 2em;
+  width: 70%;
+  float: right;
+  margin-right: 2em;
+  margin-top: 0.5em;
+}
+
+div.modal div.shadow-back form select.modal-selectBox {
+  position: absolute;
+  top: 2.55em;
+  left: 34%;
+  font-size: 1.3em;
+  font-family: inherit;
+  padding-left: 0.4em;
+}
+
+div.modal div.shadow-back form div.message {
+  margin-left: 21%;
+  margin-top: 5em;
+  font-size: 1.2em;
+}
+
+div.modal div.shadow-back form div.input {
+  position: absolute;
+  right: 3em;
+  width: 70%;
+}
+
+div.modal div.shadow-back form div.input.first {
+  top: 7em;
+}
+
+div.modal div.shadow-back form div.input.second {
+  top: 11em;
+}
+
+div.modal div.shadow-back form div.input.third {
+  top: 13em;
+}
+
+div.modal div.shadow-back form div.input label {
+  color: #86c7e6;
+  float: left;
+  padding: 0.5em 0;
+}
+
+div.modal div.shadow-back form div.input input {
+  border: none;
+  padding: 0.5em 1em;
+  background: #cfe9f5;
+  border-radius: 0.2em;
+  color: #697cae;
+  float: right;
+  width: 90%;
+}
+
+div.modal div.shadow-back form div.input input#listElement-create-deadline {
+  width: 85%;
+}
+
+div.modal div.shadow-back form div.form-buttons {
+  position: absolute;
+  bottom: 1em;
+  right: 2em;
+}
+
+/*
+  List-view style rules: The List - Base style rules
+*/
+
 body.list-view main {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3978,6 +4014,10 @@ body.list-view main div.theList span {
 body.list-view main div.theList span.btn {
   width: 10em;
 }
+
+/*
+  List-view style rules: The List - Category
+*/
 
 body.list-view main div.theList div.category:not(.no-display) {
   margin: 1em;
@@ -4013,6 +4053,10 @@ body.list-view main div.theList div.category.no-display {
   margin-top: -2em;
 }
 
+/*
+  List-view style rules: The List - Subcategory
+*/
+
 body.list-view main div.theList div.subcategory:not(.no-display) {
   border: solid thin;
   padding-bottom: 1em;
@@ -4041,6 +4085,10 @@ body.list-view main div.theList div.subcategory:not(.no-display) span.subcategor
   cursor: pointer;
   font-weight: 500;
 }
+
+/*
+  List-view style rules: The List - Task
+*/
 
 body.list-view main div.theList div.task {
   border-bottom: solid #dfdfdf thin;
@@ -4118,6 +4166,10 @@ body.list-view main div.theList div.task span.task-toggle i {
   color: #86c7e6;
 }
 
+/*
+  List-view style rules: The List - Task Items
+*/
+
 body.list-view main div.theList div.task div.selectable {
   margin: 0 0 0.5em 0.5em;
 }
@@ -4155,6 +4207,10 @@ body.list-view main div.theList div.task span.deadline-content,
 body.list-view main div.theList div.task span.deadline-icon {
   width: auto;
 }
+
+/*
+  List-view style rules: The List - Add-To-List Button
+*/
 
 body.list-view main div.theList span.add-listElement {
   width: 90%;

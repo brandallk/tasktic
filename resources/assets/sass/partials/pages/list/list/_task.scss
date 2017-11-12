@@ -1,0 +1,81 @@
+/*
+  List-view style rules: The List - Task
+*/
+
+body.list-view {
+
+    main div.theList {
+
+        div.task {
+            border-bottom: solid $veryLightGrey thin;
+            padding: 0.5em 1em;
+            position: relative;
+            transition-property: all;
+            transition-duration: 0.4s;
+
+            &.null-cat {
+                padding: 0.5em 2em;
+            }
+
+            &.complete {
+                span.task-title {
+                    text-decoration: line-through;
+                }
+            }
+
+            &.priority {
+                background-color: $lightOrange;
+
+                span.task-toggle i { color: $mediumBlue; }
+            }
+
+            &:hover,
+            &.selected {
+                background-color: $veryLightBlue;
+                border-color: $mediumBlue;
+                cursor: pointer;
+
+                span.task-title {
+                    font-weight: 500;
+                }
+
+                canvas {
+                    display: inherit;
+                } 
+            }
+
+            canvas {
+                position: absolute;
+                left: 0;
+
+                &.top-border {
+                    top: -0.18em;
+                }
+
+                &.bottom-border {
+                    bottom: -0.18em;
+                }
+            }
+
+            span, span i {
+                color: $mediumBlue; 
+            }
+
+            span.task-title {
+                margin-bottom: 0.5em;
+                font-size: 1.2em;
+                width: auto;
+            }
+
+            span.task-toggle {
+                width: auto;
+                margin: 0 6em;
+
+                i {
+                    color: $lightBlue;
+                }                
+            }
+        }
+
+    }
+}

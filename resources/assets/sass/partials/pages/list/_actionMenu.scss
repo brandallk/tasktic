@@ -1,0 +1,66 @@
+/*
+  List-view style rules: Action Menu
+*/
+
+body.list-view {
+
+    div.action-menu {
+        width: 20%;
+            position: fixed;
+            top: 20.2em;
+            left: 4em;
+
+        ul {
+            margin: 0;
+            padding: 0;
+
+            li {
+                margin: 1em 0;
+
+                &.delete i { color: $mediumPink; }
+                &.edit i { color: $white; }
+                &.status i { color: $green; }
+                &.priority i { color: $orange; }
+
+                i {                    
+                    transition-property: all;
+                    transition-duration: 0.4s;
+                }
+
+                &:hover {
+                    cursor: pointer;
+
+                    &.create i { color: $mediumBlue; }
+                    &.delete i { color: $darkPink; }
+                    &.edit i { color: $lightGrey; }
+                    &.status i { color: $mutedGreen; }
+                    &.priority i { color: $mutedOrange; }
+                }
+            }
+        }
+
+        &.fake {
+            padding: 0;
+            position: fixed;
+            top: 20.2em;
+            left: 4em;
+
+            ul li {
+                i:not(.highlighted) { color: $lightGrey }
+
+                &:hover {
+                    cursor: default;
+
+                    &.create i.highlighted { color: $lightBlue; }
+                    &.delete i.highlighted { color: $darkPink; }
+                    &.edit i.highlighted { color: $white; }
+                    &.status i.highlighted { color: $green; }
+                    &.priority i.highlighted { color: $orange; }
+
+                    i:not(.highlighted) { color: $lightGrey }
+                }
+            }
+        }
+    }
+
+}

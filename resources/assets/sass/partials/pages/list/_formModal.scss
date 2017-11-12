@@ -1,9 +1,6 @@
-* {
-    box-sizing: border-box;
-    font-family: $fontfamily;
-    font-size: 1em;
-    color: $lightBlue;
-}
+/*
+  Forms: test-input placeholder color
+*/
 
 ::-webkit-input-placeholder { /* Chrome */
   color: $lightGrey;
@@ -20,47 +17,10 @@
   opacity: 1;
 }
 
-ul {
-    list-style: none;
-}
 
-a {
-    text-decoration: none;
-}
-
-.hidden {
-    display: none;
-}
-
-.btn {
-    display: inline-block;
-    color: white;
-    padding: 1em;
-    width: 10em;
-    font-size: 1em;
-    border-radius: 0.5em;
-    margin: 1em;
-    text-align: center;
-
-    &:hover {
-        cursor: pointer;
-        box-shadow: 0 0 0.5em 0.1em $lightGrey;
-    }
-}
-
-.pink {
-    background-color: $pink;
-}
-
-.orange {
-    background-color: $orange;
-}
-
-.white {
-    background-color: $white;
-    border: solid $lightGrey thin;
-    color: $lightBlue;
-}
+/*
+  Form Modal style rules
+*/
 
 div.modal {
     div.shadow-back {

@@ -1,0 +1,42 @@
+/*
+  List-view style rules: The List - Category
+*/
+
+body.list-view {
+
+    main div.theList {
+
+        div.category:not(.no-display) {
+            margin: 1em;
+
+            &.selected span.category-title {
+                background-color: $veryLightBlue;
+                color: $mediumBlue;
+                cursor: pointer;
+                font-weight: 500;
+            }
+
+            span.category-title {
+                border-bottom: solid thin;
+                margin-bottom: 0.5em;
+                margin-top: -0.5em;
+                font-size: 1.3em;
+                padding: 1em 0 0.5em 1em;
+                transition-property: all;
+                transition-duration: 0.4s;
+
+                &:hover {
+                    background-color: $veryLightBlue;
+                    color: $mediumBlue;
+                    cursor: pointer;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        div.category.no-display {
+            margin-top: -2em;
+        }
+
+    }
+}

@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+    font-family: $fontfamily;
+    font-size: 1em;
+    color: $lightBlue;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,33 @@
+/*
+  Buttons
+*/
+
+.btn {
+    display: inline-block;
+    color: white;
+    padding: 1em;
+    width: 10em;
+    font-size: 1em;
+    border-radius: 0.5em;
+    margin: 1em;
+    text-align: center;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 0 0.5em 0.1em $lightGrey;
+    }
+}
+
+.btn.pink {
+    background-color: $pink;
+}
+
+.btn.orange {
+    background-color: $orange;
+}
+
+.btn.white {
+    background-color: $white;
+    border: solid $lightGrey thin;
+    color: $lightBlue;
+}
