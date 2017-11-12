@@ -11,23 +11,6 @@ use App\Models\Subcategory;
 class SubcategoryController extends Controller
 {
     /**
-     * Return the 'list.show' view.
-     *
-     * @param App\Models\TaskList $list
-     *
-     * @return \Illuminate\Http\Response
-     */
-    private function showListView(TaskList $list)
-    {
-        $data = [
-                'user' => Auth::user(),
-                'list' => $list
-            ];
-
-            return view('list.show', $data);
-    }
-
-    /**
      * Create a new Subcategory instance and show it.
      *
      * @param Illuminate\Http\Request $request
@@ -48,7 +31,9 @@ class SubcategoryController extends Controller
 
             Subcategory::newSubcategory($category, $name);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -77,7 +62,9 @@ class SubcategoryController extends Controller
 
             $subcategory->updateSubcategory($name);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -100,7 +87,9 @@ class SubcategoryController extends Controller
 
             $subcategory->deleteSubcategory();
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();

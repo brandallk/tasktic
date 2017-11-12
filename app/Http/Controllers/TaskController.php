@@ -12,23 +12,6 @@ use App\Models\Task;
 class TaskController extends Controller
 {
     /**
-     * Return the 'list.show' view.
-     *
-     * @param App\Models\TaskList $list
-     *
-     * @return \Illuminate\Http\Response
-     */
-    private function showListView(TaskList $list)
-    {
-        $data = [
-                'user' => Auth::user(),
-                'list' => $list
-            ];
-
-            return view('list.show', $data);
-    }
-
-    /**
      * Create a new Task instance and show it.
      *
      * @param Illuminate\Http\Request $request
@@ -51,7 +34,9 @@ class TaskController extends Controller
 
             Task::newTask($subcategory, $name, $deadline);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -82,7 +67,9 @@ class TaskController extends Controller
 
             $task->updateDetails($name, $deadline);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -115,7 +102,9 @@ class TaskController extends Controller
 
             $task->updateStatus($status);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -148,7 +137,9 @@ class TaskController extends Controller
 
             $task->updateStatus($status);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -170,7 +161,9 @@ class TaskController extends Controller
             $list = $task->subcategory->category->taskList;
             $task->deleteTask();
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
