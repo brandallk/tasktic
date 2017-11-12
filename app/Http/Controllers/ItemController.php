@@ -17,23 +17,6 @@ use App\Models\LinkItem;
 class ItemController extends Controller
 {
     /**
-     * Return the 'list.show' view.
-     *
-     * @param App\Models\TaskList $list
-     *
-     * @return \Illuminate\Http\Response
-     */
-    private function showListView(TaskList $list)
-    {
-        $data = [
-                'user' => Auth::user(),
-                'list' => $list
-            ];
-
-            return view('list.show', $data);
-    }
-
-    /**
      * Create a new DetailItem or LinkItem instance and show it.
      *
      * @param Illuminate\Http\Request $request
@@ -60,7 +43,9 @@ class ItemController extends Controller
 
             ItemManager::newItem($type, $content, $task);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -85,7 +70,9 @@ class ItemController extends Controller
 
         $item->updateItem($task, $content);
 
-        return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
     }
 
     /**
@@ -150,7 +137,9 @@ class ItemController extends Controller
 
         ItemManager::deleteItem($type, $uniqueID, $task);
 
-        return $this->showListView($list);
+        // PRG pattern: After post request, return redirect to a get request
+        // so browser refresh will not resubmit the same post request.
+        return redirect()->route('lists.show', ['list' => $list->id]);
     }
 
     /**
