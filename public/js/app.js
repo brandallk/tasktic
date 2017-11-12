@@ -31735,6 +31735,8 @@ var FormModal = function () {
 
         // (A form can have multiple cancel buttons with differing behavior.)
         this.cancelButtons = this.domElement.querySelectorAll('.cancel.btn');
+
+        this.createEltSelectBox = this.domElement.querySelector('.modal.create-listElement select');
     }
 
     _createClass(FormModal, [{
@@ -31750,6 +31752,10 @@ var FormModal = function () {
 
             if (this.submitButton) {
                 this.submitButton.addEventListener('click', this.submitForm.bind(this));
+            }
+
+            if (this.createEltSelectBox) {
+                this.createEltSelectBox.addEventListener('change', this.conditionallyShowDeadlineInput.bind(this));
             }
         }
     }, {
@@ -31773,6 +31779,15 @@ var FormModal = function () {
         key: 'submitForm',
         value: function submitForm() {
             this.form.submit();
+        }
+    }, {
+        key: 'conditionallyShowDeadlineInput',
+        value: function conditionallyShowDeadlineInput() {
+            if (this.createEltSelectBox.value == 'task') {
+                this.form.querySelector('.second.input').classList.remove('hidden');
+            } else {
+                this.form.querySelector('.second.input').classList.add('hidden');
+            }
         }
     }]);
 

@@ -7,6 +7,9 @@ export default class FormModal {
 
         // (A form can have multiple cancel buttons with differing behavior.)
         this.cancelButtons = this.domElement.querySelectorAll('.cancel.btn');
+
+        this.createEltSelectBox =
+            this.domElement.querySelector('.modal.create-listElement select');
     }
 
     activate() {
@@ -18,6 +21,11 @@ export default class FormModal {
 
         if (this.submitButton) {
             this.submitButton.addEventListener('click', this.submitForm.bind(this));
+        }
+
+        if (this.createEltSelectBox) {
+            this.createEltSelectBox.addEventListener(
+                'change', this.conditionallyShowDeadlineInput.bind(this));
         }
     }
 
@@ -38,6 +46,14 @@ export default class FormModal {
 
     submitForm() {
         this.form.submit();
+    }
+
+    conditionallyShowDeadlineInput() {
+        if (this.createEltSelectBox.value == 'task') {
+            this.form.querySelector('.second.input').classList.remove('hidden');
+        } else {
+            this.form.querySelector('.second.input').classList.add('hidden');
+        }
     }
 
 }
