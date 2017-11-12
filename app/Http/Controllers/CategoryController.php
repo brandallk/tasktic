@@ -10,23 +10,6 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     /**
-     * Return the 'list.show' view.
-     *
-     * @param App\Models\TaskList $list
-     *
-     * @return \Illuminate\Http\Response
-     */
-    private function showListView(TaskList $list)
-    {
-        $data = [
-            'user' => Auth::user(),
-            'list' => $list
-        ];
-
-        return view('list.show', $data);
-    }
-
-    /**
      * Create a new Category instance and show it.
      *
      * @param Illuminate\Http\Request $request
@@ -46,7 +29,8 @@ class CategoryController extends Controller
 
             Category::newCategory($list, $name);
 
-            // return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
@@ -76,7 +60,9 @@ class CategoryController extends Controller
 
             $category->updateCategory($name);
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -99,7 +85,9 @@ class CategoryController extends Controller
 
             $category->deleteCategory();
 
-            return $this->showListView($list);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
