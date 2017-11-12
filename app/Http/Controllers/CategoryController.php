@@ -46,7 +46,8 @@ class CategoryController extends Controller
 
             Category::newCategory($list, $name);
 
-            return $this->showListView($list);
+            // return $this->showListView($list);
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();

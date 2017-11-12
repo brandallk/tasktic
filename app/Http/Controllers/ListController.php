@@ -59,12 +59,9 @@ class ListController extends Controller
                 $request->deadline
             );
 
-            $data = [
-                'user' => Auth::user(),
-                'list' => $list
-            ];
-
-            return view('list.show', $data);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $list->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -92,7 +89,9 @@ class ListController extends Controller
 
             $newList = TaskList::newTaskList($user, $name);
 
-            return $this->show($newList);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $newList->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -120,7 +119,9 @@ class ListController extends Controller
 
             $updatedList = $list->updateTaskList($name);
 
-            return $this->show($updatedList);
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            return redirect()->route('lists.show', ['list' => $updatedList->id]);
 
         } catch (\Throwable $e) {
             return redirect()->back();
@@ -171,6 +172,8 @@ class ListController extends Controller
 
             $list->deleteTaskList();
 
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.index');
 
         } catch (\Throwable $e) {
