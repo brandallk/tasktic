@@ -48,7 +48,7 @@ body.list-view {
             ul li {
                 i:not(.highlighted) { color: $lightGrey; }
 
-                &.edit i { color: $darkBlue; }
+                /*&.edit i { color: $darkBlue; }*/
 
                 &:hover {
                     cursor: default;
@@ -64,5 +64,7 @@ body.list-view {
             }
         }
     }
+
+    .modal.edit ul li.edit i { color: $darkBlue; }
 
 }

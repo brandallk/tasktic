@@ -3831,12 +3831,12 @@ body.list-view div.action-menu.fake {
   left: 4em;
 }
 
-body.list-view div.action-menu.fake ul li i:not(.highlighted) {
-  color: #cccccc;
+body.list-view div.action-menu.fake ul li {
+  /*&.edit i { color: $darkBlue; }*/
 }
 
-body.list-view div.action-menu.fake ul li.edit i {
-  color: #4a5376;
+body.list-view div.action-menu.fake ul li i:not(.highlighted) {
+  color: #cccccc;
 }
 
 body.list-view div.action-menu.fake ul li:hover {
@@ -3865,6 +3865,10 @@ body.list-view div.action-menu.fake ul li:hover.priority i.highlighted {
 
 body.list-view div.action-menu.fake ul li:hover i:not(.highlighted) {
   color: #cccccc;
+}
+
+body.list-view .modal.edit ul li.edit i {
+  color: #4a5376;
 }
 
 /*
