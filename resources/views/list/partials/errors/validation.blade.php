@@ -1,24 +1,20 @@
-<div class="hidden modal error-priorityError">
+<div class="modal alert">
     <div class="shadow-back">
-        <form method="post" action="{{ route('lists.create.element', ['list' => $list->id]) }}">
-            {{ csrf_field() }}
-
+        <form>
             <span class="modal-heading">
-                Oops! No selection.
+                Oops! Let's try that again.
             </span>
 
             <div class="message">
-                <p>
-                    This button marks a task as a priority.
-                </p>
-                <p>
-                    Click a task on your List first.
-                    <i class="fa fa-smile-o" aria-hidden="true"></i>
-                </p>
+                <ul class="validation-msg">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
 
             <div class="form-buttons">
-                <span class="aknowledge btn white">OK</span>
+                <span class="cancel btn white">OK</span>
             </div>
 
             <div class="fake action-menu">
@@ -36,7 +32,7 @@
                         <i class="fa fa-check-square-o fa-3x" aria-hidden="true"></i>
                     </li>
                     <li class="action-button priority">
-                        <i class="fa fa-star fa-3x highlighted" aria-hidden="true"></i>
+                        <i class="fa fa-star fa-3x" aria-hidden="true"></i>
                     </li>
                 </ul>
             </div>

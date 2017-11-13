@@ -32136,9 +32136,11 @@ var AddToListButton = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listElements_task_Task__ = __webpack_require__("./resources/assets/js/taskList/listElements/task/Task.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/ActionMenu.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__AddToListButton__ = __webpack_require__("./resources/assets/js/taskList/AddToListButton.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ValidationErrors__ = __webpack_require__("./resources/assets/js/taskList/ValidationErrors.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 
 
 
@@ -32158,6 +32160,7 @@ var TaskList = function () {
         this.selected = null;
         this.actionMenu = new __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__["a" /* default */](this);
         this.addToListButton = new __WEBPACK_IMPORTED_MODULE_4__AddToListButton__["a" /* default */](this);
+        this.validationErrors = new __WEBPACK_IMPORTED_MODULE_5__ValidationErrors__["a" /* default */](this);
         this.clearSelectionContext = document.querySelector('body');
     }
 
@@ -32212,9 +32215,10 @@ var TaskList = function () {
                 listElement.activate();
             });
 
-            this.activateClearSelectionContext();
             this.addToListButton.activate();
+            this.validationErrors.activate();
             this.actionMenu.activateDefaultBehavior();
+            this.activateClearSelectionContext();
         }
 
         // Clear the List's current 'selected' element if user clicks off the List
@@ -32273,6 +32277,39 @@ var TaskList = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (TaskList);
+
+/***/ }),
+
+/***/ "./resources/assets/js/taskList/ValidationErrors.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var ValidationErrors = function () {
+    function ValidationErrors(taskList) {
+        _classCallCheck(this, ValidationErrors);
+
+        this.formModal = taskList.domElement.querySelector('.alert.modal');
+    }
+
+    _createClass(ValidationErrors, [{
+        key: 'activate',
+        value: function activate() {
+            var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](this.formModal);
+            formModal.activate();
+        }
+    }]);
+
+    return ValidationErrors;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ValidationErrors);
 
 /***/ }),
 

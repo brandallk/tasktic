@@ -3,6 +3,7 @@ import Subcategory from './listElements/subcategory/Subcategory';
 import Task from './listElements/task/Task';
 import ActionMenu from './actionMenu/ActionMenu';
 import AddToListButton from './AddToListButton';
+import ValidationErrors from './ValidationErrors';
 
 export default class TaskList {
     
@@ -15,6 +16,7 @@ export default class TaskList {
         this.selected              = null;
         this.actionMenu            = new ActionMenu(this);
         this.addToListButton       = new AddToListButton(this);
+        this.validationErrors      = new ValidationErrors(this);
         this.clearSelectionContext = document.querySelector('body');
     }
 
@@ -60,9 +62,10 @@ export default class TaskList {
             listElement.activate();
         });
 
-        this.activateClearSelectionContext();
         this.addToListButton.activate();
+        this.validationErrors.activate();
         this.actionMenu.activateDefaultBehavior();
+        this.activateClearSelectionContext();
     }
 
     // Clear the List's current 'selected' element if user clicks off the List
