@@ -4,13 +4,15 @@
 
 .btn {
     display: inline-block;
-    color: white;
+    color: $white;
     padding: 1em;
     width: 10em;
     font-size: 1em;
     border-radius: 0.5em;
     margin: 1em;
     text-align: center;
+
+    a { color: $white }
 
     &:hover {
         cursor: pointer;

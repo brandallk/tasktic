@@ -6,11 +6,11 @@
             {{ method_field('PATCH') }}
 
             <span class="modal-heading">
-                Change the task detail content
+                Change this task detail
             </span>
 
             <div class="first input">
-                <label for="detail-edit-content">Content:</label>
+                <label for="detail-edit-content">Detail:</label>
                 <input id="detail-edit-content" type="text" name="content">
             </div>
 

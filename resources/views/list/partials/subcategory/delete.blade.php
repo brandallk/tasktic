@@ -11,14 +11,13 @@
 
             <div class="message">
                 <p>
-                    ...and everything in it! &nbsp;
-                    <img src="{{ asset('img/mushroomcloud.png') }}" alt="mushroom cloud">
+                    ...and everything in it!
                 </p>
             </div>
 
             <div class="form-buttons">
-                <span class="cancel btn white">Cancel</span>
-                <span class="submit btn pink">Submit</span>
+                <span class="cancel btn white">No</span>
+                <span class="submit btn pink">Yes</span>
             </div>
 
             <div class="fake action-menu">

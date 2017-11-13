@@ -6,12 +6,12 @@
             {{ method_field('DELETE') }}
 
             <span class="modal-heading">
-                Delete the deadline
+                Delete the deadline?
             </span>
 
             <div class="form-buttons">
-                <span class="cancel btn white">Cancel</span>
-                <span class="submit btn pink">Submit</span>
+                <span class="cancel btn white">No</span>
+                <span class="submit btn pink">Yes</span>
             </div>
 
             <div class="fake action-menu">

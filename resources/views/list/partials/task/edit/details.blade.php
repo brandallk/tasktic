@@ -6,7 +6,7 @@
             {{ method_field('PATCH') }}
 
             <span class="modal-heading">
-                Change the task name and/or deadline
+                Change task name or deadline
             </span>
 
             <div class="first input">
@@ -16,7 +16,7 @@
 
             <div class="second input">
                 <label for="task-create-deadline">Deadline:</label>
-                <input id="task-create-deadline" type="text" name="deadline" placeholder="(optional)">
+                <input id="task-create-deadline" type="text" name="deadline">
             </div>
 
             <div class="form-buttons">

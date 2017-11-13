@@ -6,11 +6,11 @@
             {{ method_field('PATCH') }}
 
             <span class="modal-heading">
-                Change the url
+                Change the link URL
             </span>
 
             <div class="first input">
-                <label for="link-edit-content">New url:</label>
+                <label for="link-edit-content">URL:</label>
                 <input id="link-edit-content" type="text" name="content">
             </div>
 

@@ -3568,13 +3568,17 @@ a {
 
 .btn {
   display: inline-block;
-  color: white;
+  color: #ffffff;
   padding: 1em;
   width: 10em;
   font-size: 1em;
   border-radius: 0.5em;
   margin: 1em;
   text-align: center;
+}
+
+.btn a {
+  color: #ffffff;
 }
 
 .btn:hover {
@@ -3951,6 +3955,9 @@ div.modal div.shadow-back form div.input {
   position: absolute;
   right: 3em;
   width: 70%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 div.modal div.shadow-back form div.input.first {
@@ -3964,7 +3971,7 @@ div.modal div.shadow-back form div.input.second {
 div.modal div.shadow-back form div.input label {
   color: #86c7e6;
   float: left;
-  padding: 0.5em 0;
+  padding: 0.5em 0.5em 0.5em 0;
 }
 
 div.modal div.shadow-back form div.input input {
@@ -3974,7 +3981,7 @@ div.modal div.shadow-back form div.input input {
   border-radius: 0.2em;
   color: #697cae;
   float: right;
-  width: 90%;
+  width: 100%;
 }
 
 div.modal div.shadow-back form div.input input#listElement-create-deadline {
@@ -4160,24 +4167,16 @@ body.list-view main div.theList div.task canvas.bottom-border {
   bottom: -0.18em;
 }
 
-body.list-view main div.theList div.task span,
-body.list-view main div.theList div.task span i {
-  color: #697cae;
-}
-
 body.list-view main div.theList div.task span.task-title {
   margin-bottom: 0.5em;
   font-size: 1.2em;
   width: auto;
+  color: #697cae;
 }
 
 body.list-view main div.theList div.task span.task-toggle {
   width: auto;
   margin: 0 6em;
-}
-
-body.list-view main div.theList div.task span.task-toggle i {
-  color: #86c7e6;
 }
 
 /*
@@ -4188,11 +4187,28 @@ body.list-view main div.theList div.task div.selectable {
   margin: 0 0 0.5em 0.5em;
 }
 
+body.list-view main div.theList div.task div.selectable span.deadline-content,
+body.list-view main div.theList div.task div.selectable span.deadline-icon,
+body.list-view main div.theList div.task div.selectable span.link-content,
+body.list-view main div.theList div.task div.selectable span.detail-content,
+body.list-view main div.theList div.task div.selectable span i {
+  color: #697cae;
+}
+
+body.list-view main div.theList div.task div.selectable span.deadline-icon,
+body.list-view main div.theList div.task div.selectable span.link-content,
+body.list-view main div.theList div.task div.selectable span.detail-content {
+  margin-left: 36%;
+}
+
 body.list-view main div.theList div.task div.selectable.selected {
   font-weight: 500;
 }
 
-body.list-view main div.theList div.task div.selectable.selected span {
+body.list-view main div.theList div.task div.selectable.selected span.deadline-content,
+body.list-view main div.theList div.task div.selectable.selected span.deadline-icon,
+body.list-view main div.theList div.task div.selectable.selected span.link-content,
+body.list-view main div.theList div.task div.selectable.selected span.detail-content {
   color: #e98696;
   position: relative;
 }
@@ -4211,10 +4227,6 @@ body.list-view main div.theList div.task div.selectable.selected span.link-conte
 body.list-view main div.theList div.task div.selectable.selected span.detail-content::after {
   content: " \BB";
   color: #e98696;
-}
-
-body.list-view main div.theList div.task div.selectable span:not(.deadline-content) {
-  margin-left: 36%;
 }
 
 body.list-view main div.theList div.task span.deadline-content,

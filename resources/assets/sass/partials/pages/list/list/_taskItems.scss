@@ -11,10 +11,27 @@ body.list-view {
             div.selectable {
                 margin: 0 0 0.5em 0.5em;
 
+                span.deadline-content,
+                span.deadline-icon,
+                span.link-content,
+                span.detail-content,
+                span i {
+                    color: $mediumBlue;
+                }
+
+                span.deadline-icon,
+                span.link-content,
+                span.detail-content {
+                    margin-left: 36%;
+                }
+
                 &.selected {
                     font-weight: 500;
 
-                    span { 
+                    span.deadline-content,
+                    span.deadline-icon,
+                    span.link-content,
+                    span.detail-content, { 
                         color: $pink;
                         position: relative;
                     }
@@ -34,10 +51,6 @@ body.list-view {
                         content: " »";
                         color: $pink;
                     }
-                }
-
-                span:not(.deadline-content) {
-                    margin-left: 36%;
                 }
             }
 

@@ -31737,6 +31737,8 @@ var FormModal = function () {
         this.cancelButtons = this.domElement.querySelectorAll('.cancel.btn');
 
         this.createEltSelectBox = this.domElement.querySelector('.modal.create-listElement select');
+
+        this.createTaskItemSelectBox = this.domElement.querySelector('.modal.create.item select');
     }
 
     _createClass(FormModal, [{
@@ -31756,6 +31758,10 @@ var FormModal = function () {
 
             if (this.createEltSelectBox) {
                 this.createEltSelectBox.addEventListener('change', this.conditionallyShowDeadlineInput.bind(this));
+            }
+
+            if (this.createTaskItemSelectBox) {
+                this.createTaskItemSelectBox.addEventListener('change', this.conditionallyChangeInputLabel.bind(this));
             }
         }
     }, {
@@ -31787,6 +31793,15 @@ var FormModal = function () {
                 this.form.querySelector('.second.input').classList.remove('hidden');
             } else {
                 this.form.querySelector('.second.input').classList.add('hidden');
+            }
+        }
+    }, {
+        key: 'conditionallyChangeInputLabel',
+        value: function conditionallyChangeInputLabel() {
+            if (this.createTaskItemSelectBox.value == 'link') {
+                this.form.querySelector('.first.input label').innerHTML = 'URL:';
+            } else {
+                this.form.querySelector('.first.input label').innerHTML = 'Content:';
             }
         }
     }]);

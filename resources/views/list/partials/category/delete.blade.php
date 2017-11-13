@@ -6,18 +6,18 @@
             {{ method_field('DELETE') }}
 
             <span class="modal-heading">
-                Delete the category
+                Delete the category?
             </span>
 
             <div class="message">
                 <p>
-                    ...and everything in it! &nbsp;
+                    ...and everything in it!
                 </p>
             </div>
 
             <div class="form-buttons">
-                <span class="cancel btn white">Cancel</span>
-                <span class="submit btn pink">Submit</span>
+                <span class="cancel btn white">No</span>
+                <span class="submit btn pink">Yes</span>
             </div>
 
             <div class="fake action-menu">

@@ -10,6 +10,9 @@ export default class FormModal {
 
         this.createEltSelectBox =
             this.domElement.querySelector('.modal.create-listElement select');
+
+        this.createTaskItemSelectBox =
+            this.domElement.querySelector('.modal.create.item select');
     }
 
     activate() {
@@ -26,6 +29,11 @@ export default class FormModal {
         if (this.createEltSelectBox) {
             this.createEltSelectBox.addEventListener(
                 'change', this.conditionallyShowDeadlineInput.bind(this));
+        }
+
+        if (this.createTaskItemSelectBox) {
+            this.createTaskItemSelectBox.addEventListener(
+                'change', this.conditionallyChangeInputLabel.bind(this));
         }
     }
 
@@ -53,6 +61,14 @@ export default class FormModal {
             this.form.querySelector('.second.input').classList.remove('hidden');
         } else {
             this.form.querySelector('.second.input').classList.add('hidden');
+        }
+    }
+
+    conditionallyChangeInputLabel() {
+        if (this.createTaskItemSelectBox.value == 'link') {
+            this.form.querySelector('.first.input label').innerHTML = 'URL:';
+        } else {
+            this.form.querySelector('.first.input label').innerHTML = 'Content:';
         }
     }
 

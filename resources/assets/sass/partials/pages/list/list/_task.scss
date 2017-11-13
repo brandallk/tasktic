@@ -61,23 +61,16 @@ body.list-view {
                 }
             }
 
-            span, span i {
-                color: $mediumBlue; 
-            }
-
             span.task-title {
                 margin-bottom: 0.5em;
                 font-size: 1.2em;
                 width: auto;
+                color: $mediumBlue;
             }
 
             span.task-toggle {
                 width: auto;
-                margin: 0 6em;
-
-                i {
-                    color: $lightBlue;
-                }                
+                margin: 0 6em;   
             }
         }
 

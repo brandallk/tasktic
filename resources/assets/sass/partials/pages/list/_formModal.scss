@@ -72,6 +72,7 @@ div.modal {
                 position: absolute;
                 right: 3em;
                 width: 70%;
+                display: flex;
 
                 &.first {
                     top: 7em;
@@ -84,7 +85,7 @@ div.modal {
                 label {
                     color: $lightBlue;
                     float: left;
-                    padding: 0.5em 0;
+                    padding: 0.5em 0.5em 0.5em 0;
                 }
 
                 input {
@@ -94,7 +95,7 @@ div.modal {
                     border-radius: 0.2em;
                     color: $mediumBlue;
                     float: right;
-                    width: 90%;
+                    width: 100%;
 
                     &#listElement-create-deadline {
                         width: 85%;
