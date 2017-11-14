@@ -1,0 +1,20 @@
+$XS: 18em; // (288px)
+$S: 30em;  // (480px)
+$M: 43em;  // (688px)
+$L: 57em;  // (912px)
+$XL: 75em; // (1200px: max width)
+
+@mixin MQ($screenWidth) {
+    @if $screenWidth == XS {
+        @media only screen and (min-width: $XS) and (max-width: $S - 1) { @content; }
+    }
+    @else if $screenWidth == S {
+        @media only screen and (min-width: $S) and (max-width: $M - 1) { @content; }
+    }
+    @else if $screenWidth == M {
+        @media only screen and (min-width: $M) and (max-width: $L - 1) { @content; }
+    }
+    @else if $screenWidth == L {
+        @media only screen and (min-width: $L) and (max-width: $XL - 1) { @content; }
+    }
+}
