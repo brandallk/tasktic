@@ -7,8 +7,10 @@ export default class ValidationErrors {
     }
 
     activate() {
-        const formModal = new FormModal(this.formModal);
-        formModal.activate();
+        if (this.formModal) {
+            const formModal = new FormModal(this.formModal);
+            formModal.activate();
+        }
     }
 
 }

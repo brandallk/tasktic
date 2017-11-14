@@ -32301,8 +32301,10 @@ var ValidationErrors = function () {
     _createClass(ValidationErrors, [{
         key: 'activate',
         value: function activate() {
-            var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](this.formModal);
-            formModal.activate();
+            if (this.formModal) {
+                var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](this.formModal);
+                formModal.activate();
+            }
         }
     }]);
 

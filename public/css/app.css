@@ -3765,114 +3765,71 @@ body.list-view div.title .priorities.btn:hover {
   List-view style rules: Action Menu
 */
 
-body.list-view div.action-menu {
-  width: 20%;
+div.action-menu {
   position: fixed;
-  top: 20.2em;
-  left: 4em;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  background: #4a5376;
+  border-top: solid thin #86c7e6;
 }
 
-body.list-view div.action-menu ul {
-  margin: 0;
-  padding: 0;
+div.action-menu ul {
+  padding-left: 0;
+  text-align: center;
 }
 
-body.list-view div.action-menu ul li {
-  margin: 1em 0;
+li.action-button {
+  display: inline-block;
+  margin: 0 2.5%;
+  font-size: 0.75em;
 }
 
-body.list-view div.action-menu ul li.delete i {
-  color: #d57282;
+li.action-button:hover {
+  cursor: pointer;
 }
 
-body.list-view div.action-menu ul li.edit i {
-  color: #ffffff;
-}
-
-body.list-view div.action-menu ul li.status i {
-  color: #87e6b3;
-}
-
-body.list-view div.action-menu ul li.priority i {
-  color: #e4b46f;
-}
-
-body.list-view div.action-menu ul li i {
+li.action-button i {
   -webkit-transition-property: all;
   transition-property: all;
   -webkit-transition-duration: 0.4s;
           transition-duration: 0.4s;
 }
 
-body.list-view div.action-menu ul li:hover {
-  cursor: pointer;
-}
-
-body.list-view div.action-menu ul li:hover.create i {
+li.action-button.create:hover i {
   color: #697cae;
 }
 
-body.list-view div.action-menu ul li:hover.delete i {
-  color: #b15e6d;
-}
-
-body.list-view div.action-menu ul li:hover.edit i {
-  color: #cccccc;
-}
-
-body.list-view div.action-menu ul li:hover.status i {
-  color: #7cb193;
-}
-
-body.list-view div.action-menu ul li:hover.priority i {
-  color: #bf995e;
-}
-
-body.list-view div.action-menu.fake {
-  padding: 0;
-  position: fixed;
-  top: 20.2em;
-  left: 4em;
-}
-
-body.list-view div.action-menu.fake ul li {
-  /*&.edit i { color: $darkBlue; }*/
-}
-
-body.list-view div.action-menu.fake ul li i:not(.highlighted) {
-  color: #cccccc;
-}
-
-body.list-view div.action-menu.fake ul li:hover {
-  cursor: default;
-}
-
-body.list-view div.action-menu.fake ul li:hover.create i.highlighted {
-  color: #86c7e6;
-}
-
-body.list-view div.action-menu.fake ul li:hover.delete i.highlighted {
+li.action-button.delete i {
   color: #d57282;
 }
 
-body.list-view div.action-menu.fake ul li:hover.edit i.highlighted {
-  color: #4a5376;
+li.action-button.delete:hover i {
+  color: #b15e6d;
 }
 
-body.list-view div.action-menu.fake ul li:hover.status i.highlighted {
-  color: #87e6b3;
+li.action-button.edit i {
+  color: #ffffff;
 }
 
-body.list-view div.action-menu.fake ul li:hover.priority i.highlighted {
-  color: #e4b46f;
-}
-
-body.list-view div.action-menu.fake ul li:hover i:not(.highlighted) {
+li.action-button.edit:hover i {
   color: #cccccc;
 }
 
-body.list-view .modal.edit ul li.edit i {
-  color: #4a5376;
+li.action-button.status i {
+  color: #87e6b3;
+}
+
+li.action-button.status:hover i {
+  color: #7cb193;
+}
+
+li.action-button.priority i {
+  color: #e4b46f;
+}
+
+li.action-button.priority:hover i {
+  color: #bf995e;
 }
 
 /*

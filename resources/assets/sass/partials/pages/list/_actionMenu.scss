@@ -2,69 +2,45 @@
   List-view style rules: Action Menu
 */
 
-body.list-view {
+div.action-menu {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+    background: $darkBlue;
+    border-top: solid thin $lightBlue;
 
-    div.action-menu {
-        width: 20%;
-            position: fixed;
-            top: 20.2em;
-            left: 4em;
+    ul {
+        padding-left: 0;
+        text-align: center;
+    }
+}
 
-        ul {
-            margin: 0;
-            padding: 0;
+li.action-button {
+    display: inline-block;
+    margin: 0 2.5%;
+    font-size: 0.75em;
 
-            li {
-                margin: 1em 0;
-
-                &.delete i { color: $mediumPink; }
-                &.edit i { color: $white; }
-                &.status i { color: $green; }
-                &.priority i { color: $orange; }
-
-                i {                    
-                    transition-property: all;
-                    transition-duration: 0.4s;
-                }
-
-                &:hover {
-                    cursor: pointer;
-
-                    &.create i { color: $mediumBlue; }
-                    &.delete i { color: $darkPink; }
-                    &.edit i { color: $lightGrey; }
-                    &.status i { color: $mutedGreen; }
-                    &.priority i { color: $mutedOrange; }
-                }
-            }
-        }
-
-        &.fake {
-            padding: 0;
-            position: fixed;
-            top: 20.2em;
-            left: 4em;
-
-            ul li {
-                i:not(.highlighted) { color: $lightGrey; }
-
-                /*&.edit i { color: $darkBlue; }*/
-
-                &:hover {
-                    cursor: default;
-
-                    &.create i.highlighted { color: $lightBlue; }
-                    &.delete i.highlighted { color: $mediumPink; }
-                    &.edit i.highlighted { color: $darkBlue; }
-                    &.status i.highlighted { color: $green; }
-                    &.priority i.highlighted { color: $orange; }
-
-                    i:not(.highlighted) { color: $lightGrey }
-                }
-            }
-        }
+    &:hover {
+        cursor: pointer;
     }
 
-    .modal.edit ul li.edit i { color: $darkBlue; }
+    i {                    
+        transition-property: all;
+        transition-duration: 0.4s;
+    }
 
+    &.create:hover i { color: $mediumBlue; }
+
+    &.delete i { color: $mediumPink; }
+    &.delete:hover i { color: $darkPink; }
+
+    &.edit i { color: $white; }
+    &.edit:hover i { color: $lightGrey; }
+
+    &.status i { color: $green; }
+    &.status:hover i { color: $mutedGreen; }
+
+    &.priority i { color: $orange; }
+    &.priority:hover i { color: $mutedOrange; }
 }
