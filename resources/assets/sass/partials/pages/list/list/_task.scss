@@ -2,77 +2,48 @@
   List-view style rules: The List - Task
 */
 
-body.list-view {
+.task.selectable {
+    position: relative;
+    border-bottom: solid thin $lightestGrey;
 
-    main div.theList {
+    &.selected,
+    &:hover {
+        cursor: pointer;
+        background-color: $veryLightBlue;
 
-        div.task {
-            border-bottom: solid $veryLightGrey thin;
-            padding: 0.5em 1em;
-            position: relative;
-            transition-property: all;
-            transition-duration: 0.4s;
-
-            &.null-cat {
-                padding: 0.5em 2em;
-            }
-
-            &.complete {
-                span.task-title {
-                    text-decoration: line-through;
-                }
-            }
-
-            &.priority {
-                background-color: $lightOrange;
-
-                span.task-toggle i { color: $mediumBlue; }
-            }
-
-            &:hover,
-            &.selected {
-                background-color: $veryLightBlue;
-                border-color: $mediumBlue;
-                cursor: pointer;
-
-                span.task-title {
-                    font-weight: 500;
-                }
-
-                canvas {
-                    display: inherit;
-                } 
-            }
-
-            div.modal:hover {
-                cursor: default;
-            }
-
-            canvas {
-                position: absolute;
-                left: 0;
-
-                &.top-border {
-                    top: -0.18em;
-                }
-
-                &.bottom-border {
-                    bottom: -0.18em;
-                }
-            }
-
-            span.task-title {
-                margin-bottom: 0.5em;
-                font-size: 1.2em;
-                width: auto;
-                color: $mediumBlue;
-            }
-
-            span.task-toggle {
-                width: auto;
-                margin: 0 6em;   
-            }
+        .task-title {
+            color: $mediumBlue;
+            font-weight: 500;
         }
 
+        .task-border {
+            display: block;
+        }
+    }
+
+    .task-toggle {
+        position: absolute;
+        top: 0.35em;
+        left: 0.5em;
+
+        &:hover { cursor: pointer; }
+    }
+
+    .task-toggle i {
+        font-size: 1.25em;
+    }
+
+    .task-title {
+        padding: 0.5em 0 0.5em 2em;
+    }
+
+    .task-border.top-border {
+        position: absolute;
+        top: -2.5px;
+    }
+
+    .task-border.bottom-border {
+        position: absolute;
+        bottom: -2.5px;
     }
 }

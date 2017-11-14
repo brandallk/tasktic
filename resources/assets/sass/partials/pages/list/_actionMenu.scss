@@ -2,13 +2,14 @@
   List-view style rules: Action Menu
 */
 
-div.action-menu {
+.action-menu {
     position: fixed;
     bottom: 0;
     z-index: 1;
     width: 100%;
     background: $darkBlue;
-    border-top: solid thin $lightBlue;
+    opacity: 0.95;
+    border-top: solid thin $mediumBlue;
 
     ul {
         padding-left: 0;
@@ -16,7 +17,7 @@ div.action-menu {
     }
 }
 
-li.action-button {
+.action-button {
     display: inline-block;
     margin: 0 2.5%;
     font-size: 0.75em;

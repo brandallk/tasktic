@@ -3548,6 +3548,10 @@ template {
   font-family: "Fira Sans", sans-serif;
   font-size: 1em;
   color: #86c7e6;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
 }
 
 ul {
@@ -3560,6 +3564,12 @@ a {
 
 .hidden {
   display: none;
+}
+
+.clearfix::after {
+  display: block;
+  content: " ";
+  clear: both;
 }
 
 /*
@@ -3583,8 +3593,8 @@ a {
 
 .btn:hover {
   cursor: pointer;
-  -webkit-box-shadow: 0 0 0.5em 0.1em #cccccc;
-          box-shadow: 0 0 0.5em 0.1em #cccccc;
+  -webkit-box-shadow: 0 0 0.5em 0.1em #bbbbbb;
+          box-shadow: 0 0 0.5em 0.1em #bbbbbb;
 }
 
 .btn.pink {
@@ -3597,7 +3607,7 @@ a {
 
 .btn.white {
   background-color: #ffffff;
-  border: solid #cccccc thin;
+  border: solid #bbbbbb thin;
   color: #86c7e6;
 }
 
@@ -3765,70 +3775,71 @@ body.list-view div.title .priorities.btn:hover {
   List-view style rules: Action Menu
 */
 
-div.action-menu {
+.action-menu {
   position: fixed;
   bottom: 0;
   z-index: 1;
   width: 100%;
   background: #4a5376;
-  border-top: solid thin #86c7e6;
+  opacity: 0.95;
+  border-top: solid thin #697cae;
 }
 
-div.action-menu ul {
+.action-menu ul {
   padding-left: 0;
   text-align: center;
 }
 
-li.action-button {
+.action-button {
   display: inline-block;
   margin: 0 2.5%;
   font-size: 0.75em;
 }
 
-li.action-button:hover {
+.action-button:hover {
   cursor: pointer;
 }
 
-li.action-button i {
+.action-button i {
   -webkit-transition-property: all;
   transition-property: all;
   -webkit-transition-duration: 0.4s;
           transition-duration: 0.4s;
 }
 
-li.action-button.create:hover i {
+.action-button.create:hover i {
   color: #697cae;
 }
 
-li.action-button.delete i {
+.action-button.delete i {
   color: #d57282;
 }
 
-li.action-button.delete:hover i {
+.action-button.delete:hover i {
   color: #b15e6d;
 }
 
-li.action-button.edit i {
+.action-button.edit i {
   color: #ffffff;
 }
 
-li.action-button.edit:hover i {
-  color: #cccccc;
+.action-button.edit:hover i {
+  color: #bbbbbb;
 }
 
-li.action-button.status i {
+.action-button.status i {
   color: #87e6b3;
 }
 
-li.action-button.status:hover i {
+.action-button.status:hover i {
   color: #7cb193;
 }
 
-li.action-button.priority i {
+.action-button.priority i {
   color: #e4b46f;
 }
 
-li.action-button.priority:hover i {
+.action-button.priority:hover i {
   color: #bf995e;
 }
 
@@ -3838,23 +3849,23 @@ li.action-button.priority:hover i {
 
 ::-webkit-input-placeholder {
   /* Chrome */
-  color: #cccccc;
+  color: #bbbbbb;
 }
 
 :-ms-input-placeholder {
   /* IE 10+ */
-  color: #cccccc;
+  color: #bbbbbb;
 }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
-  color: #cccccc;
+  color: #bbbbbb;
   opacity: 1;
 }
 
 :-moz-placeholder {
   /* Firefox 4 - 18 */
-  color: #cccccc;
+  color: #bbbbbb;
   opacity: 1;
 }
 
@@ -3961,102 +3972,73 @@ div.modal div.shadow-back form div.form-buttons {
   List-view style rules: The List - Base style rules
 */
 
-body.list-view main {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%;
-  padding-top: 2em;
+main.list-view {
+  padding-top: 0.5em;
+  padding-bottom: 4.5em;
   border-top: solid #697cae thin;
-  margin-top: 1em;
 }
 
-body.list-view main div.theList {
-  padding: 1em 0;
-  margin-right: 4em;
-  width: 95%;
-  background-color: white;
-  min-height: 34em;
-  margin-left: 10em;
+.theList {
+  margin: 1.5em;
+  padding: 1em;
+  background: #ffffff;
 }
 
-body.list-view main div.theList span {
+.category-title,
+.subcategory-title,
+.task-title {
   display: inline-block;
   width: 100%;
+  padding: 0.5em 0;
 }
 
-body.list-view main div.theList span.btn {
-  width: 10em;
+.no-display .category-title,
+.no-display .subcategory-title {
+  display: none;
 }
 
 /*
   List-view style rules: The List - Category
 */
 
-body.list-view main div.theList div.category:not(.no-display) {
-  margin: 1em;
+.category.selectable:not(.no-display) {
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 0px 10px -2px #bbbbbb;
+          box-shadow: 0px 0px 10px -2px #bbbbbb;
+  margin: 1em 0;
 }
 
-body.list-view main div.theList div.category:not(.no-display).selected span.category-title {
-  background-color: #cfe9f5;
-  color: #697cae;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-body.list-view main div.theList div.category:not(.no-display) span.category-title {
+.category-title {
   border-bottom: solid thin;
-  margin-bottom: 0.5em;
-  margin-top: -0.5em;
-  font-size: 1.3em;
-  padding: 1em 0 0.5em 1em;
-  -webkit-transition-property: all;
-  transition-property: all;
-  -webkit-transition-duration: 0.4s;
-          transition-duration: 0.4s;
+  margin-top: 0.5em;
+  font-size: 1.1em;
+  padding: 0.5em 0 0.5em 1em;
 }
 
-body.list-view main div.theList div.category:not(.no-display) span.category-title:hover {
+.category.selectable.selected .category-title,
+.category-title:hover {
+  cursor: pointer;
   background-color: #cfe9f5;
   color: #697cae;
-  cursor: pointer;
   font-weight: 500;
-}
-
-body.list-view main div.theList div.category.no-display {
-  margin-top: -2em;
 }
 
 /*
   List-view style rules: The List - Subcategory
 */
 
-body.list-view main div.theList div.subcategory:not(.no-display) {
-  border: solid thin;
-  padding-bottom: 1em;
+.subcategory-title {
+  border-bottom: solid thin #dfdfdf;
+  margin-bottom: 0.5em;
+  font-size: 1.05em;
+  padding: 0.75em 0 0.5em 1em;
 }
 
-body.list-view main div.theList div.subcategory:not(.no-display).selected span.subcategory-title {
+.subcategory.selectable.selected .subcategory-title,
+.subcategory-title:hover {
+  cursor: pointer;
   background-color: #cfe9f5;
   color: #697cae;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title {
-  font-size: 1.2em;
-  padding: 1em 0 0.5em 1em;
-  -webkit-transition-property: all;
-  transition-property: all;
-  -webkit-transition-duration: 0.4s;
-          transition-duration: 0.4s;
-  border-bottom: solid thin;
-}
-
-body.list-view main div.theList div.subcategory:not(.no-display) span.subcategory-title:hover {
-  background-color: #cfe9f5;
-  color: #697cae;
-  cursor: pointer;
   font-weight: 500;
 }
 
@@ -4064,76 +4046,54 @@ body.list-view main div.theList div.subcategory:not(.no-display) span.subcategor
   List-view style rules: The List - Task
 */
 
-body.list-view main div.theList div.task {
-  border-bottom: solid #dfdfdf thin;
-  padding: 0.5em 1em;
+.task.selectable {
   position: relative;
-  -webkit-transition-property: all;
-  transition-property: all;
-  -webkit-transition-duration: 0.4s;
-          transition-duration: 0.4s;
+  border-bottom: solid thin #f2f2f2;
 }
 
-body.list-view main div.theList div.task.null-cat {
-  padding: 0.5em 2em;
-}
-
-body.list-view main div.theList div.task.complete span.task-title {
-  text-decoration: line-through;
-}
-
-body.list-view main div.theList div.task.priority {
-  background-color: #f4dfc3;
-}
-
-body.list-view main div.theList div.task.priority span.task-toggle i {
-  color: #697cae;
-}
-
-body.list-view main div.theList div.task:hover,
-body.list-view main div.theList div.task.selected {
-  background-color: #cfe9f5;
-  border-color: #697cae;
+.task.selectable.selected,
+.task.selectable:hover {
   cursor: pointer;
+  background-color: #cfe9f5;
 }
 
-body.list-view main div.theList div.task:hover span.task-title,
-body.list-view main div.theList div.task.selected span.task-title {
+.task.selectable.selected .task-title,
+.task.selectable:hover .task-title {
+  color: #697cae;
   font-weight: 500;
 }
 
-body.list-view main div.theList div.task:hover canvas,
-body.list-view main div.theList div.task.selected canvas {
-  display: inherit;
+.task.selectable.selected .task-border,
+.task.selectable:hover .task-border {
+  display: block;
 }
 
-body.list-view main div.theList div.task div.modal:hover {
-  cursor: default;
-}
-
-body.list-view main div.theList div.task canvas {
+.task.selectable .task-toggle {
   position: absolute;
-  left: 0;
+  top: 0.35em;
+  left: 0.5em;
 }
 
-body.list-view main div.theList div.task canvas.top-border {
-  top: -0.18em;
+.task.selectable .task-toggle:hover {
+  cursor: pointer;
 }
 
-body.list-view main div.theList div.task canvas.bottom-border {
-  bottom: -0.18em;
+.task.selectable .task-toggle i {
+  font-size: 1.25em;
 }
 
-body.list-view main div.theList div.task span.task-title {
-  margin-bottom: 0.5em;
-  font-size: 1.2em;
-  width: auto;
-  color: #697cae;
+.task.selectable .task-title {
+  padding: 0.5em 0 0.5em 2em;
 }
 
-body.list-view main div.theList div.task span.task-toggle {
-  width: auto;
-  margin: 0 6em;
+.task.selectable .task-border.top-border {
+  position: absolute;
+  top: -2.5px;
+}
+
+.task.selectable .task-border.bottom-border {
+  position: absolute;
+  bottom: -2.5px;
 }
 
 /*

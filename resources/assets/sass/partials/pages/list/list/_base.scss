@@ -2,32 +2,29 @@
   List-view style rules: The List - Base style rules
 */
 
-body.list-view {
+main.list-view {
+    padding-top: 0.5em;
+    padding-bottom: 4.5em;
+    border-top: solid $mediumBlue thin;
+}
 
-    main {
-        display: flex;
-        width: 100%;
-        padding-top: 2em;
-        border-top: solid $mediumBlue thin;
-        margin-top: 1em;
+.theList {
+    margin: 1.5em;
+    padding: 1em;
+    background: $white;
+}
 
-        div.theList {
-            padding: 1em 0;
-            margin-right: 4em;
-            width: 95%;
-            background-color: white;
-            min-height: 34em;
-            margin-left: 10em;
+.category-title,
+.subcategory-title,
+.task-title {
+    display: inline-block;
+    width: 100%;
+    padding: 0.5em 0;
+}
 
-            span {
-                display: inline-block;
-                width: 100%;
-
-                &.btn {
-                    width: 10em;
-                }
-            }
-        }
+.no-display {
+    .category-title,
+    .subcategory-title {
+        display:none;
     }
-
 }

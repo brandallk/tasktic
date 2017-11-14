@@ -54,12 +54,12 @@
     </span>
 
     <!-- List-Title Area -->
-    <div class="title">
+    <div class="title clearfix">
         <h1>{{ $list->name }}</h1>
         <span class="priorities btn orange">Priorities</span>
     </div>
 
-    <main>
+    <main class="list-view">
         <!-- Action Menu (Secondary Menu) -->
         <div class="action-menu">
             <ul>

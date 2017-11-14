@@ -3,6 +3,8 @@
     font-family: $fontfamily;
     font-size: 1em;
     color: $lightBlue;
+    transition-property: all;
+    transition-duration: 0.4s;
 }
 
 ul {
@@ -15,4 +17,10 @@ a {
 
 .hidden {
     display: none;
+}
+
+.clearfix::after {
+    display: block;
+    content: " ";
+    clear: both;
 }
