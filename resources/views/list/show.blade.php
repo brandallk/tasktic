@@ -128,52 +128,57 @@
                                     <span class="task-title">{{ $task->name }}</span>
                                     <canvas class="task-border bottom-border hidden" width="0" height="0"></canvas>
 
-                                    <!-- Deadline Items -->
-                                    @if ($task->deadlineItem)
+                                    <!-- Task Items -->
+                                    <div class="task-item-wrapper">
 
-                                        <div id="{{ $task->deadlineItem->list_element_id }}" class="deadline selectable hidden <?php
-                                            if ($task->status == 'priority') {echo 'priority';}
-                                            elseif ($task->status == 'complete') {echo 'complete';}
-                                            else {echo 'incomplete';}
-                                        ?>">
-                                            <span class="deadline-icon">
-                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="deadline-content">{{ $task->deadlineItem->deadline }}</span>
+                                        <!-- Deadline Items -->
+                                        @if ($task->deadlineItem)
 
-                                            @include('list.partials.item.deadline.delete')
-                                        </div>
+                                            <div id="{{ $task->deadlineItem->list_element_id }}" class="deadline task-item selectable hidden <?php
+                                                if ($task->status == 'priority') {echo 'priority';}
+                                                elseif ($task->status == 'complete') {echo 'complete';}
+                                                else {echo 'incomplete';}
+                                            ?>">
+                                                <span class="deadline-icon">
+                                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="task-item-heading deadline-content">{{ $task->deadlineItem->deadline }}</span>
 
-                                    @endif
+                                                @include('list.partials.item.deadline.delete')
+                                            </div>
 
-                                    <!-- Link Items -->
-                                    @if ($task->linkItems)
-                                    @foreach ($task->linkItems->sortBy('id') as $link)
+                                        @endif
 
-                                        <div id="{{ $link->list_element_id }}" class="link selectable hidden">
-                                            <span class="link-content">{{ $link->link }}</span>
+                                        <!-- Link Items -->
+                                        @if ($task->linkItems)
+                                        @foreach ($task->linkItems->sortBy('id') as $link)
 
-                                            @include('list.partials.item.link.visitQuery')
-                                            @include('list.partials.item.link.edit')
-                                            @include('list.partials.item.link.delete')
-                                        </div>
+                                            <div id="{{ $link->list_element_id }}" class="link task-item selectable hidden">
+                                                <span class="task-item-heading link-content">{{ $link->link }}</span>
 
-                                    @endforeach
-                                    @endif
+                                                @include('list.partials.item.link.visitQuery')
+                                                @include('list.partials.item.link.edit')
+                                                @include('list.partials.item.link.delete')
+                                            </div>
 
-                                    <!-- Detail Items -->
-                                    @if ($task->detailItems)
-                                    @foreach ($task->detailItems->sortBy('id') as $detail)
+                                        @endforeach
+                                        @endif
 
-                                        <div id="{{ $detail->list_element_id }}" class="detail selectable hidden">
-                                            <span class="detail-content">{{ $detail->detail }}</span>
+                                        <!-- Detail Items -->
+                                        @if ($task->detailItems)
+                                        @foreach ($task->detailItems->sortBy('id') as $detail)
 
-                                            @include('list.partials.item.detail.edit')
-                                            @include('list.partials.item.detail.delete')
-                                        </div>
+                                            <div id="{{ $detail->list_element_id }}" class="detail task-item selectable hidden">
+                                                <span class="task-item-heading detail-content">{{ $detail->detail }}</span>
 
-                                    @endforeach
-                                    @endif
+                                                @include('list.partials.item.detail.edit')
+                                                @include('list.partials.item.detail.delete')
+                                            </div>
+
+                                        @endforeach
+                                        @endif
+
+                                    </div> <!-- end Task Items div -->
 
                                     @include('list.partials.item.create')
                                     @include('list.partials.task.edit.details')

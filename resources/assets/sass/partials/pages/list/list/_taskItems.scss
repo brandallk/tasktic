@@ -2,63 +2,23 @@
   List-view style rules: The List - Task Items
 */
 
-body.list-view {
+.task-item-wrapper {
+    font-size: 0.85em;
+    margin-left: 13%;
+    margin-right: 1em;
+}
 
-    main div.theList {
+.task-item:last-child { padding-bottom: 1em; }
 
-        div.task {
+.task-item-heading {
+    display: inline-block;
+    padding: 0.15em 0;
+}
 
-            div.selectable {
-                margin: 0 0 0.5em 0.5em;
-
-                span.deadline-content,
-                span.deadline-icon,
-                span.link-content,
-                span.detail-content,
-                span i {
-                    color: $mediumBlue;
-                }
-
-                span.deadline-icon,
-                span.link-content,
-                span.detail-content {
-                    margin-left: 36%;
-                }
-
-                &.selected {
-                    font-weight: 500;
-
-                    span.deadline-content,
-                    span.deadline-icon,
-                    span.link-content,
-                    span.detail-content, { 
-                        color: $pink;
-                        position: relative;
-                    }
-
-                    span.deadline-icon::before, 
-                    span.link-content::before,
-                    span.detail-content::before {
-                        content: "«";
-                        color: $pink;
-                        position: absolute;
-                        left: -1em;
-                    }
-
-                    span.deadline-content::after, 
-                    span.link-content::after,
-                    span.detail-content::after {
-                        content: " »";
-                        color: $pink;
-                    }
-                }
-            }
-
-            span.deadline-content,
-            span.deadline-icon {
-                width: auto;
-            }
-
-        }
+.task-item:hover,
+.task-item.selected, {
+    span,
+    span i {
+        color: $mediumBlue;
     }
 }

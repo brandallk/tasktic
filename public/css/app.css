@@ -3989,7 +3989,6 @@ main.list-view {
 .task-title {
   display: inline-block;
   width: 100%;
-  padding: 0.5em 0;
 }
 
 .no-display .category-title,
@@ -4001,7 +4000,7 @@ main.list-view {
   List-view style rules: The List - Category
 */
 
-.category.selectable:not(.no-display) {
+.category:not(.no-display) {
   border-radius: 3px;
   -webkit-box-shadow: 0px 0px 10px -2px #bbbbbb;
           box-shadow: 0px 0px 10px -2px #bbbbbb;
@@ -4012,10 +4011,10 @@ main.list-view {
   border-bottom: solid thin;
   margin-top: 0.5em;
   font-size: 1.1em;
-  padding: 0.5em 0 0.5em 1em;
+  padding: 0.5em 1em 0.5em 7%;
 }
 
-.category.selectable.selected .category-title,
+.category.selected .category-title,
 .category-title:hover {
   cursor: pointer;
   background-color: #cfe9f5;
@@ -4031,10 +4030,10 @@ main.list-view {
   border-bottom: solid thin #dfdfdf;
   margin-bottom: 0.5em;
   font-size: 1.05em;
-  padding: 0.75em 0 0.5em 1em;
+  padding: 0.75em 1em 0.5em 7%;
 }
 
-.subcategory.selectable.selected .subcategory-title,
+.subcategory.selected .subcategory-title,
 .subcategory-title:hover {
   cursor: pointer;
   background-color: #cfe9f5;
@@ -4046,52 +4045,64 @@ main.list-view {
   List-view style rules: The List - Task
 */
 
-.task.selectable {
+.task {
   position: relative;
   border-bottom: solid thin #f2f2f2;
 }
 
-.task.selectable.selected,
-.task.selectable:hover {
+.task.selected,
+.task:hover {
   cursor: pointer;
   background-color: #cfe9f5;
 }
 
-.task.selectable.selected .task-title,
-.task.selectable:hover .task-title {
+.task.selected .task-title,
+.task:hover .task-title {
   color: #697cae;
   font-weight: 500;
 }
 
-.task.selectable.selected .task-border,
-.task.selectable:hover .task-border {
+.task.selected .task-border,
+.task:hover .task-border {
   display: block;
 }
 
-.task.selectable .task-toggle {
-  position: absolute;
-  top: 0.35em;
-  left: 0.5em;
+.task.complete .task-title {
+  text-decoration: line-through;
 }
 
-.task.selectable .task-toggle:hover {
+.task.priority {
+  background-color: #f4dfc3;
+}
+
+.task.priority .task-toggle i {
+  color: #697cae;
+}
+
+.task .task-toggle {
+  position: absolute;
+  top: 0.35em;
+  left: 5%;
+}
+
+.task .task-toggle:hover {
   cursor: pointer;
 }
 
-.task.selectable .task-toggle i {
+.task .task-toggle i {
   font-size: 1.25em;
 }
 
-.task.selectable .task-title {
-  padding: 0.5em 0 0.5em 2em;
+.task .task-title {
+  padding: 0.5em 1em 0.5em 13%;
 }
 
-.task.selectable .task-border.top-border {
+.task .task-border.top-border {
   position: absolute;
   top: -2.5px;
 }
 
-.task.selectable .task-border.bottom-border {
+.task .task-border.bottom-border {
   position: absolute;
   bottom: -2.5px;
 }
@@ -4100,55 +4111,26 @@ main.list-view {
   List-view style rules: The List - Task Items
 */
 
-body.list-view main div.theList div.task div.selectable {
-  margin: 0 0 0.5em 0.5em;
+.task-item-wrapper {
+  font-size: 0.85em;
+  margin-left: 13%;
+  margin-right: 1em;
 }
 
-body.list-view main div.theList div.task div.selectable span.deadline-content,
-body.list-view main div.theList div.task div.selectable span.deadline-icon,
-body.list-view main div.theList div.task div.selectable span.link-content,
-body.list-view main div.theList div.task div.selectable span.detail-content,
-body.list-view main div.theList div.task div.selectable span i {
+.task-item:last-child {
+  padding-bottom: 1em;
+}
+
+.task-item-heading {
+  display: inline-block;
+  padding: 0.15em 0;
+}
+
+.task-item:hover span,
+.task-item:hover span i,
+.task-item.selected span,
+.task-item.selected span i {
   color: #697cae;
-}
-
-body.list-view main div.theList div.task div.selectable span.deadline-icon,
-body.list-view main div.theList div.task div.selectable span.link-content,
-body.list-view main div.theList div.task div.selectable span.detail-content {
-  margin-left: 36%;
-}
-
-body.list-view main div.theList div.task div.selectable.selected {
-  font-weight: 500;
-}
-
-body.list-view main div.theList div.task div.selectable.selected span.deadline-content,
-body.list-view main div.theList div.task div.selectable.selected span.deadline-icon,
-body.list-view main div.theList div.task div.selectable.selected span.link-content,
-body.list-view main div.theList div.task div.selectable.selected span.detail-content {
-  color: #e98696;
-  position: relative;
-}
-
-body.list-view main div.theList div.task div.selectable.selected span.deadline-icon::before,
-body.list-view main div.theList div.task div.selectable.selected span.link-content::before,
-body.list-view main div.theList div.task div.selectable.selected span.detail-content::before {
-  content: "\AB";
-  color: #e98696;
-  position: absolute;
-  left: -1em;
-}
-
-body.list-view main div.theList div.task div.selectable.selected span.deadline-content::after,
-body.list-view main div.theList div.task div.selectable.selected span.link-content::after,
-body.list-view main div.theList div.task div.selectable.selected span.detail-content::after {
-  content: " \BB";
-  color: #e98696;
-}
-
-body.list-view main div.theList div.task span.deadline-content,
-body.list-view main div.theList div.task span.deadline-icon {
-  width: auto;
 }
 
 /*

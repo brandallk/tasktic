@@ -2,7 +2,7 @@
   List-view style rules: The List - Task
 */
 
-.task.selectable {
+.task {
     position: relative;
     border-bottom: solid thin $lightestGrey;
 
@@ -16,26 +16,30 @@
             font-weight: 500;
         }
 
-        .task-border {
-            display: block;
-        }
+        .task-border { display: block; }
+    }
+
+    &.complete {
+        .task-title { text-decoration: line-through; }
+    }
+
+    &.priority {
+        background-color: $lightOrange;
+
+        .task-toggle i { color: $mediumBlue; }
     }
 
     .task-toggle {
         position: absolute;
         top: 0.35em;
-        left: 0.5em;
+        left: 5%;
 
         &:hover { cursor: pointer; }
     }
 
-    .task-toggle i {
-        font-size: 1.25em;
-    }
+    .task-toggle i { font-size: 1.25em; }
 
-    .task-title {
-        padding: 0.5em 0 0.5em 2em;
-    }
+    .task-title { padding: 0.5em 1em 0.5em 13%; }
 
     .task-border.top-border {
         position: absolute;

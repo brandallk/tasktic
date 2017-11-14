@@ -2,7 +2,7 @@
   List-view style rules: The List - Category
 */
 
-.category.selectable:not(.no-display) {
+.category:not(.no-display) {
     border-radius: 3px;
     box-shadow: 0px 0px 10px -2px $lightGrey;
     margin: 1em 0;
@@ -12,10 +12,10 @@
     border-bottom: solid thin;
     margin-top: 0.5em;
     font-size: 1.1em;
-    padding: 0.5em 0 0.5em 1em;
+    padding: 0.5em 1em 0.5em 7%;
 }
 
-.category.selectable.selected .category-title,
+.category.selected .category-title,
 .category-title:hover {
     cursor: pointer;
     background-color: $veryLightBlue;
