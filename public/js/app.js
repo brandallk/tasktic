@@ -32351,6 +32351,7 @@ var ActionMenu = function () {
     _createClass(ActionMenu, [{
         key: 'refresh',
         value: function refresh(actions) {
+            console.log('refreshing');
             this.buttons.forEach(function (button) {
                 if (actions.includes(button.action)) {
                     button.activate();

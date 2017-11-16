@@ -23,7 +23,7 @@ export default class ActionMenu {
         ];
     }
 
-    refresh(actions) {
+    refresh(actions) { console.log('refreshing');
         this.buttons.forEach( (button) => {
             if (actions.includes(button.action)) {
                 button.activate();

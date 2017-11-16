@@ -3794,6 +3794,20 @@ body.list-view div.title .priorities.btn:hover {
   display: inline-block;
   margin: 0 2.5%;
   font-size: 0.75em;
+  /*  &.deactivated.create,
+        &.deactivated.delete,
+        &.deactivated.edit,
+        &.deactivated.status,
+        &.deactivated.priority, {
+            i, i:hover {
+                color: $lightGrey;
+                cursor: default;
+            }
+        } */
+}
+
+.action-button.hidden {
+  display: none;
 }
 
 .action-button:hover {
