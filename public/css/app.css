@@ -3608,7 +3608,7 @@ a {
 .btn.white {
   background-color: #ffffff;
   border: solid #bbbbbb thin;
-  color: #86c7e6;
+  color: #bbbbbb;
 }
 
 /*
@@ -3844,6 +3844,115 @@ body.list-view div.title .priorities.btn:hover {
 }
 
 /*
+  Form Modal style rules
+*/
+
+.shadow-back {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal form {
+  z-index: 1;
+  position: relative;
+  margin: auto;
+  margin-top: calc(50vh - 13em);
+  width: 90%;
+  max-width: 340px;
+  height: 26em;
+  padding: 1.8em 2.5%;
+  border: solid thin #697cae;
+  border-radius: 0.5em;
+  background-color: #ffffff;
+}
+
+.modal .heading-wrapper {
+  width: 100%;
+  padding: 1.5em 7% 0.5em;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.modal .heading-wrapper .modal-heading {
+  padding-right: 2%;
+  font-weight: 500;
+  color: #86c7e6;
+}
+
+select {
+  width: 100%;
+  padding: 0.5em 1em;
+  border-radius: 2px;
+  outline: solid thin #f2f2f2;
+}
+
+select:focus {
+  outline: solid thin #bbbbbb;
+}
+
+option {
+  font-size: 0.8em;
+}
+
+.inputs-wrapper {
+  height: 16.2em;
+  padding: 0.5em 12%;
+}
+
+div.input {
+  margin-bottom: 1em;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.25em;
+}
+
+input {
+  border: none;
+  padding: 0.5em 1em;
+  background: #f2f2f2;
+  border-radius: 0.2em;
+  color: #697cae;
+  width: 100%;
+}
+
+input:focus {
+  outline: solid thin #bbbbbb;
+}
+
+.form-buttons {
+  position: absolute;
+  width: 85%;
+  bottom: 1.3em;
+}
+
+form .btn {
+  width: 38%;
+  margin: 1em 0;
+}
+
+form .btn.cancel {
+  margin-right: 4%;
+}
+
+.action .icon.active {
+  display: block;
+  position: absolute;
+  width: 3.1em;
+  top: -1.5em;
+  left: 42%;
+  border-radius: 50%;
+  text-align: center;
+  background-color: white;
+}
+
+/*
   Forms: test-input placeholder color
 */
 
@@ -3867,105 +3976,6 @@ body.list-view div.title .priorities.btn:hover {
   /* Firefox 4 - 18 */
   color: #bbbbbb;
   opacity: 1;
-}
-
-/*
-  Form Modal style rules
-*/
-
-div.modal div.shadow-back {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.25);
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-div.modal div.shadow-back form {
-  z-index: 1;
-  position: fixed;
-  top: 43%;
-  background-color: rgba(255, 255, 255, 0.95);
-  width: 93%;
-  left: 3%;
-  height: 22.3em;
-  padding: 2em;
-  border-radius: 1em;
-}
-
-div.modal div.shadow-back form span.modal-heading {
-  display: block;
-  font-size: 2em;
-  width: 70%;
-  float: right;
-  margin-right: 2em;
-  margin-top: 0.5em;
-}
-
-div.modal div.shadow-back form select.modal-selectBox {
-  position: absolute;
-  top: 2.55em;
-  left: 34%;
-  font-size: 1.3em;
-  font-family: inherit;
-  padding-left: 0.4em;
-}
-
-div.modal div.shadow-back form div.message {
-  margin-left: 21%;
-  margin-top: 5em;
-  font-size: 1.2em;
-}
-
-div.modal div.shadow-back form div.input {
-  position: absolute;
-  right: 3em;
-  width: 70%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-div.modal div.shadow-back form div.input.first {
-  top: 7em;
-}
-
-div.modal div.shadow-back form div.input.second {
-  top: 11em;
-}
-
-div.modal div.shadow-back form div.input label {
-  color: #86c7e6;
-  float: left;
-  padding: 0.5em 0.5em 0.5em 0;
-}
-
-div.modal div.shadow-back form div.input input {
-  border: none;
-  padding: 0.5em 1em;
-  background: #cfe9f5;
-  border-radius: 0.2em;
-  color: #697cae;
-  float: right;
-  width: 100%;
-}
-
-div.modal div.shadow-back form div.input input#listElement-create-deadline {
-  width: 85%;
-}
-
-div.modal div.shadow-back form i.img {
-  position: absolute;
-  top: 36%;
-  left: 72%;
-}
-
-div.modal div.shadow-back form div.form-buttons {
-  position: absolute;
-  bottom: 1em;
-  right: 2em;
 }
 
 /*

@@ -5,20 +5,16 @@
 
             <div class="heading-wrapper">
                 <span class="modal-heading">
-                    Add to List
+                    New:
                 </span>
+                <select class="modal-selectBox" name="elementType" size="1">
+                    <option selected="selected" value="task">Task</option>
+                    <option value="subcategory">Task Subcategory</option>
+                    <option value="category">Task Category</option>
+                </select>
             </div>
 
             <div class="inputs-wrapper">
-                <div class="select input">
-                    <label for="listElement-create-type">New:</label>
-                    <select id="listElement-create-type" class="modal-selectBox" name="elementType" size="1">
-                        <option selected="selected" value="task">Task</option>
-                        <option value="subcategory">Task Subcategory</option>
-                        <option value="category">Task Category</option>
-                    </select>
-                </div>
-
                 <div class="first input">
                     <label for="listElement-create-name">Name:</label>
                     <input id="listElement-create-name" type="text" name="name">
@@ -35,24 +31,25 @@
                 </div>
             </div>
 
-            <div class="action icons">
-                    <span class="create icon active">
-                        <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
-                    </span>
-                    <span class="delete icon hidden">
+            <div class="fake action-menu">
+                <ul>
+                    <li class="action-button create">
+                        <i class="fa fa-plus-circle fa-3x highlighted" aria-hidden="true"></i>
+                    </li>
+                    <li class="action-button delete">
                         <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
-                    </span>
-                    <span class="edit icon hidden">
+                    </li>
+                    <li class="action-button edit">
                         <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>
-                    </span>
-                    <span class="status icon hidden">
+                    </li>
+                    <li class="action-button status">
                         <i class="fa fa-check-square-o fa-3x" aria-hidden="true"></i>
-                    </span>
-                    <span class="priority icon hidden">
+                    </li>
+                    <li class="action-button priority">
                         <i class="fa fa-star fa-3x" aria-hidden="true"></i>
-                    </span>
+                    </li>
+                </ul>
             </div>
-
         </form>
     </div>
 </div>

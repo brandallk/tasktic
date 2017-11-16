@@ -9,17 +9,16 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .modal form {
     z-index: 1;
-    position: relative;
-    margin: auto;
-    margin-top: calc(50vh - 13em);
+    position: fixed;
+    top: 18%;
+    left: 5%;
     width: 90%;
-    max-width: 340px;
-    height: 26em;
+    height: 22.3em;
     padding: 1.8em 2.5%;
     border: solid thin $mediumBlue;
     border-radius: 0.5em;
@@ -28,39 +27,43 @@
 
 .modal .heading-wrapper {
     width: 100%;
-    padding: 1.5em 7% 0.5em;
+    padding: 0.5em 7% 1.5em;
     font-size: 1.1em;
     text-align: center;
 
     .modal-heading {
         padding-right: 2%;
         font-weight: 500;
-        color: $lightBlue;
+        color: $mediumBlue;
     }
 }
 
 select {
-    width: 100%;
-    padding: 0.5em 1em;
     border-radius: 2px;
-    outline: solid thin $lightestGrey;
+    background: $darkBlue;
+    color: $white;
 
-    &:focus {
-        outline: solid thin $lightGrey;
-    }
+    outline: none;
+    box-shadow: none;
+    border: none !important;
 }
 
 option {
+    background: $mediumBlue;
+    color: $white;
     font-size: 0.8em;
 }
 
 .inputs-wrapper {
+    background: $darkBlue;
     height: 16.2em;
-    padding: 0.5em 12%;
+    padding-top: 0.5em;
+    padding-left: 6%;
+    padding-right: 6%;
 }
 
 div.input {
-    margin-bottom: 1em;
+    margin: 1em 0;
 }
 
 label {
@@ -88,23 +91,12 @@ input {
 }
 
 form .btn {
-    width: 38%;
-    margin: 1em 0;
-
-    &.cancel {
-        margin-right: 4%;
-    }
+    width: 44%;
+    margin: 2%;
 }
 
-.action .icon.active {
-    display: block;
-    position: absolute;
-    width: 3.1em;
-    top: -1.5em;
-    left: 42%;
-    border-radius: 50%;
-    text-align: center;
-    background-color: white;
+.action-menu.fake {
+    display: none;
 }
 
 
