@@ -3749,23 +3749,15 @@ body.list-view span.menu-toggle i.fa:hover {
   List-view style rules: Title Area
 */
 
-body.list-view div.title {
-  padding: 0 3em 0 4em;
+div.title {
+  padding: 0 3em 1em 4em;
 }
 
-body.list-view div.title h1 {
+div.title h1 {
   display: inline-block;
 }
 
-body.list-view div.title .priorities.btn {
-  float: right;
-  -webkit-transition-property: background-color;
-  transition-property: background-color;
-  -webkit-transition-duration: 0.4s;
-          transition-duration: 0.4s;
-}
-
-body.list-view div.title .priorities.btn:hover {
+div.title .priorities.btn:hover {
   background-color: #bf995e;
   -webkit-box-shadow: 0 0 0.5em 0.1em #4d4d4d;
           box-shadow: 0 0 0.5em 0.1em #4d4d4d;
