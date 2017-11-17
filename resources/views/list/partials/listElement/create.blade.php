@@ -43,10 +43,10 @@
                         <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
                     </span>
                     <span class="edit icon hidden">
-                        <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i>
+                        <i class="fa fa-pencil fa-3x" aria-hidden="true"></i>
                     </span>
                     <span class="status icon hidden">
-                        <i class="fa fa-check-square-o fa-3x" aria-hidden="true"></i>
+                        <i class="fa fa-check-circle fa-3x" aria-hidden="true"></i>
                     </span>
                     <span class="priority icon hidden">
                         <i class="fa fa-star fa-3x" aria-hidden="true"></i>

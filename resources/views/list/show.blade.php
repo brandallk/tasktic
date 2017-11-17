@@ -70,10 +70,10 @@
                     <i class="fa fa-times-circle fa-3x action-icon" aria-hidden="true"></i>
                 </li>
                 <li class="edit action-button">
-                    <i class="fa fa-pencil-square-o fa-3x action-icon" aria-hidden="true"></i>
+                    <i class="fa fa-pencil fa-3x action-icon" aria-hidden="true"></i>
                 </li>
                 <li class="status action-button">
-                    <i class="fa fa-check-square-o fa-3x action-icon" aria-hidden="true"></i>
+                    <i class="fa fa-check-circle fa-3x action-icon" aria-hidden="true"></i>
                 </li>
                 <li class="priority action-button">
                     <i class="fa fa-star fa-3x action-icon" aria-hidden="true"></i>

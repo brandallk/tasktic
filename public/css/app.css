@@ -3885,6 +3885,14 @@ body.list-view div.title .priorities.btn:hover {
   background-color: #ffffff;
 }
 
+.modal.short form {
+  height: 17em;
+}
+
+.modal.short .inputs-wrapper {
+  height: 11em;
+}
+
 .modal .heading-wrapper {
   width: 100%;
   padding: 1.5em 7% 0.5em;
@@ -3959,11 +3967,22 @@ form .btn.cancel {
   display: block;
   position: absolute;
   width: 3.1em;
+  height: 3.1em;
   top: -1.5em;
   left: 42%;
   border-radius: 50%;
   text-align: center;
   background-color: white;
+}
+
+.action .icon.active.delete i {
+  color: #d57282;
+}
+
+.action .icon.active.edit i {
+  margin-top: 0.25em;
+  font-size: 2em;
+  color: #4a5376;
 }
 
 /*
@@ -4091,6 +4110,11 @@ main.list-view {
   display: block;
 }
 
+.task.selected .modal,
+.task:hover .modal {
+  cursor: default;
+}
+
 .task.complete .task-title {
   text-decoration: line-through;
 }
@@ -4150,9 +4174,13 @@ main.list-view {
   padding: 0.15em 0;
 }
 
-.task-item:hover span,
+.task-item:hover span.deadline-content,
+.task-item:hover span.link-content,
+.task-item:hover span.detail-content,
 .task-item:hover span i,
-.task-item.selected span,
+.task-item.selected span.deadline-content,
+.task-item.selected span.link-content,
+.task-item.selected span.detail-content,
 .task-item.selected span i {
   color: #697cae;
 }
