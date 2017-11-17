@@ -1,41 +1,44 @@
-<div class="hidden modal main-menu new">
+<div class="hidden short modal main-menu new">
     <div class="shadow-back">
         <form method="post" action="{{ route('lists.store') }}">
             {{ csrf_field() }}
             
-            <span class="modal-heading">
-                Create a new list
-            </span>
-
-            <div class="first input">
-                <label for="list-create-name">Name:</label>
-                <input id="list-create-name" type="text" name="name">
+            <div class="heading-wrapper">
+                <span class="modal-heading">
+                    Create a new list
+                </span>
             </div>
 
-            <div class="form-buttons">
-                <span class="cancel btn white">Cancel</span>
-                <span class="submit btn pink">Submit</span>
+            <div class="inputs-wrapper">
+                <div class="first input">
+                    <label for="list-create-name">Name:</label>
+                    <input id="list-create-name" type="text" name="name">
+                </div>
+
+                <div class="form-buttons">
+                    <span class="cancel btn white">Cancel</span>
+                    <span class="submit btn pink">Submit</span>
+                </div>
             </div>
 
-            <div class="fake action-menu">
-                <ul>
-                    <li class="action-button create">
-                        <i class="fa fa-plus-circle fa-3x highlighted" aria-hidden="true"></i>
-                    </li>
-                    <li class="action-button delete">
+            <div class="action icons">
+                    <span class="create icon active">
+                        <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
+                    </span>
+                    <span class="delete icon hidden">
                         <i class="fa fa-times-circle fa-3x" aria-hidden="true"></i>
-                    </li>
-                    <li class="action-button edit">
+                    </span>
+                    <span class="edit icon hidden">
                         <i class="fa fa-pencil fa-3x" aria-hidden="true"></i>
-                    </li>
-                    <li class="action-button status">
+                    </span>
+                    <span class="status icon hidden">
                         <i class="fa fa-check-circle fa-3x" aria-hidden="true"></i>
-                    </li>
-                    <li class="action-button priority">
+                    </span>
+                    <span class="priority icon hidden">
                         <i class="fa fa-star fa-3x" aria-hidden="true"></i>
-                    </li>
-                </ul>
+                    </span>
             </div>
+
         </form>
     </div>
 </div>
