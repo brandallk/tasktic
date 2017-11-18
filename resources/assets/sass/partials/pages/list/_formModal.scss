@@ -13,6 +13,11 @@
 }
 
 .modal {
+
+    @include MQ(Mobile-Landscape) {
+        font-size: 0.68em;
+    }
+
     form {
         z-index: 1;
         position: relative;
@@ -28,7 +33,10 @@
     }
 
     &.short {
-        form { height: 17em; }
+        form {
+            height: 17em;
+            margin-top: calc(50vh - 9em);
+        }
 
         .inputs-wrapper { height: 11em; }
     }

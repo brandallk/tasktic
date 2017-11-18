@@ -3,14 +3,40 @@
 */
 
 div.title {
-    padding: 0 3em 1em 4em;
+    padding-bottom: 0.5em;
     text-align: center;
+    font-size: 0.75em;
+
+    @include MQ(S-Notebook) {
+        font-size: 1em;
+    }
+
+    @include MQ(M) {
+        padding: 2em 0 1em 0;
+        font-size: 1em;
+    }
 
     h1 {
-        display: inline-block;
+        display: block;
+        margin: 0.67em auto;
+
+        @include MQ(M) {
+            display: inline-block;
+            float: left;
+            margin: 0.15em 0 0 10%;
+        }
     }
 
     .priorities.btn {
+        display: block;
+        margin: 1em auto;
+
+        @include MQ(M) {
+            display: inline-block;
+            float: right;
+            margin: 0 8% 0 0;
+        }
+
         &:hover {
             background-color: $mutedOrange;
             box-shadow: 0 0 0.5em 0.1em $darkGrey;

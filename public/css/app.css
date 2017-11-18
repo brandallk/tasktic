@@ -3542,6 +3542,12 @@ template {
   clip: auto;
 }
 
+/* Screen widths */
+
+/* Screen heights */
+
+/* Orientations */
+
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -3652,6 +3658,7 @@ body.list-view {
   background-color: #4a5376;
   position: relative;
   margin: 0 auto;
+  max-width: 57em;
 }
 
 /*
@@ -3660,7 +3667,12 @@ body.list-view {
 
 div.main-menu.up {
   margin-top: -12.2em;
-  /*margin-top: -5.5em;*/
+}
+
+@media only screen and (min-width: 30em) {
+  div.main-menu.up {
+    margin-top: -5.5em;
+  }
 }
 
 div.main-menu ul.menu-list {
@@ -3669,14 +3681,21 @@ div.main-menu ul.menu-list {
 }
 
 div.main-menu ul.menu-list li.action {
-  /*display: inline-block;*/
-  margin-right: -0.27em;
+  /*margin-right: -0.27em;*/
   padding: 1em 2.5em;
-  /*width: 25%;*/
   border-bottom: solid thin lightblue;
   background-color: #86c7e6;
   text-align: center;
   color: white;
+}
+
+@media only screen and (min-width: 30em) {
+  div.main-menu ul.menu-list li.action {
+    display: inline-block;
+    padding: 2.4em 0;
+    width: 25%;
+    border: none;
+  }
 }
 
 div.main-menu ul.menu-list li.action.load {
@@ -3686,13 +3705,18 @@ div.main-menu ul.menu-list li.action.load {
 div.main-menu ul.menu-list li.action.load ul.dropdown {
   position: absolute;
   top: 3em;
-  /*top: 6.15em;*/
   left: 0;
-  padding: 0.5em 3% 1.5em 3%;
+  padding: 0.5em 3% 0.5em 3%;
   width: 100%;
   -webkit-box-shadow: 0 2.5px 6px 0px #4a5376;
           box-shadow: 0 2.5px 6px 0px #4a5376;
   background-color: #4a5376;
+}
+
+@media only screen and (min-width: 30em) {
+  div.main-menu ul.menu-list li.action.load ul.dropdown {
+    top: 6.15em;
+  }
 }
 
 div.main-menu ul.menu-list li.action.load ul.dropdown li {
@@ -3711,8 +3735,10 @@ div.main-menu ul.menu-list li.action.load ul.dropdown a {
   color: white;
 }
 
-div.main-menu ul.menu-list li.action.logout {
-  margin-right: 0;
+@media only screen and (min-width: 30em) {
+  div.main-menu ul.menu-list li.action.logout {
+    margin-right: 0;
+  }
 }
 
 div.main-menu ul.menu-list li.action:hover {
@@ -3735,12 +3761,48 @@ span.menu-toggle i.fa:hover {
 */
 
 div.title {
-  padding: 0 3em 1em 4em;
+  padding-bottom: 0.5em;
   text-align: center;
+  font-size: 0.75em;
+}
+
+@media only screen and (min-width: 30em) and (min-height: 44em) {
+  div.title {
+    font-size: 1em;
+  }
+}
+
+@media only screen and (min-width: 43em) {
+  div.title {
+    padding: 2em 0 1em 0;
+    font-size: 1em;
+  }
 }
 
 div.title h1 {
-  display: inline-block;
+  display: block;
+  margin: 0.67em auto;
+}
+
+@media only screen and (min-width: 43em) {
+  div.title h1 {
+    display: inline-block;
+    float: left;
+    margin: 0.15em 0 0 10%;
+  }
+}
+
+div.title .priorities.btn {
+  display: block;
+  margin: 1em auto;
+}
+
+@media only screen and (min-width: 43em) {
+  div.title .priorities.btn {
+    display: inline-block;
+    float: right;
+    margin: 0 8% 0 0;
+  }
 }
 
 div.title .priorities.btn:hover {
@@ -3763,9 +3825,44 @@ div.title .priorities.btn:hover {
   border-top: solid thin #697cae;
 }
 
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .action-menu {
+    top: 17.5em;
+    left: 6%;
+    width: 10%;
+    background: none;
+    border-top: none;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .action-menu {
+    top: 17.5em;
+    left: 4em;
+    margin-left: calc(50vw - 28.5em);
+    width: 4em;
+    background: none;
+    border-top: none;
+  }
+}
+
 .action-menu ul {
   padding-left: 0;
   text-align: center;
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .action-menu ul {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .action-menu ul {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .action-button {
@@ -3782,6 +3879,22 @@ div.title .priorities.btn:hover {
                 cursor: default;
             }
         } */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .action-button {
+    display: block;
+    margin: 1em 0;
+    font-size: 1em;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .action-button {
+    display: block;
+    margin: 1em 0;
+    font-size: 1em;
+  }
 }
 
 .action-button.hidden {
@@ -3849,6 +3962,12 @@ div.title .priorities.btn:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+@media only screen and (min-width: 18em) and (max-width: 46em) and (orientation: landscape) {
+  .modal {
+    font-size: 0.68em;
+  }
+}
+
 .modal form {
   z-index: 1;
   position: relative;
@@ -3865,6 +3984,7 @@ div.title .priorities.btn:hover {
 
 .modal.short form {
   height: 17em;
+  margin-top: calc(50vh - 9em);
 }
 
 .modal.short .inputs-wrapper {
@@ -3999,10 +4119,49 @@ main.list-view {
   border-top: solid #697cae thin;
 }
 
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  main.list-view {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 1em;
+    padding-top: 2em;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  main.list-view {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 1em;
+    padding-top: 2em;
+    width: 100%;
+  }
+}
+
 .theList {
-  margin: 1.5em;
+  margin: 1.5em 10%;
   padding: 1em;
+  min-height: 34em;
   background: #ffffff;
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .theList {
+    margin-left: 22%;
+    margin-right: 8%;
+    width: 95%;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .theList {
+    margin-left: 22%;
+    margin-right: 8%;
+    width: 95%;
+  }
 }
 
 .category-title,

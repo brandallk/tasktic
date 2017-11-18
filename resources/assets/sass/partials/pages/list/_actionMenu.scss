@@ -11,9 +11,36 @@
     opacity: 0.95;
     border-top: solid thin $mediumBlue;
 
+    @include MQ(M-Notebook) {
+        top: 17.5em;
+        left: 6%;
+        width: 10%;
+        background: none;
+        border-top: none;
+    }
+
+    @include MQ(L) {
+        top: 17.5em;
+        left: 4em;
+        margin-left: calc(50vw - 28.5em);
+        width: 4em;
+        background: none;
+        border-top: none;
+    }
+
     ul {
         padding-left: 0;
         text-align: center;
+
+        @include MQ(M-Notebook) {
+            margin: 0;
+            padding: 0;
+        }
+
+        @include MQ(L) {
+            margin: 0;
+            padding: 0;
+        }
     }
 }
 
@@ -21,6 +48,18 @@
     display: inline-block;
     margin: 0 2.5%;
     font-size: 0.75em;
+
+    @include MQ(M-Notebook) {
+        display: block;
+        margin: 1em 0;
+        font-size: 1em;
+    }
+
+    @include MQ(L) {
+        display: block;
+        margin: 1em 0;
+        font-size: 1em;
+    }
 
     &.hidden {
         display: none;

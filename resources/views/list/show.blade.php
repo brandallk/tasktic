@@ -18,9 +18,9 @@
     <!-- Main Menu (Top Menu) -->
     <div class="main-menu up">
         <ul class="menu-list">
-            <li class="action save">Save</li>
-            <li class="action new">New</li>
-            <li class="action load">Load
+            <li class="action save">Save
+            </li><li class="action new">New
+            </li><li class="action load">Load
                 <ul class="dropdown hidden">
                     @foreach ($user->taskLists as $taskList)
                         <li>
@@ -35,8 +35,8 @@
                             </a>
                         </li>
                 </ul>
-            </li>
-            <li class="action logout">
+            
+            </li><li class="action logout">
                 Logout
                 <form method="post" action="{{ route('logout') }}">
                     {{ csrf_field() }}

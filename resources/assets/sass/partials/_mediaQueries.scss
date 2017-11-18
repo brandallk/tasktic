@@ -1,20 +1,40 @@
-$XS: 18em; // (288px)
-$S: 30em;  // (480px)
-$M: 43em;  // (688px)
-$L: 57em;  // (912px)
-$XL: 75em; // (1200px: max width)
+/* Screen widths */
+$XS: 18em;       // (288px)
+$S:  30em;       // (480px)
+$M:  43em;       // (688px)
+$ML: 47em;       // (752px)
+$L:  57em;       // (912px)
+$XL: 75em;       // (1200px: max width)
+
+/* Screen heights */
+$Notebook: 44em; // (704px)
+
+/* Orientations */
+$Landscape: landscape;
 
 @mixin MQ($screenWidth) {
     @if $screenWidth == XS {
         @media only screen and (min-width: $XS) and (max-width: $S - 1) { @content; }
     }
+    @if $screenWidth == Mobile-Landscape {
+        @media only screen and (min-width: $XS) and (max-width: $ML - 1) and (orientation: $Landscape) { @content; }
+    }
     @else if $screenWidth == S {
-        @media only screen and (min-width: $S) and (max-width: $M - 1) { @content; }
+        @media only screen and (min-width: $S) { @content; }
+    }
+    @else if $screenWidth == S-Notebook {
+        @media only screen and (min-width: $S) and (min-height: $Notebook) { @content; }
     }
     @else if $screenWidth == M {
-        @media only screen and (min-width: $M) and (max-width: $L - 1) { @content; }
+        @media only screen and (min-width: $M) { @content; }
+    }
+    @else if $screenWidth == M-Notebook {
+        @media only screen and (min-width: $M) and (min-height: $Notebook) { @content; }
     }
     @else if $screenWidth == L {
-        @media only screen and (min-width: $L) and (max-width: $XL - 1) { @content; }
+        @media only screen and (min-width: $L) { @content; }
+    }
+    @else if $screenWidth == XL {
+        @media only screen and (min-width: $XL) { @content; }
     }
 }

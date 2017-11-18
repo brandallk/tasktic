@@ -6,12 +6,39 @@ main.list-view {
     padding-top: 0.5em;
     padding-bottom: 4.5em;
     border-top: solid $mediumBlue thin;
+
+    @include MQ(M-Notebook) {
+        display: flex;
+        margin-top: 1em;
+        padding-top: 2em;
+        width: 100%;
+    }
+
+    @include MQ(L) {
+        display: flex;
+        margin-top: 1em;
+        padding-top: 2em;
+        width: 100%;
+    }
 }
 
 .theList {
-    margin: 1.5em;
+    margin: 1.5em 10%;
     padding: 1em;
+    min-height: 34em;
     background: $white;
+
+    @include MQ(M-Notebook) {
+        margin-left: 22%;
+        margin-right: 8%;
+        width: 95%;
+    }
+
+    @include MQ(L) {
+        margin-left: 22%;
+        margin-right: 8%;
+        width: 95%;
+    }
 }
 
 .category-title,
