@@ -54,6 +54,28 @@ class TaskList extends Model
     }
 
     /**
+     * Get all tasks belonging to this TaskList that have 'priority' status.
+     *
+     * @return array  Array of App\Models\Task instances
+     */
+    public function priorities()
+    {
+        $priorityTasks = [];
+
+        foreach ($this->categories as $category) {
+            foreach ($category->subcategories as $subcategory) {
+                foreach ($subcategory->tasks as $task) {
+                    if ($task->status == 'priority') {
+                        $priorityTasks[] = $task;
+                    }
+                }
+            }
+        }
+
+        return $priorityTasks;
+    }
+
+    /**
      * Create a new unsaved TaskList that takes the current date as name.
      *
      * @param App\Models\User $user

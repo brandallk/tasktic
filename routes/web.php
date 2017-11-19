@@ -65,6 +65,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lists/{list}/create-element', 'ListController@createListElement')
         ->name('lists.create.element');
 
+    Route::get('/lists/{list}/priorities', 'ListController@priorities')
+        ->name('lists.priorities');
+
     // Category resources
     Route::post('/categories', 'CategoryController@store')->name('categories.store');
 

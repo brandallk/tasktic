@@ -3542,6 +3542,8 @@ template {
   clip: auto;
 }
 
+/*$mutedOrange   : #bf995e;*/
+
 /* Screen widths */
 
 /* Screen heights */
@@ -3639,7 +3641,7 @@ input:focus {
 }
 
 .btn.orange {
-  background-color: #e4b46f;
+  background-color: #f4c46f;
 }
 
 .btn.white {
@@ -3837,7 +3839,7 @@ div.title .priorities.btn {
 }
 
 div.title .priorities.btn:hover {
-  background-color: #bf995e;
+  background-color: #e4a575;
   -webkit-box-shadow: 0 0 0.5em 0.1em #4d4d4d;
           box-shadow: 0 0 0.5em 0.1em #4d4d4d;
 }
@@ -3928,11 +3930,11 @@ div.title .priorities.btn:hover {
 }
 
 .action-button.priority i {
-  color: #e4b46f;
+  color: #f4c46f;
 }
 
 .action-button.priority:hover i {
-  color: #bf995e;
+  color: #e4a575;
 }
 
 /*
@@ -4317,11 +4319,24 @@ main.list-view {
 }
 
 .task.priority {
-  background-color: #f4dfc3;
+  background-color: #f4c46f;
 }
 
+.task.priority.selected,
+.task.priority:hover {
+  background-color: #e4a575;
+}
+
+.task.priority .task-title,
 .task.priority .task-toggle i {
-  color: #697cae;
+  color: #ffffff;
+}
+
+.task.priority span.deadline-content,
+.task.priority span.link-content,
+.task.priority span.detail-content,
+.task.priority span i {
+  color: #ffffff;
 }
 
 .task .task-toggle {

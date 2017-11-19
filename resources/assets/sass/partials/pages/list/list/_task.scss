@@ -26,9 +26,20 @@
     }
 
     &.priority {
-        background-color: $lightOrange;
+        background-color: $orange;
 
-        .task-toggle i { color: $mediumBlue; }
+        &.selected,
+        &:hover { background-color: $mutedOrange; }
+
+        .task-title,
+        .task-toggle i { color: $white; }
+
+        span.deadline-content,
+        span.link-content,
+        span.detail-content,
+        span i {
+            color: $white;
+        }
     }
 
     .task-toggle {

@@ -56,7 +56,11 @@
     <!-- List-Title Area -->
     <div class="title clearfix">
         <h1>{{ $list->name }}</h1>
-        <span class="priorities btn orange">Priorities</span>
+        <span class="priorities btn orange">
+            <a href="{{ route('lists.priorities', [$taskList->id]) }}">
+                Priorities
+            </a>
+        </span>
     </div>
 
     <main class="list-view">
