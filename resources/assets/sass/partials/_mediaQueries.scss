@@ -9,7 +9,7 @@ $L:  57em;       // (912px: max width)
 $Notebook: 44em; // (704px)
 
 @mixin MQ($device) {
-    @if $device == Mobile-Landscape { //check
+    @if $device == Mobile-Landscape {
         /* Provision for mobile screens (including massive 700px+ width) so that
          * form modals can be made small enough to not overflow the screen in
          * landscape orientation. This is complicated by desktop browsers not
@@ -19,17 +19,17 @@ $Notebook: 44em; // (704px)
         @media only screen and (min-width: $XS) and (max-width: $ML)
             and (orientation: landscape) and (max-height: $M) { @content; }
     }
-    @else if $device == S { //check
+    @else if $device == S {
         @media only screen and (min-width: $S) { @content; }
     }
     @else if $device == SNotebook { //check
         /* Same as 'S' but targeting non-mobile devices. */
         @media only screen and (min-width: $S) and (min-height: $Notebook) { @content; }
     }
-    @else if $device == M { //check
+    @else if $device == M {
         @media only screen and (min-width: $M) { @content; }
     }
-    @else if $device == MNotebookOrL { //check
+    @else if $device == MNotebookOrL {
         @media only screen and (min-width: $M) and (min-height: $Notebook),
             only screen and (min-width: $L) { @content; }
     }
