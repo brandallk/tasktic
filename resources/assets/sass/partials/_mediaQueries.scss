@@ -9,16 +9,22 @@ $XL: 75em;       // (1200px: max width)
 /* Screen heights */
 $Notebook: 44em; // (704px)
 
-/* Orientations */
-$Landscape: landscape;
-
 @mixin MQ($screenWidth) {
     @if $screenWidth == XS {
-        @media only screen and (min-width: $XS) and (max-width: $S - 1) { @content; }
+        @media only screen and (min-width: $XS) and (max-width: $S) { @content; }
     }
+
+    /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
     @if $screenWidth == Mobile-Landscape {
-        @media only screen and (min-width: $XS) and (max-width: $ML - 1) and (orientation: $Landscape) { @content; }
+        @media only screen and (min-width: $XS) and (max-width: $ML)
+            and (orientation: landscape) and (max-height: $M) { @content; }
     }
+
     @else if $screenWidth == S {
         @media only screen and (min-width: $S) { @content; }
     }
@@ -30,6 +36,9 @@ $Landscape: landscape;
     }
     @else if $screenWidth == M-Notebook {
         @media only screen and (min-width: $M) and (min-height: $Notebook) { @content; }
+    }
+    @else if $screenWidth == ML {
+        @media only screen and (min-width: $ML) { @content; }
     }
     @else if $screenWidth == L {
         @media only screen and (min-width: $L) { @content; }

@@ -30,15 +30,76 @@
         border: solid thin $mediumBlue;
         border-radius: 0.5em;
         background-color: $white;
+
+        @include MQ(M-Notebook) {
+            position: fixed;
+            margin-top: 0;
+            top: 15em;
+            left: 5%;
+            max-width: 677px;
+            height: 24.1em;
+        }
+
+        @include MQ(L) {
+            position: fixed;
+            margin-top: 0;
+            top: 15em;
+            left: 2.9em;
+            margin-left: calc(50vw - 28.5em);
+            max-width: 677px;
+            height: 24.1em;
+        }
     }
 
     &.short {
         form {
             height: 17em;
             margin-top: calc(50vh - 9em);
+
+            @include MQ(M-Notebook) {
+                height: 24.1em;
+                margin-top: 0;
+            }
+
+            @include MQ(L) {
+                height: 24.1em;
+                margin-top: 0;
+            }
         }
 
-        .inputs-wrapper { height: 11em; }
+        .heading-wrapper {
+            @include MQ(M-Notebook) {
+                padding: 1em 5% 0.5em 17%;
+                font-size: 1.3em;
+            }
+
+            @include MQ(L) {
+                padding: 1em 5% 0.5em 17%;
+                font-size: 1.3em;
+            }
+        }
+
+        .inputs-wrapper {
+            height: 11em;
+
+            @include MQ(M-Notebook) {
+                height: 19.2em;
+            }
+
+            @include MQ(L) {
+                height: 19.2em;
+            }
+        }
+
+        .message {
+            @include MQ(M-Notebook) {
+                padding-left: 15%;
+            }
+
+            @include MQ(L) {
+                padding-left: 15%;
+            }
+        }
     }
 }
 
@@ -48,8 +109,13 @@
     font-size: 1.1em;
     text-align: center;
 
+    @include MQ(M-Notebook) { padding: 0 5% 0.5em 17%; }
+
+    @include MQ(L) { padding: 0 5% 0.5em 17%; }
+
     .modal-heading {
         padding-right: 2%;
+        font-size: 1.1em;
         font-weight: 500;
         color: $lightBlue;
     }
@@ -73,6 +139,16 @@ option {
 .inputs-wrapper {
     height: 16.2em;
     padding: 0.5em 12%;
+
+    @include MQ(M-Notebook) {
+        height: 19.2em;
+        padding: 0.5em 5% 0.5em 17%;
+    }
+
+    @include MQ(L) {
+        height: 19.2em;
+        padding: 0.5em 5% 0.5em 17%;
+    }
 }
 
 div.input {
@@ -101,31 +177,131 @@ input {
     position: absolute;
     width: 85%;
     bottom: 1.3em;
+
+    @include MQ(M-Notebook) {
+        width: 73.5%;
+        bottom: 0.5em;
+    }
+
+    @include MQ(L) {
+        width: 73.5%;
+        bottom: 0.5em;
+    }
 }
 
 form .btn {
     width: 38%;
     margin: 1em 0;
 
-    &.cancel { margin-right: 4%; }
+    &.cancel {
+        margin-right: 4%;
+
+        @include MQ(M-Notebook) {
+            margin-left: 20%;
+        }
+
+        @include MQ(L) {
+            margin-left: 20%;
+        }
+    }
+
+    &.submit,
+    &.cancel.pink {
+        margin: 1em 0;
+
+        @include MQ(M-Notebook) {
+            float: right;
+        }
+
+        @include MQ(L) {
+            float: right;
+        }
+    }
 }
 
-.action .icon.active {
-    display: block;
-    position: absolute;
-    width: 3.1em;
-    height: 3.1em;
-    top: -1.5em;
-    left: 42%;
-    border-radius: 50%;
-    text-align: center;
-    background-color: white;
+form .action {
 
-    &.delete i { color: $mediumPink; }
-    &.edit i {
-        margin-top: 0.25em;
-        font-size: 2em;
-        color: $darkBlue;
+    @include MQ(M-Notebook) {
+        padding: 0;
+        position: fixed;
+        top: 17.5em;
+        left: 8%;
+        width: 10%;
+        text-align: center;
+    }
+
+    @include MQ(L) {
+        padding: 0;
+        position: fixed;
+        top: 17.5em;
+        left: 4.4em;
+        margin-left: calc(50vw - 28.5em);
+        width: 5.6em;
+        text-align: center;
+    }
+
+    .icon {
+
+        @include MQ(M-Notebook) {
+            display: block;
+            margin: 1em 0;
+            border-radius: 0;
+            background-color: none;
+
+            &:not(.active) i { color: $lightGrey; }
+        }
+
+        @include MQ(L) {
+            display: block;
+            margin: 1em 0;
+            border-radius: 0;
+            background-color: none;
+
+            &:not(.active) i { color: $lightGrey; }
+        }
+
+        &.active {
+            display: block;
+            position: absolute;
+            width: 3.1em;
+            height: 3.1em;
+            top: -1.5em;
+            left: 42%;
+            border-radius: 50%;
+            text-align: center;
+            background-color: white;
+
+            @include MQ(M-Notebook) {
+                position: unset;
+                width: auto;
+                height: auto;
+                background-color: transparent;
+            }
+
+            @include MQ(L) {
+                position: unset;
+                width: auto;
+                height: auto;
+                background-color: transparent;
+            }
+
+            &.delete i { color: $mediumPink; }
+            &.edit i {
+                margin-top: 0.25em;
+                font-size: 2em;
+                color: $darkBlue;
+
+                @include MQ(M-Notebook) {
+                    margin-top: 0;
+                    font-size: 3em;
+                }
+
+                @include MQ(L) {
+                    margin-top: 0;
+                    font-size: 3em;
+                }
+            }
+        }
     }
 }
 

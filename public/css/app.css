@@ -3546,8 +3546,6 @@ template {
 
 /* Screen heights */
 
-/* Orientations */
-
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -3667,6 +3665,12 @@ body.list-view {
 
 div.main-menu.up {
   margin-top: -12.2em;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 30em) {
@@ -3687,6 +3691,12 @@ div.main-menu ul.menu-list li.action {
   background-color: #86c7e6;
   text-align: center;
   color: white;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 30em) {
@@ -3711,6 +3721,12 @@ div.main-menu ul.menu-list li.action.load ul.dropdown {
   -webkit-box-shadow: 0 2.5px 6px 0px #4a5376;
           box-shadow: 0 2.5px 6px 0px #4a5376;
   background-color: #4a5376;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 30em) {
@@ -3733,6 +3749,15 @@ div.main-menu ul.menu-list li.action.load ul.dropdown li:hover {
 
 div.main-menu ul.menu-list li.action.load ul.dropdown a {
   color: white;
+}
+
+div.main-menu ul.menu-list li.action.logout {
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 30em) {
@@ -3764,6 +3789,18 @@ div.title {
   padding-bottom: 0.5em;
   text-align: center;
   font-size: 0.75em;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 30em) and (min-height: 44em) {
@@ -3782,6 +3819,12 @@ div.title {
 div.title h1 {
   display: block;
   margin: 0.67em auto;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 43em) {
@@ -3795,6 +3838,12 @@ div.title h1 {
 div.title .priorities.btn {
   display: block;
   margin: 1em auto;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 43em) {
@@ -3818,17 +3867,28 @@ div.title .priorities.btn:hover {
 .action-menu {
   position: fixed;
   bottom: 0;
-  z-index: 1;
   width: 100%;
   background: #4a5376;
   opacity: 0.95;
   border-top: solid thin #697cae;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 43em) and (min-height: 44em) {
   .action-menu {
     top: 17.5em;
-    left: 6%;
+    left: 8%;
     width: 10%;
     background: none;
     border-top: none;
@@ -3838,7 +3898,7 @@ div.title .priorities.btn:hover {
 @media only screen and (min-width: 57em) {
   .action-menu {
     top: 17.5em;
-    left: 4em;
+    left: 4.4em;
     margin-left: calc(50vw - 28.5em);
     width: 4em;
     background: none;
@@ -3849,6 +3909,18 @@ div.title .priorities.btn:hover {
 .action-menu ul {
   padding-left: 0;
   text-align: center;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 43em) and (min-height: 44em) {
@@ -3869,6 +3941,18 @@ div.title .priorities.btn:hover {
   display: inline-block;
   margin: 0 2.5%;
   font-size: 0.75em;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
   /*  &.deactivated.create,
         &.deactivated.delete,
         &.deactivated.edit,
@@ -3962,7 +4046,16 @@ div.title .priorities.btn:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-@media only screen and (min-width: 18em) and (max-width: 46em) and (orientation: landscape) {
+.modal {
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 18em) and (max-width: 47em) and (orientation: landscape) and (max-height: 43em) {
   .modal {
     font-size: 0.68em;
   }
@@ -3980,15 +4073,156 @@ div.title .priorities.btn:hover {
   border: solid thin #697cae;
   border-radius: 0.5em;
   background-color: #ffffff;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .modal form {
+    position: fixed;
+    margin-top: 0;
+    top: 15em;
+    left: 5%;
+    max-width: 677px;
+    height: 24.1em;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .modal form {
+    position: fixed;
+    margin-top: 0;
+    top: 15em;
+    left: 2.9em;
+    margin-left: calc(50vw - 28.5em);
+    max-width: 677px;
+    height: 24.1em;
+  }
 }
 
 .modal.short form {
   height: 17em;
   margin-top: calc(50vh - 9em);
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .modal.short form {
+    height: 24.1em;
+    margin-top: 0;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .modal.short form {
+    height: 24.1em;
+    margin-top: 0;
+  }
+}
+
+.modal.short .heading-wrapper {
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .modal.short .heading-wrapper {
+    padding: 1em 5% 0.5em 17%;
+    font-size: 1.3em;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .modal.short .heading-wrapper {
+    padding: 1em 5% 0.5em 17%;
+    font-size: 1.3em;
+  }
 }
 
 .modal.short .inputs-wrapper {
   height: 11em;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .modal.short .inputs-wrapper {
+    height: 19.2em;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .modal.short .inputs-wrapper {
+    height: 19.2em;
+  }
+}
+
+.modal.short .message {
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .modal.short .message {
+    padding-left: 15%;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .modal.short .message {
+    padding-left: 15%;
+  }
 }
 
 .modal .heading-wrapper {
@@ -3996,10 +4230,35 @@ div.title .priorities.btn:hover {
   padding: 1.5em 7% 0.5em;
   font-size: 1.1em;
   text-align: center;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .modal .heading-wrapper {
+    padding: 0 5% 0.5em 17%;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .modal .heading-wrapper {
+    padding: 0 5% 0.5em 17%;
+  }
 }
 
 .modal .heading-wrapper .modal-heading {
   padding-right: 2%;
+  font-size: 1.1em;
   font-weight: 500;
   color: #86c7e6;
 }
@@ -4022,6 +4281,32 @@ option {
 .inputs-wrapper {
   height: 16.2em;
   padding: 0.5em 12%;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .inputs-wrapper {
+    height: 19.2em;
+    padding: 0.5em 5% 0.5em 17%;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .inputs-wrapper {
+    height: 19.2em;
+    padding: 0.5em 5% 0.5em 17%;
+  }
 }
 
 div.input {
@@ -4050,6 +4335,32 @@ input:focus {
   position: absolute;
   width: 85%;
   bottom: 1.3em;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  .form-buttons {
+    width: 73.5%;
+    bottom: 0.5em;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  .form-buttons {
+    width: 73.5%;
+    bottom: 0.5em;
+  }
 }
 
 form .btn {
@@ -4059,9 +4370,143 @@ form .btn {
 
 form .btn.cancel {
   margin-right: 4%;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
-.action .icon.active {
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  form .btn.cancel {
+    margin-left: 20%;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  form .btn.cancel {
+    margin-left: 20%;
+  }
+}
+
+form .btn.submit,
+form .btn.cancel.pink {
+  margin: 1em 0;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  form .btn.submit,
+  form .btn.cancel.pink {
+    float: right;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  form .btn.submit,
+  form .btn.cancel.pink {
+    float: right;
+  }
+}
+
+form .action {
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  form .action {
+    padding: 0;
+    position: fixed;
+    top: 17.5em;
+    left: 8%;
+    width: 10%;
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  form .action {
+    padding: 0;
+    position: fixed;
+    top: 17.5em;
+    left: 4.4em;
+    margin-left: calc(50vw - 28.5em);
+    width: 5.6em;
+    text-align: center;
+  }
+}
+
+form .action .icon {
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  form .action .icon {
+    display: block;
+    margin: 1em 0;
+    border-radius: 0;
+    background-color: none;
+  }
+
+  form .action .icon:not(.active) i {
+    color: #bbbbbb;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  form .action .icon {
+    display: block;
+    margin: 1em 0;
+    border-radius: 0;
+    background-color: none;
+  }
+
+  form .action .icon:not(.active) i {
+    color: #bbbbbb;
+  }
+}
+
+form .action .icon.active {
   display: block;
   position: absolute;
   width: 3.1em;
@@ -4071,16 +4516,72 @@ form .btn.cancel {
   border-radius: 50%;
   text-align: center;
   background-color: white;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
-.action .icon.active.delete i {
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  form .action .icon.active {
+    position: unset;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  form .action .icon.active {
+    position: unset;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+  }
+}
+
+form .action .icon.active.delete i {
   color: #d57282;
 }
 
-.action .icon.active.edit i {
+form .action .icon.active.edit i {
   margin-top: 0.25em;
   font-size: 2em;
   color: #4a5376;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+}
+
+@media only screen and (min-width: 43em) and (min-height: 44em) {
+  form .action .icon.active.edit i {
+    margin-top: 0;
+    font-size: 3em;
+  }
+}
+
+@media only screen and (min-width: 57em) {
+  form .action .icon.active.edit i {
+    margin-top: 0;
+    font-size: 3em;
+  }
 }
 
 /*
@@ -4117,6 +4618,18 @@ main.list-view {
   padding-top: 0.5em;
   padding-bottom: 4.5em;
   border-top: solid #697cae thin;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 43em) and (min-height: 44em) {
@@ -4146,6 +4659,18 @@ main.list-view {
   padding: 1em;
   min-height: 34em;
   background: #ffffff;
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
+  /* Provision for mobile screens (including massive 700px+ width) so that form
+     * modals can be made small enough to not overflow the screen in landscape orientation.
+     * This is complicated by desktop browsers not recognizing the 'orientation' or
+     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
+     * to impose a crude landscape-orientation query substitute that desktop browsers
+     * will honor. */
 }
 
 @media only screen and (min-width: 43em) and (min-height: 44em) {
@@ -4300,6 +4825,10 @@ main.list-view {
   font-size: 0.85em;
   margin-left: 13%;
   margin-right: 1em;
+}
+
+.task-item-wrapper form {
+  font-size: 1rem;
 }
 
 .task-item:last-child {

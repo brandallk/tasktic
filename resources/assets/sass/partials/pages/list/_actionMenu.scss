@@ -5,7 +5,6 @@
 .action-menu {
     position: fixed;
     bottom: 0;
-    z-index: 1;
     width: 100%;
     background: $darkBlue;
     opacity: 0.95;
@@ -13,7 +12,7 @@
 
     @include MQ(M-Notebook) {
         top: 17.5em;
-        left: 6%;
+        left: 8%;
         width: 10%;
         background: none;
         border-top: none;
@@ -21,7 +20,7 @@
 
     @include MQ(L) {
         top: 17.5em;
-        left: 4em;
+        left: 4.4em;
         margin-left: calc(50vw - 28.5em);
         width: 4em;
         background: none;
