@@ -7,14 +7,7 @@ main.list-view {
     padding-bottom: 4.5em;
     border-top: solid $mediumBlue thin;
 
-    @include MQ(M-Notebook) {
-        display: flex;
-        margin-top: 1em;
-        padding-top: 2em;
-        width: 100%;
-    }
-
-    @include MQ(L) {
+    @include MQ(MNotebookOrL) {
         display: flex;
         margin-top: 1em;
         padding-top: 2em;
@@ -28,13 +21,7 @@ main.list-view {
     min-height: 34em;
     background: $white;
 
-    @include MQ(M-Notebook) {
-        margin-left: 22%;
-        margin-right: 8%;
-        width: 95%;
-    }
-
-    @include MQ(L) {
+    @include MQ(MNotebookOrL) {
         margin-left: 22%;
         margin-right: 8%;
         width: 95%;

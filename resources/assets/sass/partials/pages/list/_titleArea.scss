@@ -7,7 +7,7 @@ div.title {
     text-align: center;
     font-size: 0.75em;
 
-    @include MQ(S-Notebook) {
+    @include MQ(SNotebook) {
         font-size: 1em;
     }
 

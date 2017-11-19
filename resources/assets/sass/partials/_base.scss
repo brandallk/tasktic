@@ -15,6 +15,39 @@ a {
     text-decoration: none;
 }
 
+select {
+    width: 100%;
+    padding: 0.5em 1em;
+    border-radius: 2px;
+    outline: solid thin $lightestGrey;
+
+    &:focus {
+        outline: solid thin $lightGrey;
+    }
+}
+
+option {
+    font-size: 0.8em;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0.25em;
+}
+
+input {
+    border: none;
+    padding: 0.5em 1em;
+    background: $lightestGrey;
+    border-radius: 0.2em;
+    color: $mediumBlue;
+    width: 100%;
+
+    &:focus {
+        outline: solid thin $lightGrey;
+    }
+}
+
 .hidden {
     display: none;
 }

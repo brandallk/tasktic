@@ -3,47 +3,34 @@ $XS: 18em;       // (288px)
 $S:  30em;       // (480px)
 $M:  43em;       // (688px)
 $ML: 47em;       // (752px)
-$L:  57em;       // (912px)
-$XL: 75em;       // (1200px: max width)
+$L:  57em;       // (912px: max width)
 
 /* Screen heights */
 $Notebook: 44em; // (704px)
 
-@mixin MQ($screenWidth) {
-    @if $screenWidth == XS {
-        @media only screen and (min-width: $XS) and (max-width: $S) { @content; }
-    }
-
-    /* Provision for mobile screens (including massive 700px+ width) so that form
-     * modals can be made small enough to not overflow the screen in landscape orientation.
-     * This is complicated by desktop browsers not recognizing the 'orientation' or
-     * (reliably) 'aspect-ratio' media queries: So a max-height restriction is also used
-     * to impose a crude landscape-orientation query substitute that desktop browsers
-     * will honor. */
-    @if $screenWidth == Mobile-Landscape {
+@mixin MQ($device) {
+    @if $device == Mobile-Landscape { //check
+        /* Provision for mobile screens (including massive 700px+ width) so that
+         * form modals can be made small enough to not overflow the screen in
+         * landscape orientation. This is complicated by desktop browsers not
+         * recognizing the 'orientation' or (reliably) 'aspect-ratio' media queries:
+         * So a max-height restriction is also used to impose a crude landscape-
+         * orientation query substitute that desktop browsers will honor. */
         @media only screen and (min-width: $XS) and (max-width: $ML)
             and (orientation: landscape) and (max-height: $M) { @content; }
     }
-
-    @else if $screenWidth == S {
+    @else if $device == S { //check
         @media only screen and (min-width: $S) { @content; }
     }
-    @else if $screenWidth == S-Notebook {
+    @else if $device == SNotebook { //check
+        /* Same as 'S' but targeting non-mobile devices. */
         @media only screen and (min-width: $S) and (min-height: $Notebook) { @content; }
     }
-    @else if $screenWidth == M {
+    @else if $device == M { //check
         @media only screen and (min-width: $M) { @content; }
     }
-    @else if $screenWidth == M-Notebook {
-        @media only screen and (min-width: $M) and (min-height: $Notebook) { @content; }
-    }
-    @else if $screenWidth == ML {
-        @media only screen and (min-width: $ML) { @content; }
-    }
-    @else if $screenWidth == L {
-        @media only screen and (min-width: $L) { @content; }
-    }
-    @else if $screenWidth == XL {
-        @media only screen and (min-width: $XL) { @content; }
+    @else if $device == MNotebookOrL { //check
+        @media only screen and (min-width: $M) and (min-height: $Notebook),
+            only screen and (min-width: $L) { @content; }
     }
 }
