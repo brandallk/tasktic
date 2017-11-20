@@ -87,6 +87,11 @@
             </div> <!-- end Tasks div -->
 
         @endforeach
+
+        @else
+            <p class="no-priorities-msg">
+                You have not yet marked any tasks as 'priority' status.
+            </p>
         @endif
 
     </div>

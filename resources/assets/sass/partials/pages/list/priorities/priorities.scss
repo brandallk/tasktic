@@ -11,20 +11,33 @@
     .titles {
         h1 {
             margin-bottom: 0.25em;
+            font-size: 1.5em;
             color: $white;
+
+            @include MQ(S) {
+                font-size: 2em;
+            }
         }
 
         span {
             display: block;
-            font-size: 1.2em;
+            font-size: 1em;
             color: white;
+
+            @include MQ(S) {
+                font-size: 1.2em;
+            }
         }
     }
 
     .icon {
         position: absolute;
-            top: 2.5em;
+            top: 1.9em;
             left: 9%;
+
+            @include MQ(S) {
+                top: 2.5em;
+            }
 
         &.return {
             &:hover {
@@ -42,4 +55,31 @@
     margin: 1.5em auto;
     width: 80%;
     min-height: auto;
+}
+
+.priorities-view .task {
+    &:hover,
+    &.selected {
+        cursor: default;
+        background-color: $white;
+
+        .task-title {
+            color: $lightBlue;
+            font-weight: 400;
+        }
+    }
+}
+
+.task-item:hover,
+.task-item.selected {
+    span.deadline-content,
+    span.link-content,
+    span.detail-content,
+    span i {
+        color: $lightBlue;
+    }
+}
+
+.no-priorities-msg {
+    text-align: center;
 }

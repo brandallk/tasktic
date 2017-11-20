@@ -3748,7 +3748,7 @@ div.main-menu ul.menu-list li.action.load ul.dropdown {
 
 @media only screen and (min-width: 30em) {
   div.main-menu ul.menu-list li.action.load ul.dropdown {
-    top: 6.15em;
+    top: 5.95em;
   }
 }
 
@@ -4425,19 +4425,38 @@ body.list-view main div.theList span.add-listElement {
 
 .priorities.header .titles h1 {
   margin-bottom: 0.25em;
+  font-size: 1.5em;
   color: #ffffff;
+}
+
+@media only screen and (min-width: 30em) {
+  .priorities.header .titles h1 {
+    font-size: 2em;
+  }
 }
 
 .priorities.header .titles span {
   display: block;
-  font-size: 1.2em;
+  font-size: 1em;
   color: white;
+}
+
+@media only screen and (min-width: 30em) {
+  .priorities.header .titles span {
+    font-size: 1.2em;
+  }
 }
 
 .priorities.header .icon {
   position: absolute;
-  top: 2.5em;
+  top: 1.9em;
   left: 9%;
+}
+
+@media only screen and (min-width: 30em) {
+  .priorities.header .icon {
+    top: 2.5em;
+  }
 }
 
 .priorities.header .icon.return:hover {
@@ -4456,5 +4475,32 @@ body.list-view main div.theList span.add-listElement {
   margin: 1.5em auto;
   width: 80%;
   min-height: auto;
+}
+
+.priorities-view .task:hover,
+.priorities-view .task.selected {
+  cursor: default;
+  background-color: #ffffff;
+}
+
+.priorities-view .task:hover .task-title,
+.priorities-view .task.selected .task-title {
+  color: #86c7e6;
+  font-weight: 400;
+}
+
+.task-item:hover span.deadline-content,
+.task-item:hover span.link-content,
+.task-item:hover span.detail-content,
+.task-item:hover span i,
+.task-item.selected span.deadline-content,
+.task-item.selected span.link-content,
+.task-item.selected span.detail-content,
+.task-item.selected span i {
+  color: #86c7e6;
+}
+
+.no-priorities-msg {
+  text-align: center;
 }
 
