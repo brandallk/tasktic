@@ -9,7 +9,10 @@ export default class TaskItem {
     activate() {
         this.domElement.addEventListener('click', () => {
             this.markNewSelection();
-            this.task.taskList.actionMenu.refresh(this.actions);
+
+            if (document.querySelector('div.action-menu')) {
+                this.task.taskList.actionMenu.refresh(this.actions);
+            }
 
             // Prevent bubbling the event up to a parent selectable element
             event.stopPropagation();

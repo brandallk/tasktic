@@ -31823,13 +31823,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var mainMenu = new __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__["a" /* default */]();
-var taskList = new __WEBPACK_IMPORTED_MODULE_1__taskList_TaskList__["a" /* default */]();
+if (document.querySelector('div.main-menu')) {
+    var mainMenu = new __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__["a" /* default */]();
+    mainMenu.activate();
+}
 
-mainMenu.activate();
-taskList.activate();
+if (document.querySelector('.theList')) {
+    var taskList = new __WEBPACK_IMPORTED_MODULE_1__taskList_TaskList__["a" /* default */]();
+    taskList.activate();
 
-window.onresize = taskList.redrawEnhancedTaskBorders.bind(taskList);
+    window.onresize = taskList.redrawEnhancedTaskBorders.bind(taskList);
+}
 
 /***/ }),
 
@@ -32158,13 +32162,34 @@ var TaskList = function () {
         this.tasks = this.getTasks();
         this.listElements = this.getListElements();
         this.selected = null;
-        this.actionMenu = new __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__["a" /* default */](this);
-        this.addToListButton = new __WEBPACK_IMPORTED_MODULE_4__AddToListButton__["a" /* default */](this);
-        this.validationErrors = new __WEBPACK_IMPORTED_MODULE_5__ValidationErrors__["a" /* default */](this);
+        this.actionMenu = this.getActionMenu();
+        this.addToListButton = this.getAddToListButton();
+        this.validationErrors = this.getValidationErrors();
         this.clearSelectionContext = document.querySelector('body');
     }
 
     _createClass(TaskList, [{
+        key: 'getActionMenu',
+        value: function getActionMenu() {
+            if (document.querySelector('div.action-menu')) {
+                return new __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__["a" /* default */](this);
+            }
+        }
+    }, {
+        key: 'getAddToListButton',
+        value: function getAddToListButton() {
+            if (document.querySelector('.add-listElement.btn')) {
+                return new __WEBPACK_IMPORTED_MODULE_4__AddToListButton__["a" /* default */](this);
+            }
+        }
+    }, {
+        key: 'getValidationErrors',
+        value: function getValidationErrors() {
+            if (document.querySelector('.alert.modal')) {
+                return new __WEBPACK_IMPORTED_MODULE_5__ValidationErrors__["a" /* default */](this);
+            }
+        }
+    }, {
         key: 'getCategories',
         value: function getCategories() {
             var _this = this;
@@ -32215,10 +32240,18 @@ var TaskList = function () {
                 listElement.activate();
             });
 
-            this.addToListButton.activate();
-            this.validationErrors.activate();
-            this.actionMenu.activateDefaultBehavior();
-            this.activateClearSelectionContext();
+            if (document.querySelector('.add-listElement.btn')) {
+                this.addToListButton.activate();
+            }
+
+            if (document.querySelector('.alert.modal')) {
+                this.validationErrors.activate();
+            }
+
+            if (document.querySelector('div.action-menu')) {
+                this.actionMenu.activateDefaultBehavior();
+                this.activateClearSelectionContext();
+            }
         }
 
         // Clear the List's current 'selected' element if user clicks off the List
@@ -32339,7 +32372,7 @@ var ActionMenu = function () {
         _classCallCheck(this, ActionMenu);
 
         this.taskList = taskList;
-        this.domElement = document.querySelector('div.action-menu:not(.fake)');
+        this.domElement = document.querySelector('div.action-menu');
         this.createButton = new __WEBPACK_IMPORTED_MODULE_0__buttons_CreateButton__["a" /* default */](this, this.domElement.querySelector('li.create'));
         this.deleteButton = new __WEBPACK_IMPORTED_MODULE_1__buttons_DeleteButton__["a" /* default */](this, this.domElement.querySelector('li.delete'));
         this.editButton = new __WEBPACK_IMPORTED_MODULE_2__buttons_EditButton__["a" /* default */](this, this.domElement.querySelector('li.edit'));
@@ -32351,7 +32384,6 @@ var ActionMenu = function () {
     _createClass(ActionMenu, [{
         key: 'refresh',
         value: function refresh(actions) {
-            console.log('refreshing');
             this.buttons.forEach(function (button) {
                 if (actions.includes(button.action)) {
                     button.activate();
@@ -32814,7 +32846,10 @@ var ListElement = function () {
 
             this.domElement.addEventListener('click', function () {
                 _this.markNewSelection();
-                _this.taskList.actionMenu.refresh(_this.actions);
+
+                if (document.querySelector('div.action-menu')) {
+                    _this.taskList.actionMenu.refresh(_this.actions);
+                }
 
                 // Prevent bubbling the event up to a parent selectable element
                 event.stopPropagation();
@@ -33273,7 +33308,10 @@ var TaskItem = function () {
 
             this.domElement.addEventListener('click', function () {
                 _this.markNewSelection();
-                _this.task.taskList.actionMenu.refresh(_this.actions);
+
+                if (document.querySelector('div.action-menu')) {
+                    _this.task.taskList.actionMenu.refresh(_this.actions);
+                }
 
                 // Prevent bubbling the event up to a parent selectable element
                 event.stopPropagation();

@@ -1,0 +1,45 @@
+/*
+  List priorities-view style rules
+*/
+
+.priorities.header {
+    padding: 1em 10%;
+    text-align: center;
+    background-color: $orange;
+    text-align: center;
+
+    .titles {
+        h1 {
+            margin-bottom: 0.25em;
+            color: $white;
+        }
+
+        span {
+            display: block;
+            font-size: 1.2em;
+            color: white;
+        }
+    }
+
+    .icon {
+        position: absolute;
+            top: 2.5em;
+            left: 9%;
+
+        &.return {
+            &:hover {
+                cursor: pointer;
+
+                i { color: $mediumBlue;}
+            }
+
+            i { color: $white; }
+        }
+    }
+}
+
+.priorities-view .theList {
+    margin: 1.5em auto;
+    width: 80%;
+    min-height: auto;
+}

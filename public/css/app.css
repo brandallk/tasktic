@@ -3687,7 +3687,8 @@ body.welcome-page div.greeting div.authLinks {
   List-view style rules: Base rules
 */
 
-body.list-view {
+body.list-view,
+body.priorities-view {
   background-color: #4a5376;
   position: relative;
   margin: 0 auto;
@@ -4409,5 +4410,51 @@ body.list-view main div.theList span.add-listElement {
   width: 90%;
   display: block;
   margin: 1em auto;
+}
+
+/*
+  List priorities-view style rules
+*/
+
+.priorities.header {
+  padding: 1em 10%;
+  text-align: center;
+  background-color: #f4c46f;
+  text-align: center;
+}
+
+.priorities.header .titles h1 {
+  margin-bottom: 0.25em;
+  color: #ffffff;
+}
+
+.priorities.header .titles span {
+  display: block;
+  font-size: 1.2em;
+  color: white;
+}
+
+.priorities.header .icon {
+  position: absolute;
+  top: 2.5em;
+  left: 9%;
+}
+
+.priorities.header .icon.return:hover {
+  cursor: pointer;
+}
+
+.priorities.header .icon.return:hover i {
+  color: #697cae;
+}
+
+.priorities.header .icon.return i {
+  color: #ffffff;
+}
+
+.priorities-view .theList {
+  margin: 1.5em auto;
+  width: 80%;
+  min-height: auto;
 }
 

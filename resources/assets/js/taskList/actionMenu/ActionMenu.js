@@ -8,7 +8,7 @@ export default class ActionMenu {
 
     constructor(taskList) {
         this.taskList       = taskList;
-        this.domElement     = document.querySelector('div.action-menu:not(.fake)');
+        this.domElement     = document.querySelector('div.action-menu');
         this.createButton   = new CreateButton(this, this.domElement.querySelector('li.create'));
         this.deleteButton   = new DeleteButton(this, this.domElement.querySelector('li.delete'));
         this.editButton     = new EditButton(this, this.domElement.querySelector('li.edit'));
@@ -23,7 +23,7 @@ export default class ActionMenu {
         ];
     }
 
-    refresh(actions) { console.log('refreshing');
+    refresh(actions) {
         this.buttons.forEach( (button) => {
             if (actions.includes(button.action)) {
                 button.activate();

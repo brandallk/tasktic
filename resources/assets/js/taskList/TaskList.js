@@ -14,10 +14,28 @@ export default class TaskList {
         this.tasks                 = this.getTasks();
         this.listElements          = this.getListElements();
         this.selected              = null;
-        this.actionMenu            = new ActionMenu(this);
-        this.addToListButton       = new AddToListButton(this);
-        this.validationErrors      = new ValidationErrors(this);
+        this.actionMenu            = this.getActionMenu();
+        this.addToListButton       = this.getAddToListButton();
+        this.validationErrors      = this.getValidationErrors();
         this.clearSelectionContext = document.querySelector('body');
+    }
+
+    getActionMenu() {
+        if (document.querySelector('div.action-menu')) {
+            return new ActionMenu(this);
+        }
+    }
+
+    getAddToListButton() {
+        if (document.querySelector('.add-listElement.btn')) {
+            return new AddToListButton(this);
+        }
+    }
+
+    getValidationErrors() {
+        if (document.querySelector('.alert.modal')) {
+            return new ValidationErrors(this);
+        }
     }
 
     getCategories() {
@@ -62,10 +80,18 @@ export default class TaskList {
             listElement.activate();
         });
 
-        this.addToListButton.activate();
-        this.validationErrors.activate();
-        this.actionMenu.activateDefaultBehavior();
-        this.activateClearSelectionContext();
+        if (document.querySelector('.add-listElement.btn')) {
+            this.addToListButton.activate();
+        }
+        
+        if (document.querySelector('.alert.modal')) {
+            this.validationErrors.activate();
+        }
+
+        if (document.querySelector('div.action-menu')) {
+            this.actionMenu.activateDefaultBehavior();
+            this.activateClearSelectionContext();
+        }
     }
 
     // Clear the List's current 'selected' element if user clicks off the List

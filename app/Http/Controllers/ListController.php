@@ -168,6 +168,7 @@ class ListController extends Controller
     {
        try {
             $data = [
+                'list' => $list,
                 'priorities' => $list->priorities()
             ];
 

@@ -2,7 +2,8 @@
   List-view style rules: Base rules
 */
 
-body.list-view {
+body.list-view,
+body.priorities-view {
     background-color: $darkBlue;
     position: relative;
     margin: 0 auto;
