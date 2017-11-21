@@ -212,7 +212,7 @@
 
                                 @if ( $task->id == $task->subcategory->tasks->sortBy('display_order')->last()->id )
 
-                                    <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" data-formID="{{ $task->list_element_id }}InsertBelow">
+                                    <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragleave="dragleave_handler(event);" data-formID="{{ $task->list_element_id }}InsertBelow">
 
                                         <form id="{{ $task->list_element_id }}InsertBelow" class="task-display-position-reorder hidden" method="post" action="{{ route('tasks.reorder', ['task' => $task->id]) }}">
                                             {{ csrf_field() }}
