@@ -148,10 +148,10 @@ class TaskController extends Controller
         }
     }
 
-    public function reorder(Request $request, Task $task)
+    public function reorderDisplayPosition(Request $request, Task $task)
     {
         try {
-            // $task::reorder($droppedTask, $draggedTask, $insertAbove, $insertBelow);
+            // $task::reorderDisplayPosition($droppedTask, $draggedTask, $insertAbove, $insertBelow);
 
             $draggedTask = Task::find($request->draggedTaskID);
             $droppedTask = $task;
