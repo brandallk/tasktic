@@ -90,7 +90,7 @@
 
                             <!-- List tasks -->
                             @if ($subcategory->tasks)
-                            @foreach ($subcategory->tasks->sortBy('display_order') as $task)
+                            @foreach ($subcategory->tasks->sortBy('display_position') as $task)
 
                                 <script type="text/javascript">
                                     function dragstart_handler(event) {
@@ -210,7 +210,7 @@
                                     
                                 </div> <!-- end Tasks div -->
 
-                                @if ( $task->id == $task->subcategory->tasks->sortBy('display_order')->last()->id )
+                                @if ( $task->id == $task->subcategory->tasks->sortBy('display_position')->last()->id )
 
                                     <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragleave="dragleave_handler(event);" data-formID="{{ $task->list_element_id }}InsertBelow">
 

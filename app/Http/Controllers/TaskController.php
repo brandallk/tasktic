@@ -158,10 +158,10 @@ class TaskController extends Controller
 
             if ($droppedTask->subcategory->id == $draggedTask->subcategory->id) {
 
-                $droppedTaskDispOrd = $droppedTask->display_order;
+                $droppedTaskDispOrd = $droppedTask->display_position;
 
                 $subcatTasks = [];
-                foreach ($task->subcategory->tasks->sortBy('display_order') as $task) {
+                foreach ($task->subcategory->tasks->sortBy('display_position') as $task) {
                     $subcatTasks[] = $task;
                 }
 
@@ -169,31 +169,31 @@ class TaskController extends Controller
 
                     for ($i=0; $i < count($subcatTasks); $i++) {
                         if ($subcatTasks[$i]->id != $draggedTask->id) {
-                            if ($subcatTasks[$i]->display_order < $droppedTaskDispOrd) {
-                                $subcatTasks[$i]->display_order = $i + 1;
+                            if ($subcatTasks[$i]->display_position < $droppedTaskDispOrd) {
+                                $subcatTasks[$i]->display_position = $i + 1;
                                 $subcatTasks[$i]->save();
-                            } elseif ($subcatTasks[$i]->display_order >= $droppedTaskDispOrd) {
-                                $subcatTasks[$i]->display_order += 1;
+                            } elseif ($subcatTasks[$i]->display_position >= $droppedTaskDispOrd) {
+                                $subcatTasks[$i]->display_position += 1;
                                 $subcatTasks[$i]->save();
                             }
                         }                
                     }
 
-                    $draggedTask->display_order = $droppedTaskDispOrd;
+                    $draggedTask->display_position = $droppedTaskDispOrd;
                     $draggedTask->save();
 
                 } elseif ($request->insertBelow) {
                     
                     for ($i=0; $i < count($subcatTasks); $i++) {
                         if ($subcatTasks[$i]->id != $draggedTask->id) {
-                            $subcatTasks[$i]->display_order = $i + 1;
+                            $subcatTasks[$i]->display_position = $i + 1;
                             $subcatTasks[$i]->save();
                         }                
                     }
 
                     $lastDisplayedSubcatTask = $subcatTasks[count($subcatTasks) - 1];
 
-                    $draggedTask->display_order = $lastDisplayedSubcatTask->display_order + 1;
+                    $draggedTask->display_position = $lastDisplayedSubcatTask->display_position + 1;
                     $draggedTask->save();
 
                 }

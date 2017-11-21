@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDisplayOrderColumnToTasksTable extends Migration
+class AddDisplayPositionColumnToTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddDisplayOrderColumnToTasksTable extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->integer('display_order')->nullable();
+            $table->integer('display_position')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddDisplayOrderColumnToTasksTable extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('display_order');
+            $table->dropColumn('display_position');
         });
     }
 }
