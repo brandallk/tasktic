@@ -4284,6 +4284,11 @@ main.list-view {
   font-weight: 500;
 }
 
+.dropTarget {
+  height: 0.5em;
+  background-color: transparent;
+}
+
 /*
   List-view style rules: The List - Task
 */

@@ -148,6 +148,70 @@ class TaskController extends Controller
         }
     }
 
+    public function reorder(Request $request, Task $task)
+    {
+        try {
+            // $task::reorder($droppedTask, $draggedTask, $insertAbove, $insertBelow);
+
+            $draggedTask = Task::find($request->draggedTaskID);
+            $droppedTask = $task;
+
+            if ($droppedTask->subcategory->id == $draggedTask->subcategory->id) {
+
+                $droppedTaskDispOrd = $droppedTask->display_order;
+
+                $subcatTasks = [];
+                foreach ($task->subcategory->tasks->sortBy('display_order') as $task) {
+                    $subcatTasks[] = $task;
+                }
+
+                if ($request->insertAbove) {
+
+                    for ($i=0; $i < count($subcatTasks); $i++) {
+                        if ($subcatTasks[$i]->id != $draggedTask->id) {
+                            if ($subcatTasks[$i]->display_order < $droppedTaskDispOrd) {
+                                $subcatTasks[$i]->display_order = $i + 1;
+                                $subcatTasks[$i]->save();
+                            } elseif ($subcatTasks[$i]->display_order >= $droppedTaskDispOrd) {
+                                $subcatTasks[$i]->display_order += 1;
+                                $subcatTasks[$i]->save();
+                            }
+                        }                
+                    }
+
+                    $draggedTask->display_order = $droppedTaskDispOrd;
+                    $draggedTask->save();
+
+                } elseif ($request->insertBelow) {
+                    
+                    for ($i=0; $i < count($subcatTasks); $i++) {
+                        if ($subcatTasks[$i]->id != $draggedTask->id) {
+                            $subcatTasks[$i]->display_order = $i + 1;
+                            $subcatTasks[$i]->save();
+                        }                
+                    }
+
+                    $lastDisplayedSubcatTask = $subcatTasks[count($subcatTasks) - 1];
+
+                    $draggedTask->display_order = $lastDisplayedSubcatTask->display_order + 1;
+                    $draggedTask->save();
+
+                }
+
+            }
+
+            // PRG pattern: After post request, return redirect to a get request
+            // so browser refresh will not resubmit the same post request.
+            $list = $task->subcategory->category->taskList;
+            return redirect()->route('lists.show', ['list' => $list->id]);
+
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+    }
+
     /**
      * Delete the given Task.
      *

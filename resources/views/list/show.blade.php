@@ -90,14 +90,53 @@
 
                             <!-- List tasks -->
                             @if ($subcategory->tasks)
-                            @foreach ($subcategory->tasks->sortBy('id') as $task)
+                            @foreach ($subcategory->tasks->sortBy('display_order') as $task)
+
+                                <script type="text/javascript">
+                                    function dragstart_handler(event) {
+                                        event.dataTransfer.setData("text/plain", event.target.getAttribute("data-taskID"));
+                                    }
+                                    function dragover_handler(event) {
+                                        event.preventDefault();
+                                        event.target.style.backgroundColor = '#86c7e6';
+                                    }
+                                    function dragleave_handler(event) {
+                                        event.target.style.backgroundColor = 'transparent';
+                                    }
+                                    function drop_handler(event) {
+                                        event.preventDefault();
+
+                                        var data = event.dataTransfer.getData("text");
+                                        var formID = event.target.getAttribute("data-formID");
+                                        var form = document.getElementById(formID);
+                                        var input = form.querySelector('input.draggedTaskID');
+                                        input.setAttribute('value', data);
+                                        form.submit();
+                                    }
+                                </script>
+
+                                <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragleave="dragleave_handler(event);" data-formID="{{ $task->list_element_id }}InsertAbove">
+
+                                    <form id="{{ $task->list_element_id }}InsertAbove" class="task-display-position-reorder hidden" method="post" action="{{ route('tasks.reorder', ['task' => $task->id]) }}">
+                                        {{ csrf_field() }}
+
+                                        {{ method_field('PATCH') }}
+
+                                        <input type="hidden" name="insertAbove" value="true">
+
+                                        <!-- value set by JS on drop event, == $task->id of dragged task -->
+                                        <input class="draggedTaskID" type="hidden" name="draggedTaskID" value="">
+                                        
+                                    </form>
+                                </div>
 
                                 <div id="{{ $task->list_element_id }}" class="task selectable <?php
                                     if (is_null($subcategory->name)) { echo "null-cat "; }
                                     if ($task->status == 'priority') {echo 'priority';}
                                     elseif ($task->status == 'complete') {echo 'complete';}
                                     else {echo 'incomplete';}
-                                    ?>">
+                                    ?>" draggable="true" ondragstart="dragstart_handler(event);" data-taskID="{{ $task->id }}">
+
                                     <canvas class="task-border top-border hidden" width="0" height="0"></canvas>
 
                                     <span class="task-toggle down">
@@ -170,6 +209,25 @@
                                     @include('list.partials.task.delete')
                                     
                                 </div> <!-- end Tasks div -->
+
+                                @if ( $task->id == $task->subcategory->tasks->sortBy('display_order')->last()->id )
+
+                                    <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" data-formID="{{ $task->list_element_id }}InsertBelow">
+
+                                        <form id="{{ $task->list_element_id }}InsertBelow" class="task-display-position-reorder hidden" method="post" action="{{ route('tasks.reorder', ['task' => $task->id]) }}">
+                                            {{ csrf_field() }}
+
+                                            {{ method_field('PATCH') }}
+
+                                            <input type="hidden" name="insertBelow" value="true">
+
+                                            <!-- value set by JS on drop event, == $task->id of dragged task -->
+                                            <input class="draggedTaskID" type="hidden" name="draggedTaskID" value="">
+                                            
+                                        </form>
+                                    </div>
+
+                                @endif
 
                             @endforeach
                             @endif

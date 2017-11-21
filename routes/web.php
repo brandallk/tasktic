@@ -100,6 +100,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');
 
+    Route::patch('/tasks/{task}/reorder', 'TaskController@reorder')->name('tasks.reorder');
+
     // Task-item resources (DeadlineItems, DetailItems, LinkItems)
     Route::post('/items', 'ItemController@store')->name('items.store');
 
