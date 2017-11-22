@@ -141,4 +141,38 @@ class Subcategory extends Model
             return true;
         });
     }
+
+    /**
+     * Get an indexed array containing the Subcategory's Tasks, in ascending order
+     * by Task->display_position.
+     *
+     * @return Array
+     */
+    public function getTasksOrderedByDisplayPosition() {
+        $tasksOrderedByDisplayPosition = [];
+
+        foreach ($this->tasks->sortBy('display_position') as $task) {
+            $tasksOrderedByDisplayPosition[] = $task;
+        }
+
+        return $tasksOrderedByDisplayPosition;
+    }
+
+    /**
+     * Get the last Task from an indexed array containing the Subcategory's Tasks
+     * (in ascending order by Task->display_position).
+     *
+     * @return App\Models\Task
+     */
+    public function getLastDisplayedTask() {
+        $tasks = $this->getTasksOrderedByDisplayPosition();
+
+        if ($tasks[1]) {
+            return $tasks[count($tasks) - 1];
+        } elseif ($tasks[0]) {
+            return $tasks[0];
+        } else {
+            return null;
+        }
+    }
 }

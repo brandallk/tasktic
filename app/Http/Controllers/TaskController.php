@@ -150,7 +150,7 @@ class TaskController extends Controller
 
     public function reorderDisplayPosition(Request $request, Task $task)
     {
-        try {
+        // try {
             // $task::reorderDisplayPosition($droppedTask, $draggedTask, $insertAbove, $insertBelow);
 
             $draggedTask = Task::find($request->draggedTaskID);
@@ -205,11 +205,11 @@ class TaskController extends Controller
             $list = $task->subcategory->category->taskList;
             return redirect()->route('lists.show', ['list' => $list->id]);
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();
-        }
+        // } catch (\Throwable $e) {
+        //     return redirect()->back();
+        // } catch (\Exception $e) {
+        //     return redirect()->back();
+        // }
     }
 
     /**
