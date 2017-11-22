@@ -150,66 +150,24 @@ class TaskController extends Controller
 
     public function reorderDisplayPosition(Request $request, Task $task)
     {
-        // try {
-            // $task::reorderDisplayPosition($droppedTask, $draggedTask, $insertAbove, $insertBelow);
+        try {
+            $movedTask   = Task::find($request->draggedTaskID);
+            $insertSite  = $task;
+            $insertAbove = ($request->insertAbove) ? true : false;
+            $insertBelow = ($request->insertBelow) ? true : false;
 
-            $draggedTask = Task::find($request->draggedTaskID);
-            $droppedTask = $task;
-
-            if ($droppedTask->subcategory->id == $draggedTask->subcategory->id) {
-
-                $droppedTaskDispOrd = $droppedTask->display_position;
-
-                $subcatTasks = [];
-                foreach ($task->subcategory->tasks->sortBy('display_position') as $task) {
-                    $subcatTasks[] = $task;
-                }
-
-                if ($request->insertAbove) {
-
-                    for ($i=0; $i < count($subcatTasks); $i++) {
-                        if ($subcatTasks[$i]->id != $draggedTask->id) {
-                            if ($subcatTasks[$i]->display_position < $droppedTaskDispOrd) {
-                                $subcatTasks[$i]->display_position = $i + 1;
-                                $subcatTasks[$i]->save();
-                            } elseif ($subcatTasks[$i]->display_position >= $droppedTaskDispOrd) {
-                                $subcatTasks[$i]->display_position += 1;
-                                $subcatTasks[$i]->save();
-                            }
-                        }                
-                    }
-
-                    $draggedTask->display_position = $droppedTaskDispOrd;
-                    $draggedTask->save();
-
-                } elseif ($request->insertBelow) {
-                    
-                    for ($i=0; $i < count($subcatTasks); $i++) {
-                        if ($subcatTasks[$i]->id != $draggedTask->id) {
-                            $subcatTasks[$i]->display_position = $i + 1;
-                            $subcatTasks[$i]->save();
-                        }                
-                    }
-
-                    $lastDisplayedSubcatTask = $subcatTasks[count($subcatTasks) - 1];
-
-                    $draggedTask->display_position = $lastDisplayedSubcatTask->display_position + 1;
-                    $draggedTask->save();
-
-                }
-
-            }
+            $movedTask->changeDisplayPosition($insertSite, $insertAbove, $insertBelow);
 
             // PRG pattern: After post request, return redirect to a get request
             // so browser refresh will not resubmit the same post request.
             $list = $task->subcategory->category->taskList;
             return redirect()->route('lists.show', ['list' => $list->id]);
 
-        // } catch (\Throwable $e) {
-        //     return redirect()->back();
-        // } catch (\Exception $e) {
-        //     return redirect()->back();
-        // }
+        } catch (\Throwable $e) {
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 
     /**

@@ -184,6 +184,76 @@ class Task extends Model
     }
 
     /**
+     * Reassign the Task's display_position (when it is dragged-and-dropped to a new position
+     * within its Subcategory <div>).
+     *
+     * @param App\Models\Task $insertSite  The Task immediately next to the drop-target
+     * @param bool $insertAbove  True if inserting above the $insertSite
+     * @param bool $insertBelow  True if inserting below the $insertSite
+     *
+     * @return bool  True if the display position changed successfully
+     */
+    public function changeDisplayPosition(
+        Task $insertSite, bool $insertAbove, bool $insertBelow)
+    {
+        // A Task can't be moved to a different Subcategory by drag-and-drop
+        if ($insertSite->subcategory == $this->subcategory) {
+
+            $this->display_position = null; // Temporarily clear the display position
+            $insertPosition         = $insertSite->display_position;
+            $tasks                  = $this->subcategory->getTasksOrderedByDisplayPosition();
+
+            if ($insertAbove) {
+
+                for ($i=0; $i < count($tasks); $i++) {
+
+                    // For all Tasks other than $this...
+                    if ($tasks[$i] != $this) {
+
+                        // Above the insert position, reassign display positions starting from 1
+                        if ($tasks[$i]->display_position < $insertPosition) {
+                            $tasks[$i]->display_position = $i + 1;
+                            $tasks[$i]->save();
+
+                        // At and below the insert position, increment display positions by 1
+                        } elseif ($tasks[$i]->display_position >= $insertPosition) {
+                            $tasks[$i]->display_position += 1;
+                            $tasks[$i]->save();
+                        }
+                    }                
+                }
+
+                // The insert position is $this Task's new display position
+                $this->display_position = $insertPosition;
+                $this->save();
+
+            } elseif ($insertBelow) {
+                
+                for ($i=0; $i < count($tasks); $i++) {
+
+                    // For all Tasks other than $this...
+                    if ($tasks[$i] != $this) {
+
+                        // Reassign display position starting from 1
+                        $tasks[$i]->display_position = $i + 1;
+                        $tasks[$i]->save();
+                    }                
+                }
+
+                // $this Task is positioned below the other Tasks
+                $lastTask = $this->subcategory->getLastDisplayedTask();
+                $this->display_position = $lastTask->display_position + 1;
+                $this->save();
+
+            }
+
+            return true; // $this Task's display position was changed
+        }
+
+        return false; // $this Task's display position was not changed
+    }
+
+    /**
      * Delete the given Task and all iItem instances belonging to it. Use a database transaction
      * so operations will automatically rollback if a failure occurs.
      *

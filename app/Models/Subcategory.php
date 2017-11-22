@@ -148,7 +148,8 @@ class Subcategory extends Model
      *
      * @return Array
      */
-    public function getTasksOrderedByDisplayPosition() {
+    public function getTasksOrderedByDisplayPosition()
+    {
         $tasksOrderedByDisplayPosition = [];
 
         foreach ($this->tasks->sortBy('display_position') as $task) {
@@ -164,7 +165,8 @@ class Subcategory extends Model
      *
      * @return App\Models\Task
      */
-    public function getLastDisplayedTask() {
+    public function getLastDisplayedTask()
+    {
         $tasks = $this->getTasksOrderedByDisplayPosition();
 
         if ($tasks[1]) {
