@@ -131,10 +131,10 @@ export default class Task extends ListElement {
             dropTarget.addEventListener('drop', (event) => {
                 event.preventDefault();
 
-                const data = event.dataTransfer.getData("text");
+                const draggedTaskID = event.dataTransfer.getData("text");
                 const form = dropTarget.querySelector('form');
                 const input = form.querySelector('input.draggedTaskID');
-                input.setAttribute('value', data);
+                input.setAttribute('value', draggedTaskID);
                 form.submit();
             });
 

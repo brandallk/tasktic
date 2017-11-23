@@ -92,18 +92,7 @@
                             @if ($subcategory->tasks)
                             @foreach ($subcategory->tasks->sortBy('display_position') as $task)
 
-                                <div class="dropTarget">
-
-                                    <form class="hidden" method="post" action="{{ route('tasks.reposition', ['task' => $task->id]) }}">
-                                        {{ csrf_field() }}
-
-                                        {{ method_field('PATCH') }}
-
-                                        <input type="hidden" name="insertAbove" value="true">
-                                        <input class="draggedTaskID" type="hidden" name="draggedTaskID" value="">
-                                        
-                                    </form>
-                                </div>
+                                @include('list.partials.dropTarget.insertAbove')
 
                                 <div id="{{ $task->list_element_id }}" class="task selectable <?php
                                     if (is_null($subcategory->name)) { echo "null-cat "; }
@@ -187,18 +176,7 @@
 
                                 @if ( $task->id == $task->subcategory->tasks->sortBy('display_position')->last()->id )
 
-                                    <div class="dropTarget">
-
-                                        <form class="hidden" method="post" action="{{ route('tasks.reposition', ['task' => $task->id]) }}">
-                                            {{ csrf_field() }}
-
-                                            {{ method_field('PATCH') }}
-
-                                            <input type="hidden" name="insertBelow" value="true">
-                                            <input class="draggedTaskID" type="hidden" name="draggedTaskID" value="">
-                                            
-                                        </form>
-                                    </div>
+                                    @include('list.partials.dropTarget.insertBelow')
 
                                 @endif
 

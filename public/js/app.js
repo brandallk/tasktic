@@ -33153,10 +33153,10 @@ var Task = function (_ListElement) {
                 dropTarget.addEventListener('drop', function (event) {
                     event.preventDefault();
 
-                    var data = event.dataTransfer.getData("text");
+                    var draggedTaskID = event.dataTransfer.getData("text");
                     var form = dropTarget.querySelector('form');
                     var input = form.querySelector('input.draggedTaskID');
-                    input.setAttribute('value', data);
+                    input.setAttribute('value', draggedTaskID);
                     form.submit();
                 });
             });
