@@ -33094,6 +33094,8 @@ var Task = function (_ListElement) {
             this.drawEnhancedBorders();
             this.dropdownToggle.activate();
             this.activateTaskItems();
+            this.makeDraggable();
+            this.makeDroppable();
         }
     }, {
         key: 'drawEnhancedBorders',
@@ -33124,6 +33126,40 @@ var Task = function (_ListElement) {
                     item.activate();
                 });
             }
+        }
+    }, {
+        key: 'makeDraggable',
+        value: function makeDraggable() {
+            this.domElement.addEventListener('dragstart', function (event) {
+                event.dataTransfer.setData("text/plain", event.target.getAttribute("data-taskID"));
+            });
+        }
+    }, {
+        key: 'makeDroppable',
+        value: function makeDroppable() {
+            var dropTargets = this.domElement.parentElement.querySelectorAll('.dropTarget');
+
+            dropTargets.forEach(function (dropTarget) {
+
+                dropTarget.addEventListener('dragover', function (event) {
+                    event.preventDefault();
+                    event.target.style.backgroundColor = '#86c7e6';
+                });
+
+                dropTarget.addEventListener('dragleave', function (event) {
+                    event.target.style.backgroundColor = 'transparent';
+                });
+
+                dropTarget.addEventListener('drop', function (event) {
+                    event.preventDefault();
+
+                    var data = event.dataTransfer.getData("text");
+                    var form = dropTarget.querySelector('form');
+                    var input = form.querySelector('input.draggedTaskID');
+                    input.setAttribute('value', data);
+                    form.submit();
+                });
+            });
         }
     }, {
         key: 'clearSelected',

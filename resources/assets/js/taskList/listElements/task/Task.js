@@ -76,6 +76,8 @@ export default class Task extends ListElement {
         this.drawEnhancedBorders();
         this.dropdownToggle.activate();
         this.activateTaskItems();
+        this.makeDraggable();
+        this.makeDroppable();
     }
 
     drawEnhancedBorders() {
@@ -104,6 +106,39 @@ export default class Task extends ListElement {
                 item.activate();
             });
         }
+    }
+
+    makeDraggable() {
+        this.domElement.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData("text/plain", event.target.getAttribute("data-taskID"));
+        });
+    }
+
+    makeDroppable() {
+        const dropTargets = this.domElement.parentElement.querySelectorAll('.dropTarget');
+
+        dropTargets.forEach( (dropTarget) => {
+
+            dropTarget.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                event.target.style.backgroundColor = '#86c7e6';
+            });
+
+            dropTarget.addEventListener('dragleave', (event) => {
+                event.target.style.backgroundColor = 'transparent';
+            });
+
+            dropTarget.addEventListener('drop', (event) => {
+                event.preventDefault();
+
+                const data = event.dataTransfer.getData("text");
+                const form = dropTarget.querySelector('form');
+                const input = form.querySelector('input.draggedTaskID');
+                input.setAttribute('value', data);
+                form.submit();
+            });
+
+        });
     }
 
     clearSelected() {
