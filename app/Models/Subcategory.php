@@ -169,9 +169,9 @@ class Subcategory extends Model
     {
         $tasks = $this->getTasksOrderedByDisplayPosition();
 
-        if ($tasks[1]) {
+        if (isset($tasks[1])) {
             return $tasks[count($tasks) - 1];
-        } elseif ($tasks[0]) {
+        } elseif (isset($tasks[0])) {
             return $tasks[0];
         } else {
             return null;
