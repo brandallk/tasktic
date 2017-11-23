@@ -169,11 +169,11 @@ class Subcategory extends Model
     {
         $tasks = $this->getTasksOrderedByDisplayPosition();
 
-        if (isset($tasks[1])) {
+        if (isset($tasks[1])) { // Array has at least two values
             return $tasks[count($tasks) - 1];
-        } elseif (isset($tasks[0])) {
+        } elseif (isset($tasks[0])) { // Array has only the one value
             return $tasks[0];
-        } else {
+        } else { // Array is empty
             return null;
         }
     }
