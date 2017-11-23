@@ -22,7 +22,7 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'subcategory_id', 'name', 'list_element_id', 'status', 'deadline'
+        'subcategory_id', 'name', 'list_element_id', 'status', 'deadline', 'display_position'
     ];
 
     /**
@@ -100,7 +100,9 @@ class Task extends Model
                 'name' => $name,
                 'list_element_id' => $uniqueID,
                 'status' => 'incomplete',
-                'deadline' => $deadline
+                'deadline' => $deadline,
+                'display_position' =>
+                    $subcategory->getLastDisplayedTask()->display_position + 1
             ]);
 
             $task->subcategory()->associate($subcategory);
