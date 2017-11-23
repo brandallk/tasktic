@@ -148,7 +148,16 @@ class TaskController extends Controller
         }
     }
 
-    public function reorderDisplayPosition(Request $request, Task $task)
+    /**
+     * Handle drag-and-drop re-ordering of Task display position within a
+     * Subcategory <div>
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Models\Task $task
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reposition(Request $request, Task $task)
     {
         try {
             $movedTask   = Task::find($request->draggedTaskID);

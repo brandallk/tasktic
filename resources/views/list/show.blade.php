@@ -117,7 +117,7 @@
 
                                 <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragleave="dragleave_handler(event);" data-formID="{{ $task->list_element_id }}InsertAbove">
 
-                                    <form id="{{ $task->list_element_id }}InsertAbove" class="task-display-position-reorder hidden" method="post" action="{{ route('tasks.reorder', ['task' => $task->id]) }}">
+                                    <form id="{{ $task->list_element_id }}InsertAbove" class="hidden" method="post" action="{{ route('tasks.reposition', ['task' => $task->id]) }}">
                                         {{ csrf_field() }}
 
                                         {{ method_field('PATCH') }}
@@ -214,7 +214,7 @@
 
                                     <div class="dropTarget" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragleave="dragleave_handler(event);" data-formID="{{ $task->list_element_id }}InsertBelow">
 
-                                        <form id="{{ $task->list_element_id }}InsertBelow" class="task-display-position-reorder hidden" method="post" action="{{ route('tasks.reorder', ['task' => $task->id]) }}">
+                                        <form id="{{ $task->list_element_id }}InsertBelow" class="hidden" method="post" action="{{ route('tasks.reposition', ['task' => $task->id]) }}">
                                             {{ csrf_field() }}
 
                                             {{ method_field('PATCH') }}
