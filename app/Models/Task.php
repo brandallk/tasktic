@@ -187,7 +187,8 @@ class Task extends Model
 
     /**
      * Reassign the Task's display_position (when it is dragged-and-dropped to a new position
-     * within its Subcategory <div>).
+     * within its Subcategory <div>). Use a database transaction so operations will
+     * automatically rollback if a failure occurs.
      *
      * @param App\Models\Task $insertSite  The Task immediately next to the drop-target
      * @param bool $insertAbove  True if inserting above the $insertSite
@@ -198,61 +199,67 @@ class Task extends Model
     public function changeDisplayPosition(
         Task $insertSite, bool $insertAbove, bool $insertBelow)
     {
-        // A Task can't be moved to a different Subcategory by drag-and-drop
-        if ($insertSite->subcategory == $this->subcategory) {
+        $task = $this;
 
-            $this->display_position = null; // Temporarily clear the display position
-            $insertPosition         = $insertSite->display_position;
-            $tasks                  = $this->subcategory->getTasksOrderedByDisplayPosition();
+        return DB::transaction(function () use (
+            $task, $insertSite, $insertAbove, $insertBelow
+        ) {        
+            // A Task can't be moved to a different Subcategory by drag-and-drop
+            if ($insertSite->subcategory == $task->subcategory) {
 
-            if ($insertAbove) {
+                $task->display_position = null; // Temporarily clear the display position
+                $insertPosition = $insertSite->display_position;
+                $tasks = $task->subcategory->getTasksOrderedByDisplayPosition();
 
-                for ($i=0; $i < count($tasks); $i++) {
+                if ($insertAbove) {
 
-                    // For all Tasks other than $this...
-                    if ($tasks[$i] != $this) {
+                    for ($i=0; $i < count($tasks); $i++) {
 
-                        // Above the insert position, reassign display positions starting from 1
-                        if ($tasks[$i]->display_position < $insertPosition) {
+                        // For all Tasks other than $this...
+                        if ($tasks[$i] != $task) {
+
+                            // Above the insert position, reassign display positions starting from 1
+                            if ($tasks[$i]->display_position < $insertPosition) {
+                                $tasks[$i]->display_position = $i + 1;
+                                $tasks[$i]->save();
+
+                            // At and below the insert position, increment display positions by 1
+                            } elseif ($tasks[$i]->display_position >= $insertPosition) {
+                                $tasks[$i]->display_position += 1;
+                                $tasks[$i]->save();
+                            }
+                        }                
+                    }
+
+                    // The insert position is $this Task's new display position
+                    $task->display_position = $insertPosition;
+                    $task->save();
+
+                } elseif ($insertBelow) {
+                    
+                    for ($i=0; $i < count($tasks); $i++) {
+
+                        // For all Tasks other than $this...
+                        if ($tasks[$i] != $task) {
+
+                            // Reassign display position starting from 1
                             $tasks[$i]->display_position = $i + 1;
                             $tasks[$i]->save();
+                        }                
+                    }
 
-                        // At and below the insert position, increment display positions by 1
-                        } elseif ($tasks[$i]->display_position >= $insertPosition) {
-                            $tasks[$i]->display_position += 1;
-                            $tasks[$i]->save();
-                        }
-                    }                
+                    // $this Task is positioned below the other Tasks
+                    $lastTask = $task->subcategory->getLastDisplayedTask();
+                    $task->display_position = $lastTask->display_position + 1;
+                    $task->save();
+
                 }
 
-                // The insert position is $this Task's new display position
-                $this->display_position = $insertPosition;
-                $this->save();
-
-            } elseif ($insertBelow) {
-                
-                for ($i=0; $i < count($tasks); $i++) {
-
-                    // For all Tasks other than $this...
-                    if ($tasks[$i] != $this) {
-
-                        // Reassign display position starting from 1
-                        $tasks[$i]->display_position = $i + 1;
-                        $tasks[$i]->save();
-                    }                
-                }
-
-                // $this Task is positioned below the other Tasks
-                $lastTask = $this->subcategory->getLastDisplayedTask();
-                $this->display_position = $lastTask->display_position + 1;
-                $this->save();
-
+                return true; // $this Task's display position was changed
             }
 
-            return true; // $this Task's display position was changed
-        }
-
-        return false; // $this Task's display position was not changed
+            return false; // $this Task's display position was not changed
+        });
     }
 
     /**
