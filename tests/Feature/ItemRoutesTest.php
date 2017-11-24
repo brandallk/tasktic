@@ -98,7 +98,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_store_method_returns_the_list_show_view()
+    public function ItemController_store_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -116,9 +116,8 @@ class ItemRoutesTest extends TestCase
                          ->post("/items", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('A new task detail.');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
@@ -175,7 +174,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_updateDetail_method_returns_the_list_show_view()
+    public function ItemController_updateDetail_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -192,9 +191,8 @@ class ItemRoutesTest extends TestCase
                          ->patch("/items/detail/{$item->id}", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('Some other task detail.');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
@@ -255,7 +253,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_updateLink_method_returns_the_list_show_view()
+    public function ItemController_updateLink_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -272,9 +270,8 @@ class ItemRoutesTest extends TestCase
                          ->patch("/items/link/{$item->id}", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('http://newuri.com');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -321,7 +318,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_destroyDeadline_method_returns_the_list_show_view()
+    public function ItemController_destroyDeadline_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -334,9 +331,8 @@ class ItemRoutesTest extends TestCase
                          ->delete("/items/deadline/{$item->id}");
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertDontSee('July 4');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -356,7 +352,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_destroyDetail_method_returns_the_list_show_view()
+    public function ItemController_destroyDetail_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -369,9 +365,8 @@ class ItemRoutesTest extends TestCase
                          ->delete("/items/detail/{$item->id}");
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertDontSee('A task detail.');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -391,7 +386,7 @@ class ItemRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ItemController_destroyLink_method_returns_the_list_show_view()
+    public function ItemController_destroyLink_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -404,8 +399,7 @@ class ItemRoutesTest extends TestCase
                          ->delete("/items/link/{$item->id}");
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertDontSee('http://someuri.com');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 }
