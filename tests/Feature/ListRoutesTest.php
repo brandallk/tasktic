@@ -77,7 +77,7 @@ class ListRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ListController_createListElement_method_returns_list_show_view()
+    public function ListController_createListElement_method_returns_redirect_to_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -92,9 +92,8 @@ class ListRoutesTest extends TestCase
                          ->post("/lists/{$list->id}/create-element", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('New Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -118,7 +117,7 @@ class ListRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ListController_store_method_returns_the_list_show_view()
+    public function ListController_store_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
 
@@ -128,11 +127,12 @@ class ListRoutesTest extends TestCase
 
         $response = $this->actingAs($user)
                          ->post('/lists', $requestData);
+                         
+        $list = $user->taskLists->where('name', 'New List')->first();
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('New List');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -157,7 +157,7 @@ class ListRoutesTest extends TestCase
     }
 
     /** @test */
-    public function ListController_update_method_returns_the_list_show_view()
+    public function ListController_update_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -170,9 +170,8 @@ class ListRoutesTest extends TestCase
                          ->patch("/lists/{$list->id}", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('New Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
