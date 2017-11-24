@@ -102,7 +102,8 @@ class Task extends Model
                 'status' => 'incomplete',
                 'deadline' => $deadline,
                 'display_position' =>
-                    $subcategory->getLastDisplayedTask()->display_position + 1
+                    ($subcategory->getLastDisplayedTask())
+                        ? ($subcategory->getLastDisplayedTask()->display_position + 1) : 1
             ]);
 
             $task->subcategory()->associate($subcategory);

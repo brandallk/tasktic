@@ -84,7 +84,7 @@ class TaskRoutesTest extends TestCase
     }
 
     /** @test */
-    public function TaskController_store_method_returns_the_list_show_view()
+    public function TaskController_store_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -101,9 +101,8 @@ class TaskRoutesTest extends TestCase
                          ->post("/tasks", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('Task Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
