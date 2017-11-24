@@ -77,7 +77,7 @@ class CategoryRoutesTest extends TestCase
     }
 
     /** @test */
-    public function CategoryController_store_method_returns_the_list_show_view()
+    public function CategoryController_store_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -91,9 +91,8 @@ class CategoryRoutesTest extends TestCase
                          ->post("/categories", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('Category Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
@@ -144,7 +143,7 @@ class CategoryRoutesTest extends TestCase
     }
 
     /** @test */
-    public function CategoryController_update_method_returns_the_list_show_view()
+    public function CategoryController_update_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -158,9 +157,8 @@ class CategoryRoutesTest extends TestCase
                          ->patch("/categories/{$category->id}", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('New Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -177,7 +175,7 @@ class CategoryRoutesTest extends TestCase
     }
 
     /** @test */
-    public function CategoryController_destroy_method_returns_the_list_show_view()
+    public function CategoryController_destroy_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -187,8 +185,7 @@ class CategoryRoutesTest extends TestCase
                          ->delete("/categories/{$category->id}");
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertDontSee('Category Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 }
