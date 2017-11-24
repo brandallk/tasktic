@@ -79,7 +79,7 @@ class SubcategoryRoutesTest extends TestCase
     }
 
     /** @test */
-    public function SubcategoryController_store_method_returns_the_list_show_view()
+    public function SubcategoryController_store_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -94,9 +94,8 @@ class SubcategoryRoutesTest extends TestCase
                          ->post("/subcategories", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('Subcategory Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
@@ -149,7 +148,7 @@ class SubcategoryRoutesTest extends TestCase
     }
 
     /** @test */
-    public function SubcategoryController_update_method_returns_the_list_show_view()
+    public function SubcategoryController_update_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -164,9 +163,8 @@ class SubcategoryRoutesTest extends TestCase
                          ->patch("/subcategories/{$subcategory->id}", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('New Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -184,7 +182,7 @@ class SubcategoryRoutesTest extends TestCase
     }
 
     /** @test */
-    public function SubcategoryController_destroy_method_returns_the_list_show_view()
+    public function SubcategoryController_destroy_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -195,8 +193,7 @@ class SubcategoryRoutesTest extends TestCase
                          ->delete("/subcategories/{$subcategory->id}");
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertDontSee('Subcategory Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 }
