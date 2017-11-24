@@ -161,7 +161,9 @@ class TaskRoutesTest extends TestCase
         $response = $this->actingAs($user)
                          ->patch("tasks/{$task->id}/details", $requestData);
 
-        $response->assertSuccessful();
+        $response
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     // 3 data sets that should each fail the TaskController::updateDetails validation
@@ -195,7 +197,7 @@ class TaskRoutesTest extends TestCase
     }
 
     /** @test */
-    public function TaskController_updateDetails_method_returns_the_list_show_view()
+    public function TaskController_updateDetails_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -212,10 +214,8 @@ class TaskRoutesTest extends TestCase
                          ->patch("tasks/{$task->id}/details", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertSee('New Name')
-            ->assertSee('New deadline');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
@@ -281,7 +281,7 @@ class TaskRoutesTest extends TestCase
     }
 
     /** @test */
-    public function TaskController_updateStatus_method_returns_the_list_show_view()
+    public function TaskController_updateStatus_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -297,8 +297,8 @@ class TaskRoutesTest extends TestCase
                          ->patch("tasks/{$task->id}/status", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /**
@@ -364,7 +364,7 @@ class TaskRoutesTest extends TestCase
     }
 
     /** @test */
-    public function TaskController_updatePriority_method_returns_the_list_show_view()
+    public function TaskController_updatePriority_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -380,8 +380,8 @@ class TaskRoutesTest extends TestCase
                          ->patch("tasks/{$task->id}/priority", $requestData);
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 
     /** @test */
@@ -400,7 +400,7 @@ class TaskRoutesTest extends TestCase
     }
 
     /** @test */
-    public function TaskController_destroy_method_returns_the_list_show_view()
+    public function TaskController_destroy_method_returns_redirect_to_the_list_show_view()
     {
         $user = $this->registerNewUser();
         $list = TaskList::newTaskList($user, 'List Name');
@@ -412,8 +412,7 @@ class TaskRoutesTest extends TestCase
                          ->delete("/tasks/{$task->id}");
 
         $response
-            ->assertSuccessful()
-            ->assertViewIs('list.show')
-            ->assertDontSee('Task Name');
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 }
