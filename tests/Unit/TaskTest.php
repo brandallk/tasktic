@@ -92,6 +92,21 @@ class TaskTest extends TestCase
     }
 
     /** @test */
+    public function a_new_Task_gets_a_display_position()
+    {
+        $subcategory = $this->makeNewSubcategory();
+        $task1 = Task::newTask($subcategory, 'task1');
+
+        $this->assertDatabaseHas('tasks', ['id' => $task1->id, 'display_position' => 1]);
+        $this->assertEquals(1, $task1->display_position);
+
+        $task2 = Task::newTask($subcategory, 'task2');
+
+        $this->assertDatabaseHas('tasks', ['id' => $task2->id, 'display_position' => 2]);
+        $this->assertEquals(2, $task2->display_position);
+    }
+
+    /** @test */
     public function a_Task_belongs_to_a_Subcategory()
     {
         $subcategory = $this->makeNewSubcategory();

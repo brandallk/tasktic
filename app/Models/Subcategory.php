@@ -152,7 +152,7 @@ class Subcategory extends Model
     {
         $tasksOrderedByDisplayPosition = [];
 
-        foreach ($this->tasks->sortBy('display_position') as $task) {
+        foreach ($this->tasks()->get()->sortBy('display_position') as $task) {
             $tasksOrderedByDisplayPosition[] = $task;
         }
 
