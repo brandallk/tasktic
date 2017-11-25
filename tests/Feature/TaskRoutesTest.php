@@ -385,6 +385,86 @@ class TaskRoutesTest extends TestCase
     }
 
     /** @test */
+    public function TaskController_reposition_method_reorders_Task_display_positions_when_a_Task_is_dragged_above_another()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+
+        $task1 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'name' => 'task1',
+            'display_position' => 1
+        ]);
+
+        $task2 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'name' => 'task2',
+            'display_position' => 2
+        ]);
+
+        $task3 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'name' => 'task3',
+            'display_position' => 3
+        ]);
+
+        $requestData = [
+            'draggedTaskID' => $task3->id,
+            'insertAbove' => 'true'
+        ];
+
+        // Drag $task3 over $task1
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task1->id}/reposition", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 1]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 2]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 3]);
+    }
+
+    /** @test */
+    public function TaskController_reposition_method_reorders_Task_display_positions_when_a_Task_is_dragged_to_bottom_of_Subcat()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+
+        $task1 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'name' => 'task1',
+            'display_position' => 1
+        ]);
+
+        $task2 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'name' => 'task2',
+            'display_position' => 2
+        ]);
+
+        $task3 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'name' => 'task3',
+            'display_position' => 3
+        ]);
+
+        $requestData = [
+            'draggedTaskID' => $task1->id,
+            'insertBelow' => 'true'
+        ];
+
+        // Drag $task1 below $task3
+        $response = $this->actingAs($user)
+                         ->patch("tasks/{$task3->id}/reposition", $requestData);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 2]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 3]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 4]);
+    }
+
+    /** @test */
     public function TaskController_destroy_method_deletes_a_Task()
     {
         $user = $this->registerNewUser();
