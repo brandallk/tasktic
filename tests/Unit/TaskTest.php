@@ -107,6 +107,29 @@ class TaskTest extends TestCase
     }
 
     /** @test */
+    public function changeDisplayPosition_method_reorders_Task_display_positions()
+    {
+        $subcategory = $this->makeNewSubcategory();
+        $task1 = Task::newTask($subcategory, 'task1');
+        $task2 = Task::newTask($subcategory, 'task2');
+        $task3 = Task::newTask($subcategory, 'task3');
+
+        // Drag $task3 over $task1
+        $task3->changeDisplayPosition($task1, true, false);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 1]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 2]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 3]);
+
+        // Drag $task3 below $task1 again
+        $task3->changeDisplayPosition($task1, false, true);
+
+        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 2]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 3]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 4]);
+    }
+
+    /** @test */
     public function a_Task_belongs_to_a_Subcategory()
     {
         $subcategory = $this->makeNewSubcategory();
