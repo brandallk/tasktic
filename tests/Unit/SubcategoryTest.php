@@ -83,22 +83,6 @@ class SubcategoryTest extends TestCase
     }
 
     /** @test */
-    public function a_Subategory_can_access_its_Tasks()
-    {
-        $user = factory(User::class)->create();
-        $list = TaskList::newTaskList($user, 'New List');
-        $category = Category::newCategory($list, 'New Category');
-        $subcategory = Subcategory::newSubcategory($category, 'New Subcategory');
-        
-        $newTask = Task::newTask($subcategory, 'New Task');
-
-        $this->assertEquals(
-            $newTask->id,
-            $subcategory->tasks->where('name', 'New Task')->first()->id
-        );
-    }
-
-    /** @test */
     public function a_Subcategory_can_be_updated()
     {
         $user = factory(User::class)->create();
