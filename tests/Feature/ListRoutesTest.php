@@ -190,6 +190,22 @@ class ListRoutesTest extends TestCase
     }
 
     /** @test */
+    public function ListController_priorities_method_returns_the_list_priorities_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        $response = $this->actingAs($user)
+                         ->get("/lists/{$list->id}/priorities");
+
+        $response
+            ->assertSuccessful()
+            ->assertViewIs('list.priorities.show')
+            ->assertSee('Priorities')
+            ->assertSee($list->name);
+    }
+
+    /** @test */
     public function ListController_destroy_method_deletes_the_list()
     {
         $user = $this->registerNewUser();
