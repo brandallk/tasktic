@@ -180,4 +180,36 @@ class SubcategoryTest extends TestCase
             $subcategory->getTasksOrderedByDisplayPosition()
         );
     }
+
+    /** @test */
+    public function getLastDisplayedTask_method_returns_Subcat_Task_with_highest_display_position()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newDefaultSubcategory($category);
+
+        $task1 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'display_position' => 3
+        ]);
+        $task1->wasRecentlyCreated = false;
+
+        $task2 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'display_position' => 2
+        ]);
+        $task2->wasRecentlyCreated = false;
+
+        $task3 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'display_position' => 1
+        ]);
+        $task3->wasRecentlyCreated = false;
+
+        $this->assertEquals(
+            $task1,
+            $subcategory->getLastDisplayedTask()
+        );
+    }
 }
