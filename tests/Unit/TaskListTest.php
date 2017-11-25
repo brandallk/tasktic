@@ -87,6 +87,27 @@ class TaskListTest extends TestCase
     }
 
     /** @test */
+    public function a_TaskList_has_an_array_of_its_priority_status_Tasks()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'New List');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newSubcategory($category, 'Subcategory Name');
+
+        $task1 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id
+        ]);
+
+        $task2 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'status' => 'priority'
+        ]);
+        $task2->wasRecentlyCreated = false;
+
+        $this->assertEquals([$task2], $list->priorities());
+    }
+
+    /** @test */
     public function a_TaskList_can_be_updated()
     {
         $user = factory(User::class)->create();
