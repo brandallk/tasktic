@@ -148,4 +148,36 @@ class SubcategoryTest extends TestCase
 
         $this->assertEquals(null, $subcategory->name);
     }
+
+    /** @test */
+    public function getTasksOrderedByDisplayPosition_method_returns_ordered_array_of_Subcats_Tasks()
+    {
+        $user = factory(User::class)->create();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $category = Category::newCategory($list, 'Category Name');
+        $subcategory = Subcategory::newDefaultSubcategory($category);
+
+        $task1 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'display_position' => 3
+        ]);
+        $task1->wasRecentlyCreated = false;
+
+        $task2 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'display_position' => 2
+        ]);
+        $task2->wasRecentlyCreated = false;
+
+        $task3 = factory(Task::class)->create([
+            'subcategory_id' => $subcategory->id,
+            'display_position' => 1
+        ]);
+        $task3->wasRecentlyCreated = false;
+
+        $this->assertEquals(
+            [$task3, $task2, $task1],
+            $subcategory->getTasksOrderedByDisplayPosition()
+        );
+    }
 }
