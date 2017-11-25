@@ -51,6 +51,17 @@ Route::middleware(['auth'])->group(function () {
     // Home page
     Route::get('/home', 'HomeController@showHome')->name('home');
 
+    // Save the user's local timezone to his/her User model
+    Route::post('/{user}/timezone', function(\Illuminate\Http\Request $request, \App\Models\User $user) {
+        // var_dump($request, $user);
+        // die($user);
+        $timezoneOffsetMinutes = $request->timezoneOffsetMinutes;
+        $timezoneName = timezone_name_from_abbr("", $timezoneOffsetMinutes*60, false);
+        $user->timezone = $timezoneName;
+        $user->save();
+        return redirect()->route('lists.show', ['list' => $request->listID]);
+    })->name('user.timezone');
+
     // TaskList resources
     Route::get('/lists', 'ListController@index')->name('lists.index');
 
