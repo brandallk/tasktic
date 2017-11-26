@@ -32131,6 +32131,52 @@ var AddToListButton = function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/taskList/StoreTimezoneForm.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var StoreTimezoneForm = function () {
+    function StoreTimezoneForm() {
+        _classCallCheck(this, StoreTimezoneForm);
+
+        this.domElement = document.querySelector('form#storeUserTimeZone');
+        this.tzInput = this.domElement.querySelector('input#tzOffset');
+        this.storedTZOffset = Number(this.domElement.getAttribute('data-storedTZOffset'));
+    }
+
+    _createClass(StoreTimezoneForm, [{
+        key: 'activate',
+        value: function activate() {
+            var tzOffsetMinutes = this.getUserTimezoneOffset();
+
+            this.tzInput.value = tzOffsetMinutes;
+
+            // Only submit the form if the user's timezone (offset) has changed
+            if (tzOffsetMinutes != this.storedTZOffset) {
+                this.domElement.submit();
+            }
+        }
+    }, {
+        key: 'getUserTimezoneOffset',
+        value: function getUserTimezoneOffset() {
+            var offset = new Date().getTimezoneOffset();
+            offset = offset == 0 ? 0 : -offset;
+
+            return offset;
+        }
+    }]);
+
+    return StoreTimezoneForm;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (StoreTimezoneForm);
+
+/***/ }),
+
 /***/ "./resources/assets/js/taskList/TaskList.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -32141,9 +32187,11 @@ var AddToListButton = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actionMenu_ActionMenu__ = __webpack_require__("./resources/assets/js/taskList/actionMenu/ActionMenu.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__AddToListButton__ = __webpack_require__("./resources/assets/js/taskList/AddToListButton.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ValidationErrors__ = __webpack_require__("./resources/assets/js/taskList/ValidationErrors.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__StoreTimezoneForm__ = __webpack_require__("./resources/assets/js/taskList/StoreTimezoneForm.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 
 
 
@@ -32165,6 +32213,7 @@ var TaskList = function () {
         this.actionMenu = this.getActionMenu();
         this.addToListButton = this.getAddToListButton();
         this.validationErrors = this.getValidationErrors();
+        this.storeTimezoneForm = this.getStoreTimezoneForm();
         this.clearSelectionContext = document.querySelector('body');
     }
 
@@ -32187,6 +32236,13 @@ var TaskList = function () {
         value: function getValidationErrors() {
             if (document.querySelector('.alert.modal')) {
                 return new __WEBPACK_IMPORTED_MODULE_5__ValidationErrors__["a" /* default */](this);
+            }
+        }
+    }, {
+        key: 'getStoreTimezoneForm',
+        value: function getStoreTimezoneForm() {
+            if (document.querySelector('form#storeUserTimeZone')) {
+                return new __WEBPACK_IMPORTED_MODULE_6__StoreTimezoneForm__["a" /* default */]();
             }
         }
     }, {
@@ -32251,6 +32307,10 @@ var TaskList = function () {
             if (document.querySelector('div.action-menu')) {
                 this.actionMenu.activateDefaultBehavior();
                 this.activateClearSelectionContext();
+            }
+
+            if (document.querySelector('form#storeUserTimeZone')) {
+                this.storeTimezoneForm.activate();
             }
         }
 

@@ -18,21 +18,6 @@
 
     @include('list.partials.storeTimezone')
 
-    <!-- Get the user's timezone offset (from UTC, in minutes) and store it in a data attribute on <body> -->
-    <script type="text/javascript">
-        var tzOffsetMinutes = new Date().getTimezoneOffset();
-        tzOffsetMinutes = (tzOffsetMinutes == 0) ? 0 : -tzOffsetMinutes;
-        var tzForm = document.querySelector('form#storeUserTimeZone');
-        var tzInput = tzForm.querySelector('input#tzOffset');
-        tzInput.value = tzOffsetMinutes;
-        var storedTZOffset = Number(tzForm.getAttribute('data-storedTZOffset'));
-
-        // Only submit the form if the user's timezone (offset) has changed
-        if (tzOffsetMinutes != storedTZOffset) {
-            tzForm.submit();
-        }
-    </script>
-
     <!-- Main Menu (Top Menu) -->
     <div class="main-menu up">
         <ul class="menu-list">

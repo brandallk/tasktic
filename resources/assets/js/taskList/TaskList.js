@@ -4,6 +4,7 @@ import Task from './listElements/task/Task';
 import ActionMenu from './actionMenu/ActionMenu';
 import AddToListButton from './AddToListButton';
 import ValidationErrors from './ValidationErrors';
+import StoreTimezoneForm from './StoreTimezoneForm';
 
 export default class TaskList {
     
@@ -17,6 +18,7 @@ export default class TaskList {
         this.actionMenu            = this.getActionMenu();
         this.addToListButton       = this.getAddToListButton();
         this.validationErrors      = this.getValidationErrors();
+        this.storeTimezoneForm     = this.getStoreTimezoneForm();
         this.clearSelectionContext = document.querySelector('body');
     }
 
@@ -35,6 +37,12 @@ export default class TaskList {
     getValidationErrors() {
         if (document.querySelector('.alert.modal')) {
             return new ValidationErrors(this);
+        }
+    }
+
+    getStoreTimezoneForm() {
+        if (document.querySelector('form#storeUserTimeZone')) {
+            return new StoreTimezoneForm();
         }
     }
 
@@ -91,6 +99,10 @@ export default class TaskList {
         if (document.querySelector('div.action-menu')) {
             this.actionMenu.activateDefaultBehavior();
             this.activateClearSelectionContext();
+        }
+
+        if (document.querySelector('form#storeUserTimeZone')) {
+            this.storeTimezoneForm.activate();
         }
     }
 
