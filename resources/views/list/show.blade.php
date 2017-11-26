@@ -16,7 +16,7 @@
 <body class="list-view">
 
     <!-- Report the user's timezone offset so it can be saved to his/her User model -->
-    <form id="saveUserTimeZone" class="hidden" method="post" action="{{ route('user.timezone', ['user' => $user]) }}" data-previousTimeZoneOffsetMinutes="<?php
+    <form id="saveUserTimeZone" class="hidden" method="post" action="{{ route('user.timezone', ['user' => $user, 'list' => $list]) }}" data-previousTimeZoneOffsetMinutes="<?php
     $dtz = new DateTimeZone($user->timezone);
     $offsetSeconds = $dtz->getOffset(new DateTime("now", $dtz));
     echo $offsetSeconds/60;
