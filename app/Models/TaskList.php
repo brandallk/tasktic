@@ -145,7 +145,7 @@ class TaskList extends Model
     {
         if (!$this->saved) {
             // Get a string for the current day's date formatted like "Wednesday, October 18th"
-            $defaultName = (\Carbon\Carbon::now())->format('l\, F jS');
+            $defaultName = (\Carbon\Carbon::now())->timezone($this->user->timezone)->format('l\, F jS');
             return $this->updateTaskList($defaultName);
         }
 

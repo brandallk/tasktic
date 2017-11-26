@@ -188,7 +188,7 @@ class TaskListTest extends TestCase
 
         $list->resetNameByDate();
 
-        $today = \Carbon\Carbon::today();
+        $today = (\Carbon\Carbon::today())->timezone($user->timezone);
         $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
         
         $this->assertEquals($newDefaultName, $list->name);
@@ -202,7 +202,7 @@ class TaskListTest extends TestCase
 
         $list->resetNameByDate();
 
-        $today = \Carbon\Carbon::today();
+        $today = (\Carbon\Carbon::today())->timezone($user->timezone);
         $newDefaultName = $today->format('l\, F jS'); // format like Friday, October 20th
         
         $this->assertTrue($list->saved);
