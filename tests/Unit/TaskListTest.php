@@ -145,7 +145,7 @@ class TaskListTest extends TestCase
         $user = factory(User::class)->create();
         $list = TaskList::newDefaultTaskList($user);
         
-        $today = \Carbon\Carbon::today();
+        $today = (\Carbon\Carbon::today())->timezone($user->timezone);
         $todayFormatted = $today->format('l\, F jS'); // format like Friday, October 20th
 
         $this->assertEquals($todayFormatted, $list->name);

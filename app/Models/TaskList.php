@@ -85,7 +85,7 @@ class TaskList extends Model
     public static function newDefaultTaskList(User $user)
     {
         // Get a string for the current day's date formatted like "Wednesday, October 18th"
-        $today = (\Carbon\Carbon::now())->format('l\, F jS');
+        $today = (\Carbon\Carbon::now())->timezone($user->timezone)->format('l\, F jS');
 
         return self::newTaskList($user, $today, false);
     }
