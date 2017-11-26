@@ -20,11 +20,11 @@ class UserController extends Controller
     public function storeTimezone(Request $request, User $user, TaskList $list)
     {
         try{
-            $timezoneOffsetSeconds = ($request->timezoneOffsetMinutes)*60;
+            $tzOffsetSeconds = ($request->tzOffsetMinutes)*60;
 
-            $timezoneName = timezone_name_from_abbr("", $timezoneOffsetSeconds, false);
+            $tzName = timezone_name_from_abbr("", $tzOffsetSeconds, false);
 
-            $user->timezone = $timezoneName;
+            $user->timezone = $tzName;
             $user->save();
 
             return redirect()->route('lists.show', ['list' => $list->id]);

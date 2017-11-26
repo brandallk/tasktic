@@ -143,9 +143,15 @@ class ListController extends Controller
             // Update the TaskList's 'last_time_loaded' property
             $list->updateLastTimeLoaded();
 
+            // Get the timezone offset from UTC, based on the User's stored timezone
+            $dtz = new \DateTimeZone(Auth::user()->timezone);
+            $secondsOffsetFromUTC = $dtz->getOffset(new \DateTime("now", $dtz));
+            $offsetMinutes = $secondsOffsetFromUTC/60;
+
             $data = [
                 'user' => Auth::user(),
-                'list' => $list
+                'list' => $list,
+                'offsetMinutes' => $offsetMinutes
             ];
 
             return view('list.show', $data);
