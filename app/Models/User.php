@@ -51,4 +51,24 @@ class User extends Authenticatable
 
         return $lastLoaded;
     }
+
+    /**
+     * Assign a local timezone (by converting local timezone offset from UTC) to the User
+     *
+     * @param int $tzOffsetMinutes  The number of minutes the User's local timezone is
+     * offset from UTC (can be 0 or negative)
+     *
+     * @return bool
+     */
+    public function setTimezone(int $tzOffsetMinutes)
+    {
+        $tzOffsetSeconds = ($tzOffsetMinutes)*60;
+
+        $tzName = timezone_name_from_abbr("", $tzOffsetSeconds, false);
+
+        $this->timezone = $tzName;
+        $this->save();
+
+        return true;
+    }
 }

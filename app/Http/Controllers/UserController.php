@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     /**
      * Convert a timezone offset from UTC (as reported in minutes by JavaScript running
-     * in the user's browser) to a timezone name and assign it to the User instance.
+     * in the user's browser) to a timezone name and save it to the User instance.
      *
      * @param Illuminate\Http\Request $request
      * @param App\Models\User $user
@@ -20,12 +20,7 @@ class UserController extends Controller
     public function storeTimezone(Request $request, User $user, TaskList $list)
     {
         try{
-            $tzOffsetSeconds = ($request->tzOffsetMinutes)*60;
-
-            $tzName = timezone_name_from_abbr("", $tzOffsetSeconds, false);
-
-            $user->timezone = $tzName;
-            $user->save();
+            $user->setTimezone($request->tzOffsetMinutes);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
 
