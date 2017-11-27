@@ -5,9 +5,10 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use App\Models\TaskList;
 use Illuminate\Support\Facades\Auth;
 
-class UserRegistrationTest extends TestCase
+class UserRoutesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -49,5 +50,27 @@ class UserRegistrationTest extends TestCase
         $user = $this->registerNewUser();
 
         $this->assertEquals('UTC', $user->timezone);
+    }
+
+    /** @test */
+    public function UserContoller_storeTimezone_method_changes_the_users_stored_timezone()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+        $OffsetFromUTCinMinutesAtLosAngeles = -480;
+
+        $requestData = [
+            'tzOffsetMinutes' => $OffsetFromUTCinMinutesAtLosAngeles
+        ];
+
+        $response = $this->actingAs($user)
+                         ->post("/{$user->id}/{$list->id}/timezone", $requestData);
+
+        $this->assertDatabaseMissing('users', ['id' => $user->id, 'timezone' => 'UTC']);
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'timezone' => 'America/Los_Angeles']);
+        $this->assertEquals('America/Los_Angeles', $user->where('id', $user->id)->first()->timezone);
+
+        $response->assertStatus(302) // 302 is a redirect
+                 ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 }

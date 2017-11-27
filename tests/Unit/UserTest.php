@@ -71,7 +71,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function setTimezone_method_changes_the_users_timezone()
+    public function setTimezone_method_changes_the_users_stored_timezone()
     {
         $user = factory(User::class)->create(['timezone' => 'UTC']);
 
