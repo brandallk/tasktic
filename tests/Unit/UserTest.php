@@ -69,4 +69,20 @@ class UserTest extends TestCase
 
         $this->assertEquals($user->getCurrentList()->name, 'Loaded Today');
     }
+
+    /** @test */
+    public function setTimezone_method_changes_the_users_timezone()
+    {
+        $user = factory(User::class)->create(['timezone' => 'UTC']);
+
+        $OffsetFromUTCinMinutesAtDenver = -420;
+        $user->setTimezone($OffsetFromUTCinMinutesAtDenver);
+
+        $this->assertEquals('America/Denver', $user->timezone);
+
+        $OffsetFromUTCinMinutesAtLosAngeles = -480;
+        $user->setTimezone($OffsetFromUTCinMinutesAtLosAngeles);
+
+        $this->assertEquals('America/Los_Angeles', $user->timezone);
+    }
 }

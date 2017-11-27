@@ -44,21 +44,10 @@ class UserRegistrationTest extends TestCase
     }
 
     /** @test */
-    public function a_new_User_gets_a_default_TaskList()
+    public function a_new_User_gets_a_default_timezone()
     {
         $user = $this->registerNewUser();
 
-        // A User's default TaskList is the only one that can have 'saved' == false
-        $defaultList = $user->TaskLists->whereIn('saved', false)->first();
-
-        $currentList = $user->getCurrentList();
-
-        $this->assertEquals($defaultList->id, $currentList->id);
-
-        $defaultCat = $defaultList->categories->first();
-        $this->assertEquals(null, $defaultCat->name);
-
-        $defaultSubcat = $defaultCat->subcategories->first();
-        $this->assertEquals(null, $defaultSubcat->name);
+        $this->assertEquals('UTC', $user->timezone);
     }
 }
