@@ -23,6 +23,11 @@
                 <a href="{{ route('lists.show', ['list' => $list->id]) }}">
                     {{ $list->name }}
                 </a>
+                <form class="deleteTaskList" method="post" action="{{ route('lists.destroy', ['list' => $list->id]) }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <i class="fa fa-times-circle action-icon" aria-hidden="true" onclick="this.parentElement.submit()"></i>
+                </form>
             </li>
         @endforeach
     </ul>
