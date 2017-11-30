@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\TaskList;
+use App\Models\Category;
 use App\Http\Controllers\ListController;
 
 class ListRoutesTest extends TestCase
@@ -187,6 +188,22 @@ class ListRoutesTest extends TestCase
             ->assertSuccessful()
             ->assertViewIs('list.show')
             ->assertSee('List Name');
+    }
+
+    /** @test */
+    public function ListController_show_method_adds_timezone_data_to_show_view()
+    {
+        $user = $this->registerNewUser();
+        $list = TaskList::newTaskList($user, 'List Name');
+
+        $dtz = new \DateTimeZone($user->timezone);
+        $secondsOffsetFromUTC = $dtz->getOffset(new \DateTime("now", $dtz));
+        $offsetMinutes = $secondsOffsetFromUTC/60;
+
+        $response = $this->actingAs($user)
+                         ->get("/lists/{$list->id}");
+
+        $response->assertViewHas('offsetMinutes', $offsetMinutes);
     }
 
     /** @test */
