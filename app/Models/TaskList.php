@@ -132,6 +132,9 @@ class TaskList extends Model
         $this->name = $name;
         $this->save();
 
+        // Check to see if $this is the 'default' TaskList
+        // If it is, create a new one
+
         return $this;
     }
 
@@ -191,6 +194,9 @@ class TaskList extends Model
             if ($user->taskLists()->get()->isEmpty()) {
                 TaskList::newDefaultTaskList($user);
             }
+
+            // Check to see if $this is the 'default' TaskList
+            // If it is, create a new one
 
             return true;
         });
