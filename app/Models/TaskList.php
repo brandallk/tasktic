@@ -132,8 +132,15 @@ class TaskList extends Model
         $this->name = $name;
         $this->save();
 
-        // Check to see if $this is the 'default' TaskList
-        // If it is, create a new one
+        // Check to see if $this is the user's default' TaskList
+        if (!$this->saved) {
+            // If it is, change its 'saved' status...
+            $this->saved = true;
+            $this->save();
+
+            // ...and create a new one
+            self::newDefaultTaskList(Auth::user());
+        }
 
         return $this;
     }
@@ -182,6 +189,9 @@ class TaskList extends Model
         $user = Auth::user();
 
         return DB::transaction(function () use ($list, $user) {
+            // Check to see if $this is the user's 'default' TaskList
+            $isDefaultList = !$list->saved; // The default List has 'saved' == false
+
             foreach ($list->categories as $category) {
                 $category->deleteCategory();
             }
@@ -189,14 +199,11 @@ class TaskList extends Model
             // Note: important that the TaskList is deleted AFTER its child Categories are deleted
             $this->delete();
 
-            // If the deleted TaskList was the user's only remaining TaskList, create a
-            // new default TaskList.
-            if ($user->taskLists()->get()->isEmpty()) {
-                TaskList::newDefaultTaskList($user);
+            // If the deleted TaskList was the default TaskList or user's only remaining TaskList,
+            // create a new default TaskList.
+            if ($isDefaultList || $user->taskLists()->get()->isEmpty()) {
+                self::newDefaultTaskList($user);
             }
-
-            // Check to see if $this is the 'default' TaskList
-            // If it is, create a new one
 
             return true;
         });
