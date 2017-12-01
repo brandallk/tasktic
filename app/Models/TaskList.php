@@ -123,26 +123,29 @@ class TaskList extends Model
     /**
      * Update a TaskList's name.
      *
-     * @param string $name  The new name assigned to the TaskList.
+     * @param string $name  The new name assigned to the TaskList. Use a database
+     * transaction so operations will automatically rollback if a failure occurs.
      *
      * @return App\Models\TaskList
      */
     public function updateTaskList(string $name)
     {
-        $this->name = $name;
-        $this->save();
-
-        // Check to see if $this is the user's default' TaskList
-        if (!$this->saved) {
-            // If it is, change its 'saved' status...
-            $this->saved = true;
+        return DB::transaction(function () use ($name) {
+            $this->name = $name;
             $this->save();
 
-            // ...and create a new one
-            self::newDefaultTaskList(Auth::user());
-        }
+            // Check to see if $this is the user's default' TaskList
+            if (!$this->saved) {
+                // If it is, change its 'saved' status...
+                $this->saved = true;
+                $this->save();
 
-        return $this;
+                // ...and create a new one
+                self::newDefaultTaskList(Auth::user());
+            }
+
+            return $this;
+        }
     }
 
     /**
