@@ -53,6 +53,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the User's default TaskList.
+     *
+     * @return App\Models\TaskList  The User's default TaskList.
+     */
+    public function getDefaultList()
+    {
+        $lists = $this->taskLists;
+
+        $default = $lists->where('saved', false)->first();
+
+        return $default;
+    }
+
+    /**
      * Assign a local timezone (by converting local timezone offset from UTC) to the User
      *
      * @param int $tzOffsetMinutes  The number of minutes the User's local timezone is
