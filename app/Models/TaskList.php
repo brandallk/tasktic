@@ -121,10 +121,10 @@ class TaskList extends Model
     }
 
     /**
-     * Update a TaskList's name.
+     * Update a TaskList's name. Use a database transaction so operations will
+     * automatically rollback if a failure occurs.
      *
-     * @param string $name  The new name assigned to the TaskList. Use a database
-     * transaction so operations will automatically rollback if a failure occurs.
+     * @param string $name  The new name assigned to the TaskList.
      *
      * @return App\Models\TaskList
      */
@@ -134,13 +134,12 @@ class TaskList extends Model
             $this->name = $name;
             $this->save();
 
-            // Check to see if $this is the user's default' TaskList
-            if (!$this->saved) {
-                // If it is, change its 'saved' status...
+            $isDefaultList = ($this->id == Auth::user()->getDefaultList()->id);
+
+            if ($isDefaultList) {
                 $this->saved = true;
                 $this->save();
 
-                // ...and create a new one
                 self::newDefaultTaskList(Auth::user());
             }
 
@@ -156,13 +155,19 @@ class TaskList extends Model
      */
     public function resetNameByDate()
     {
-        if (!$this->saved) {
-            // Get a string for the current day's date formatted like "Wednesday, October 18th"
-            $defaultName = (\Carbon\Carbon::now())->timezone($this->user->timezone)->format('l\, F jS');
-            return $this->updateTaskList($defaultName);
-        }
+        return DB::transaction(function () {
+            if (!$this->saved) {
+                // Get a string for the current day's date formatted like "Wednesday, October 18th"
+                $defaultName = (\Carbon\Carbon::now())->timezone($this->user->timezone)->format('l\, F jS');
 
-        return false;
+                $this->name = $defaultName;
+                $this->save();
+
+                return $this;
+            }
+
+            return false;
+        });
     }
 
     /**
@@ -192,8 +197,7 @@ class TaskList extends Model
         $user = Auth::user();
 
         return DB::transaction(function () use ($list, $user) {
-            // Check to see if $this is the user's 'default' TaskList
-            $isDefaultList = !$list->saved; // The default List has 'saved' == false
+            $isDefaultList = ($list->id == $user->getDefaultList()->id);
 
             foreach ($list->categories as $category) {
                 $category->deleteCategory();
@@ -202,9 +206,9 @@ class TaskList extends Model
             // Note: important that the TaskList is deleted AFTER its child Categories are deleted
             $this->delete();
 
-            // If the deleted TaskList was the default TaskList or user's only remaining TaskList,
-            // create a new default TaskList.
-            if ($isDefaultList || $user->taskLists()->get()->isEmpty()) {
+            $noListsLeft = $user->taskLists()->get()->isEmpty();
+
+            if ($isDefaultList || $noListsLeft) {
                 self::newDefaultTaskList($user);
             }
 

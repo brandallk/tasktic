@@ -40,12 +40,12 @@ class HomeController extends Controller
 
         } elseif ($role == 'visitor') {
             try {
-                $currentList = $user->getCurrentList();
+                // Ensure the default list is named according to the current date
+                $defaultList = $user->getDefaultList();
+                $defaultList->resetNameByDate();
 
-                $resetName = $currentList->resetNameByDate();
-                if ($resetName) {
-                    $currentList = $resetName;
-                }
+                // Get the user's last-loaded list so it can be displayed
+                $currentList = $user->getCurrentList();
 
                 $routeParams = ['list' => $currentList->id];
                 return redirect()->route('lists.show', $routeParams);
