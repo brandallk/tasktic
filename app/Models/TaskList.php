@@ -145,7 +145,7 @@ class TaskList extends Model
             }
 
             return $this;
-        }
+        });
     }
 
     /**

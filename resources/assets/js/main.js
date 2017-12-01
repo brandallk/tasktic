@@ -1,5 +1,6 @@
 import MainMenu from './mainMenu/MainMenu';
 import TaskList from './taskList/TaskList';
+import ListIndex from './listIndex/ListIndex';
 
 if (document.querySelector('div.main-menu')) {
     const mainMenu = new MainMenu();
@@ -11,4 +12,9 @@ if (document.querySelector('.theList')) {
     taskList.activate();
 
     window.onresize = taskList.redrawEnhancedTaskBorders.bind(taskList);
+}
+
+if(document.querySelector('ul.taskListIndex')) {
+    const listIndex = new ListIndex();
+    listIndex.activate();
 }

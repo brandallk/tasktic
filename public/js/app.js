@@ -31813,6 +31813,92 @@ var FormModal = function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/listIndex/ListDeleteButton.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__ = __webpack_require__("./resources/assets/js/formModal/FormModal.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var ListDeleteButton = function () {
+    function ListDeleteButton(buttonElement) {
+        _classCallCheck(this, ListDeleteButton);
+
+        this.domElement = buttonElement;
+        this.formModal = buttonElement.parentElement.querySelector('.modal.delete.taskList');
+    }
+
+    _createClass(ListDeleteButton, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.domElement.addEventListener('click', function () {
+                var formModal = new __WEBPACK_IMPORTED_MODULE_0__formModal_FormModal__["a" /* default */](_this.formModal);
+                formModal.show();
+                formModal.activate();
+            });
+        }
+    }]);
+
+    return ListDeleteButton;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ListDeleteButton);
+
+/***/ }),
+
+/***/ "./resources/assets/js/listIndex/ListIndex.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ListDeleteButton__ = __webpack_require__("./resources/assets/js/listIndex/ListDeleteButton.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var ListIndex = function () {
+    function ListIndex() {
+        _classCallCheck(this, ListIndex);
+
+        this.domElement = document.querySelector('ul.taskListIndex');
+        this.deleteButtons = this.getDeleteButtons();
+    }
+
+    _createClass(ListIndex, [{
+        key: 'getDeleteButtons',
+        value: function getDeleteButtons() {
+            var buttonElements = Array.from(document.querySelectorAll('span.deleteListButton'));
+            var buttons = [];
+
+            buttonElements.forEach(function (buttonElement) {
+                buttons.push(new __WEBPACK_IMPORTED_MODULE_0__ListDeleteButton__["a" /* default */](buttonElement));
+            });
+
+            return buttons;
+        }
+    }, {
+        key: 'activate',
+        value: function activate() {
+            this.deleteButtons.forEach(function (button) {
+                button.activate();
+            });
+        }
+    }]);
+
+    return ListIndex;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (ListIndex);
+
+/***/ }),
+
 /***/ "./resources/assets/js/main.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -31820,6 +31906,8 @@ var FormModal = function () {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mainMenu_MainMenu__ = __webpack_require__("./resources/assets/js/mainMenu/MainMenu.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__taskList_TaskList__ = __webpack_require__("./resources/assets/js/taskList/TaskList.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listIndex_ListIndex__ = __webpack_require__("./resources/assets/js/listIndex/ListIndex.js");
+
 
 
 
@@ -31833,6 +31921,11 @@ if (document.querySelector('.theList')) {
     taskList.activate();
 
     window.onresize = taskList.redrawEnhancedTaskBorders.bind(taskList);
+}
+
+if (document.querySelector('ul.taskListIndex')) {
+    var listIndex = new __WEBPACK_IMPORTED_MODULE_2__listIndex_ListIndex__["a" /* default */]();
+    listIndex.activate();
 }
 
 /***/ }),
