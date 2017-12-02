@@ -212,6 +212,65 @@ class TaskListTest extends TestCase
     }
 
     /** @test */
+    public function a_new_default_TaskList_is_created_if_the_old_one_is_renamed_and_saved()
+    {
+        $user = factory(User::class)->create();
+        $originalDefaultList = TaskList::newDefaultTaskList($user);
+
+        $originalDefaultList->updateTaskList('New Name');
+        
+        $this->assertDatabaseHas(
+            'task_lists',
+            [
+                'id' => $originalDefaultList->id,
+                'name' => 'New Name',
+                'saved' => true
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'task_lists',
+            [
+                'id' => User::find($user->id)->getDefaultList()->id,
+                'name' => (\Carbon\Carbon::today())->timezone($user->timezone)
+                    ->format('l\, F jS'),
+                'saved' => false
+            ]
+        );
+        
+        $this->assertFalse(
+            $originalDefaultList->id == User::find($user->id)->getDefaultList()->id
+        );
+    }
+
+    /** @test */
+    public function a_new_default_TaskList_is_created_if_the_old_one_is_deleted()
+    {
+        $user = factory(User::class)->create();
+        $originalDefaultList = TaskList::newDefaultTaskList($user);
+
+        $originalDefaultList->deleteTaskList();
+        
+        $this->assertDatabaseMissing(
+            'task_lists', ['id' => $originalDefaultList->id]
+        );
+
+        $this->assertDatabaseHas(
+            'task_lists',
+            [
+                'id' => User::find($user->id)->getDefaultList()->id,
+                'name' => (\Carbon\Carbon::today())->timezone($user->timezone)
+                    ->format('l\, F jS'),
+                'saved' => false
+            ]
+        );
+        
+        $this->assertFalse(
+            $originalDefaultList->id == User::find($user->id)->getDefaultList()->id
+        );
+    }
+
+    /** @test */
     public function a_TaskList_gets_a_new_list_element_when_a_new_category_is_added()
     {
         $user = factory(User::class)->create();
