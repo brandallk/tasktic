@@ -134,13 +134,13 @@ class TaskList extends Model
             $this->name = $name;
             $this->save();
 
-            $isDefaultList = ($this->id == Auth::user()->getDefaultList()->id);
+            $isDefaultList = ($this->id == $this->user->getDefaultList()->id);
 
             if ($isDefaultList) {
                 $this->saved = true;
                 $this->save();
 
-                self::newDefaultTaskList(Auth::user());
+                self::newDefaultTaskList($this->user);
             }
 
             return $this;
@@ -193,23 +193,20 @@ class TaskList extends Model
      */
     public function deleteTaskList()
     {
-        $list = $this;
-        $user = Auth::user();
+        return DB::transaction(function () {
+            $isDefaultList = ($this->id == $this->user->getDefaultList()->id);
 
-        return DB::transaction(function () use ($list, $user) {
-            $isDefaultList = ($list->id == $user->getDefaultList()->id);
-
-            foreach ($list->categories as $category) {
+            foreach ($this->categories as $category) {
                 $category->deleteCategory();
             }
 
             // Note: important that the TaskList is deleted AFTER its child Categories are deleted
             $this->delete();
 
-            $noListsLeft = $user->taskLists()->get()->isEmpty();
+            $noListsLeft = $this->user->taskLists()->get()->isEmpty();
 
             if ($isDefaultList || $noListsLeft) {
-                self::newDefaultTaskList($user);
+                self::newDefaultTaskList($this->user);
             }
 
             return true;

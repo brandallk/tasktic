@@ -111,6 +111,7 @@ class TaskListTest extends TestCase
     public function a_TaskList_can_be_updated()
     {
         $user = factory(User::class)->create();
+        $defaultList = TaskList::newDefaultTaskList($user);
         $list = TaskList::newTaskList($user, 'Original Name');
         
         $list->updateTaskList('New Name');
@@ -122,7 +123,7 @@ class TaskListTest extends TestCase
     public function a_TaskList_can_be_deleted()
     {
         $user = factory(User::class)->create();
-        Auth::login($user);
+        $defaultList = TaskList::newDefaultTaskList($user);
         $list = TaskList::newTaskList($user, 'List Name');
         
         $list->deleteTaskList();
