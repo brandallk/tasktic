@@ -459,9 +459,9 @@ class TaskRoutesTest extends TestCase
         $response = $this->actingAs($user)
                          ->patch("tasks/{$task3->id}/reposition", $requestData);
 
-        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 2]);
-        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 3]);
-        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 4]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 1]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 2]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 3]);
     }
 
     /** @test */

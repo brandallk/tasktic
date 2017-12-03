@@ -124,9 +124,9 @@ class TaskTest extends TestCase
         // Drag $task3 below $task1 again
         $task3->changeDisplayPosition($task1, false, true);
 
-        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 2]);
-        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 3]);
-        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 4]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task1', 'display_position' => 1]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task2', 'display_position' => 2]);
+        $this->assertDatabaseHas('tasks', ['name' => 'task3', 'display_position' => 3]);
     }
 
     /** @test */
