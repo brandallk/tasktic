@@ -78,6 +78,62 @@ class Task extends Model
     }
 
     /**
+     * Renumber numeric values of a given property of the given array's elements, starting
+     * from 1. Optionally ignore one given array element during the renumbering.
+     *
+     * @param array $array
+     * @param string $elementProperty  Array element properties to be renumbered
+     * @param mixed $ignoredElement  This element will not be included in the renumbering
+     *
+     * @return Array  Renumbered array
+     */
+    private function renumberAscendingFromOne(
+        array $array, string $elementProperty, $ignoredElement = null)
+    {
+        $j = 1;
+        for ($i=0; $i < count($array); $i++) {
+
+            // For all array elements other than $ignoredElement...
+            if ($array[$i]->id != $ignoredElement->id) {
+
+                // Renumber the given property in ascending integers starting from 1
+                $array[$i]->$elementProperty = $j++;
+                $array[$i]->save();
+            }                
+        }
+
+        return $array;
+    }
+
+    /**
+     * Renumber numeric values of a given property of the given array's elements, starting
+     * from a given number. Optionally ignore one given array element during the renumbering.
+     *
+     * @param array $array
+     * @param string $elementProperty  Array element properties to be renumbered
+     * @param int $given  The number from which to begin renumbering
+     * @param mixed $ignoredElement  This element will not be included in the renumbering
+     *
+     * @return Array  Renumbered array
+     */
+    private function renumberAscendingFromGiven(
+        array $array, string $elementProperty, int $given, $ignoredElement = null)
+    {
+        for ($i=0; $i < count($array); $i++) {
+
+            // For all array elements other than $ignoredElement...
+            if ($array[$i]->id != $ignoredElement->id) {
+
+                // ...increment the given property by 1
+                $array[$i]->$elementProperty = ++$given;
+                $array[$i]->save();
+            }                
+        }
+
+        return $array;
+    }
+
+    /**
      * Create a new Task with the given name, assigned to the given Subcategory. Use a database
      * transaction so operations will automatically rollback if a failure occurs.
      *
@@ -133,40 +189,38 @@ class Task extends Model
      */
     public function updateDetails(string $name = null, string $deadline = null)
     {
-        $task = $this;
-
-        return DB::transaction(function () use ($task, $name, $deadline) {
+        return DB::transaction(function () use ($name, $deadline) {
             // If the request includes a new 'name'
             if (!is_null($name)) {
                 // Update the old 'name'
-                $task->name = $name;
-                $task->save();
+                $this->name = $name;
+                $this->save();
 
                 // Also update the corresponding ListElement name.
-                $list = $task->subcategory->category->taskList;
-                ListElement::updateListElement($list, $name, $task->list_element_id);
+                $list = $this->subcategory->category->taskList;
+                ListElement::updateListElement($list, $name, $this->list_element_id);
             }
 
             // If the request includes a new 'deadline'
             if (!is_null($deadline)) {
 
                 // If there is already a 'deadline' for this Task
-                if (!is_null($task->deadlineItem)) {
+                if (!is_null($this->deadlineItem)) {
                     // Update it
-                    $task->deadlineItem->updateItem($task, $deadline);
+                    $this->deadlineItem->updateItem($this, $deadline);
                 }
 
                 // If there's no 'deadline' for this Task
                 else {
                     // Create one
-                    $item = DeadlineItem::newItem($task, 'deadline', $deadline);
+                    $item = DeadlineItem::newItem($this, 'deadline', $deadline);
                     // And update the Task's matching 'deadline' property
-                    $task->deadline = $deadline;
-                    $task->save();
+                    $this->deadline = $deadline;
+                    $this->save();
                 }
             }
 
-            return $task;
+            return $this;
         });
     }
 
@@ -200,60 +254,57 @@ class Task extends Model
     public function changeDisplayPosition(
         Task $insertSite, bool $insertAbove, bool $insertBelow)
     {
-        $task = $this;
-
         return DB::transaction(function () use (
-            $task, $insertSite, $insertAbove, $insertBelow
+            $insertSite, $insertAbove, $insertBelow
         ) {        
             // A Task can't be moved to a different Subcategory by drag-and-drop
-            if ($insertSite->subcategory == $task->subcategory) {
+            if ($insertSite->subcategory == $this->subcategory) {
 
-                $task->display_position = null; // Temporarily clear the display position
+                $this->display_position = null; // Temporarily clear the display position
                 $insertPosition = $insertSite->display_position;
-                $tasks = $task->subcategory->getTasksOrderedByDisplayPosition();
+                $tasks = $this->subcategory->getTasksOrderedByDisplayPosition();
 
                 if ($insertAbove) {
 
-                    for ($i=0; $i < count($tasks); $i++) {
+                    $insertIndex = array_search($tasks[$insertPosition], $tasks);
+                    $tasksBeforeInsertPosition = array_slice($tasks, 0, $insertIndex - 1);
+                    $tasksAfterInsertPosition = array_slice($tasks, $insertIndex - 1);
 
-                        // For all Tasks other than $this...
-                        if ($tasks[$i] != $task) {
+                    // Tasks before $this Tasks's $insertPosition get new 'display_position's
+                    $this->renumberAscendingFromOne(
+                        $tasksBeforeInsertPosition,
+                        $property = 'display_position',
+                        $except = $this
+                    );
 
-                            // Above the insert position, reassign display positions starting from 1
-                            if ($tasks[$i]->display_position < $insertPosition) {
-                                $tasks[$i]->display_position = $i + 1;
-                                $tasks[$i]->save();
+                    // Tasks at and following $this Tasks's $insertPosition get new 'display_position's
+                    $this->renumberAscendingFromGiven(
+                        $tasksAfterInsertPosition,
+                        $property = 'display_position',
+                        $given = $insertPosition,
+                        $except = $this
+                    );
 
-                            // At and below the insert position, increment display positions by 1
-                            } elseif ($tasks[$i]->display_position >= $insertPosition) {
-                                $tasks[$i]->display_position += 1;
-                                $tasks[$i]->save();
-                            }
-                        }                
-                    }
-
-                    // The insert position is $this Task's new display position
-                    $task->display_position = $insertPosition;
-                    $task->save();
+                    // $this Task gets displayed at the $insertPosition
+                    $this->display_position = $insertPosition;
+                    $this->save();
 
                 } elseif ($insertBelow) {
-                    
-                    for ($i=0; $i < count($tasks); $i++) {
 
-                        // For all Tasks other than $this...
-                        if ($tasks[$i] != $task) {
+                    // Tasks before $this Tasks's $insertPosition get new 'display_position's
+                    $this->renumberAscendingFromOne(
+                        $tasks, $property = 'display_position', $except = $this
+                    );
 
-                            // Reassign display position starting from 1
-                            $tasks[$i]->display_position = $i + 1;
-                            $tasks[$i]->save();
-                        }                
+                    $lastTask = $tasks[count($tasks) - 1];
+
+                    // If $this Task isn't already last...
+                    if ($lastTask->id != $this->id) {
+
+                        // ...then $this Task gets displayed below the other Tasks
+                        $this->display_position = $lastTask->display_position + 1;
+                        $this->save();
                     }
-
-                    // $this Task is positioned below the other Tasks
-                    $lastTask = $task->subcategory->getLastDisplayedTask();
-                    $task->display_position = $lastTask->display_position + 1;
-                    $task->save();
-
                 }
 
                 return true; // $this Task's display position was changed
@@ -271,18 +322,16 @@ class Task extends Model
      */
     public function deleteTask()
     {
-        $task = $this;
+        return DB::transaction(function () {
+            $list = $this->subcategory->category->taskList;
+            $uniqueID = $this->list_element_id;
 
-        return DB::transaction(function () use ($task) {
-            $list = $task->subcategory->category->taskList;
-            $uniqueID = $task->list_element_id;
-
-            foreach ($task->taskItems as $item) {
-                ItemManager::deleteItem($item->type, $item->unique_id, $task);
+            foreach ($this->taskItems as $item) {
+                ItemManager::deleteItem($item->type, $item->unique_id, $this);
             }
 
             // Note: important that the Task is deleted AFTER its child Items are deleted
-            $task->delete();
+            $this->delete();
 
             // Also delete the corresponding ListELement.
             ListElement::deleteListElement($list, $uniqueID);
