@@ -79,7 +79,7 @@
             @if ($list->categories)
             @foreach ($list->categories->sortBy('id') as $category)
 
-                <div id="{{ $category->list_element_id }}" class="category selectable <?php
+                <div class="category selectable <?php
                     if (is_null($category->name)) { echo "no-display"; } ?>">
                     <span class="category-title">{{ $category->name }}</span>
 
@@ -87,7 +87,7 @@
                     @if ($category->subcategories)
                     @foreach ($category->subcategories->sortBy('id') as $subcategory)
 
-                        <div id="{{ $subcategory->list_element_id }}" class="subcategory selectable <?php
+                        <div class="subcategory selectable <?php
                             if (is_null($subcategory->name)) { echo "no-display"; } ?>">
                             <span class="subcategory-title">{{ $subcategory->name }}</span>
 
@@ -97,7 +97,7 @@
 
                                 @include('list.partials.dropTarget.insertAbove')
 
-                                <div id="{{ $task->list_element_id }}" class="task selectable <?php
+                                <div class="task selectable <?php
                                     if (is_null($subcategory->name)) { echo "null-cat "; }
                                     if ($task->status == 'priority') {echo 'priority';}
                                     elseif ($task->status == 'complete') {echo 'complete';}
@@ -123,7 +123,7 @@
                                         <!-- Deadline Items -->
                                         @if ($task->deadlineItem)
 
-                                            <div id="{{ $task->deadlineItem->list_element_id }}" class="deadline task-item selectable hidden <?php
+                                            <div class="deadline task-item selectable hidden <?php
                                                 if ($task->status == 'priority') {echo 'priority';}
                                                 elseif ($task->status == 'complete') {echo 'complete';}
                                                 else {echo 'incomplete';}
@@ -142,7 +142,7 @@
                                         @if ($task->linkItems)
                                         @foreach ($task->linkItems->sortBy('id') as $link)
 
-                                            <div id="{{ $link->list_element_id }}" class="link task-item selectable hidden">
+                                            <div class="link task-item selectable hidden">
                                                 <span class="task-item-heading link-content">{{ $link->link }}</span>
 
                                                 @include('list.partials.item.link.visitQuery')
@@ -157,7 +157,7 @@
                                         @if ($task->detailItems)
                                         @foreach ($task->detailItems->sortBy('id') as $detail)
 
-                                            <div id="{{ $detail->list_element_id }}" class="detail task-item selectable hidden">
+                                            <div class="detail task-item selectable hidden">
                                                 <span class="task-item-heading detail-content">{{ $detail->detail }}</span>
 
                                                 @include('list.partials.item.detail.edit')
