@@ -31770,6 +31770,10 @@ var FormModal = function () {
             if (this.domElement.classList.contains('hidden')) {
                 this.domElement.classList.remove('hidden');
             }
+
+            if (this.domElement.parentElement.getAttribute('draggable') == "true") {
+                this.domElement.parentElement.setAttribute('draggable', "false");
+            }
         }
     }, {
         key: 'hide',
@@ -31779,6 +31783,10 @@ var FormModal = function () {
 
                 // Prevent bubbling the event up to a parent selectable element
                 event.stopPropagation();
+            }
+
+            if (this.domElement.parentElement.getAttribute('draggable') == "false") {
+                this.domElement.parentElement.setAttribute('draggable', "true");
             }
         }
     }, {
