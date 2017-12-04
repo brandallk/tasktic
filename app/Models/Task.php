@@ -78,62 +78,6 @@ class Task extends Model
     }
 
     /**
-     * Renumber numeric values of a given property of the given array's elements, starting
-     * from 1. Optionally ignore one given array element during the renumbering.
-     *
-     * @param array $array
-     * @param string $elementProperty  Array element properties to be renumbered
-     * @param mixed $ignoredElement  This element will not be included in the renumbering
-     *
-     * @return Array  Renumbered array
-     */
-    private function renumberAscendingFromOne(
-        array $array, string $elementProperty, $ignoredElement = null)
-    {
-        $j = 1;
-        for ($i=0; $i < count($array); $i++) {
-
-            // For all array elements other than $ignoredElement...
-            if ($array[$i]->id != $ignoredElement->id) {
-
-                // Renumber the given property in ascending integers starting from 1
-                $array[$i]->$elementProperty = $j++;
-                $array[$i]->save();
-            }                
-        }
-
-        return $array;
-    }
-
-    /**
-     * Renumber numeric values of a given property of the given array's elements, starting
-     * from a given number. Optionally ignore one given array element during the renumbering.
-     *
-     * @param array $array
-     * @param string $elementProperty  Array element properties to be renumbered
-     * @param int $given  The number from which to begin renumbering
-     * @param mixed $ignoredElement  This element will not be included in the renumbering
-     *
-     * @return Array  Renumbered array
-     */
-    private function renumberAscendingFromGiven(
-        array $array, string $elementProperty, int $given, $ignoredElement = null)
-    {
-        for ($i=0; $i < count($array); $i++) {
-
-            // For all array elements other than $ignoredElement...
-            if ($array[$i]->id != $ignoredElement->id) {
-
-                // ...increment the given property by 1
-                $array[$i]->$elementProperty = ++$given;
-                $array[$i]->save();
-            }                
-        }
-
-        return $array;
-    }
-
-    /**
      * Create a new Task with the given name, assigned to the given Subcategory. Use a database
      * transaction so operations will automatically rollback if a failure occurs.
      *
@@ -258,60 +202,111 @@ class Task extends Model
             $insertSite, $insertAbove, $insertBelow
         ) {        
             // A Task can't be moved to a different Subcategory by drag-and-drop
-            if ($insertSite->subcategory == $this->subcategory) {
+            if ($insertSite->subcategory != $this->subcategory) {
+
+                return false;
+
+            } else {
 
                 $this->display_position = null; // Temporarily clear the display position
-                $insertPosition = $insertSite->display_position;
+                
                 $tasks = $this->subcategory->getTasksOrderedByDisplayPosition();
+
+                // Get the $tasks[i] index corresponding to the insert position:
+                // 'display_position's are numbered from 1, but $tasks[i] are indexed from 0
+                $insertIndex = array_search($tasks[$insertSite->display_position - 1], $tasks);
+                    
+                $tasksBeforeInsertPosition = $insertAbove ? array_slice($tasks, 0, $insertIndex) : $tasks;
+
+                $this->display_position = $this->renumberAscendingFromOne(
+                    $tasksBeforeInsertPosition,
+                    $property = 'display_position',
+                    $except = $this
+                );
+                $this->save();
 
                 if ($insertAbove) {
 
-                    $insertIndex = array_search($tasks[$insertPosition], $tasks);
-                    $tasksBeforeInsertPosition = array_slice($tasks, 0, $insertIndex - 1);
-                    $tasksAfterInsertPosition = array_slice($tasks, $insertIndex - 1);
+                    $tasksAfterInsertPosition = array_slice($tasks, $insertIndex);
 
-                    // Tasks before $this Tasks's $insertPosition get new 'display_position's
-                    $this->renumberAscendingFromOne(
-                        $tasksBeforeInsertPosition,
-                        $property = 'display_position',
-                        $except = $this
-                    );
-
-                    // Tasks at and following $this Tasks's $insertPosition get new 'display_position's
                     $this->renumberAscendingFromGiven(
                         $tasksAfterInsertPosition,
                         $property = 'display_position',
-                        $given = $insertPosition,
+                        $given = $this->display_position,
                         $except = $this
                     );
-
-                    // $this Task gets displayed at the $insertPosition
-                    $this->display_position = $insertPosition;
-                    $this->save();
-
-                } elseif ($insertBelow) {
-
-                    // Tasks before $this Tasks's $insertPosition get new 'display_position's
-                    $this->renumberAscendingFromOne(
-                        $tasks, $property = 'display_position', $except = $this
-                    );
-
-                    $lastTask = $tasks[count($tasks) - 1];
-
-                    // If $this Task isn't already last...
-                    if ($lastTask->id != $this->id) {
-
-                        // ...then $this Task gets displayed below the other Tasks
-                        $this->display_position = $lastTask->display_position + 1;
-                        $this->save();
-                    }
                 }
 
-                return true; // $this Task's display position was changed
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Renumber numeric values of a given property of the given array's elements, starting
+     * from 1. Optionally ignore one given array element during the renumbering.
+     *
+     * @param array $array
+     * @param string $elementProperty  Array element properties to be renumbered
+     * @param mixed $ignoredElement  This element will not be included in the renumbering
+     *
+     * @return int  Value of the element property for the next element after the final one
+     * if the array continued with additional element(s) after the final one 
+     */
+    private function renumberAscendingFromOne(
+        array $array, string $elementProperty, $ignoredElement = null)
+    {
+        if (count($array) >= 1) { // If the array is not empty
+
+            $j = 1;
+            for ($i=0; $i < count($array); $i++) {
+
+                // For all array elements other than $ignoredElement...
+                if ($array[$i]->id != $ignoredElement->id) {
+
+                    // Renumber the given property in ascending integers starting from 1
+                    $array[$i]->$elementProperty = $j++;
+                    $array[$i]->save();
+                }                
             }
 
-            return false; // $this Task's display position was not changed
-        });
+            $lastElement = $array[count($array) - 1];
+            $nextPropInSequence = $lastElement->$elementProperty + 1;
+
+            return $nextPropInSequence;
+
+        } else { // If the array is empty
+
+            return $firstPropInSequence = 1;
+        }
+    }
+
+    /**
+     * Renumber numeric values of a given property of the given array's elements, starting
+     * from a given number. Optionally ignore one given array element during the renumbering.
+     *
+     * @param array $array
+     * @param string $elementProperty  Array element properties to be renumbered
+     * @param int $given  The number from which to begin renumbering
+     * @param mixed $ignoredElement  This element will not be included in the renumbering
+     *
+     * @return bool
+     */
+    private function renumberAscendingFromGiven(
+        array $array, string $elementProperty, int $given, $ignoredElement = null)
+    {
+        for ($i=0; $i < count($array); $i++) {
+
+            // For all array elements other than $ignoredElement...
+            if ($array[$i]->id != $ignoredElement->id) {
+
+                // ...increment the given property by 1
+                $array[$i]->$elementProperty = ++$given;
+                $array[$i]->save();
+            }                
+        }
+
+        return true;
     }
 
     /**
