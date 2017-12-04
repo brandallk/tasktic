@@ -14,7 +14,7 @@
                     <label for="listElement-create-type">New:</label>
                     <select id="listElement-create-type" class="modal-selectBox" name="elementType" size="1">
                         <option selected="selected" value="task">Task</option>
-                        <option value="subcategory">Task Subcategory</option>
+                        <!-- <option value="subcategory">Task Subcategory</option> -->
                         <option value="category">Task Category</option>
                     </select>
                 </div>
