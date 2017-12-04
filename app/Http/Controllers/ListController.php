@@ -31,8 +31,7 @@ class ListController extends Controller
     }
 
     /**
-     * Create a new Category, Subcategory, or Task instance belonging to the
-     * current TaskList
+     * Create a new Category or Task instance belonging to the current TaskList
      *
      * @param Illuminate\Http\Request $request
      * @param TaskList $list
@@ -44,8 +43,8 @@ class ListController extends Controller
         $request->validate([
             'elementType' => [
                 'required',                
-                // elementType must be 'category', 'subcategory', or 'task'
-                'regex:/^(sub)?category|task$/i'
+                // elementType must be 'category' or 'task'
+                'regex:/^category|task$/i'
             ],
             'name' => 'required|string',
             'deadline' => 'nullable|string'
