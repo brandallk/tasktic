@@ -31768,10 +31768,13 @@ var FormModal = function () {
         key: 'show',
         value: function show() {
             if (this.domElement.classList.contains('hidden')) {
+
                 this.domElement.classList.remove('hidden');
             }
 
+            // Prevent unintended draggable behavior inherited from the containing <div> element
             if (this.domElement.parentElement.getAttribute('draggable') == "true") {
+
                 this.domElement.parentElement.setAttribute('draggable', "false");
             }
         }
@@ -31779,13 +31782,16 @@ var FormModal = function () {
         key: 'hide',
         value: function hide() {
             if (!this.domElement.classList.contains('hidden')) {
+
                 this.domElement.classList.add('hidden');
 
                 // Prevent bubbling the event up to a parent selectable element
                 event.stopPropagation();
             }
 
-            if (this.domElement.parentElement.getAttribute('draggable') == "false") {
+            // Re-establish draggable behavior for a containing Task <div> element
+            if (this.domElement.parentElement.getAttribute('draggable') == "false" && this.domElement.parentElement.classList.contains('task')) {
+
                 this.domElement.parentElement.setAttribute('draggable', "true");
             }
         }
