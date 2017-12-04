@@ -14,7 +14,7 @@
             <div class="inputs-wrapper">
                 <div class="first input">
                     <label for="subcategory-edit-name">Name:</label>
-                    <input id="subcategory-edit-name" type="text" name="name">
+                    <input id="subcategory-edit-name" type="text" name="name" value="{{ optional($subcategory)->name }}">
                 </div>
 
                 <div class="form-buttons">

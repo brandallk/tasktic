@@ -14,7 +14,7 @@
             <div class="inputs-wrapper">
                 <div class="first input">
                     <label for="detail-edit-content">Detail:</label>
-                    <input id="detail-edit-content" type="text" name="content">
+                    <input id="detail-edit-content" type="text" name="content" value="{{ optional($detail)->detail }}">
                 </div>
 
                 <div class="form-buttons">

@@ -14,12 +14,12 @@
             <div class="inputs-wrapper">
                 <div class="first input">
                     <label for="task-edit-name">Name:</label>
-                    <input id="task-edit-name" type="text" name="name">
+                    <input id="task-edit-name" type="text" name="name" value="{{ optional($task)->name }}">
                 </div>
 
                 <div class="second input">
                     <label for="task-create-deadline">Deadline:</label>
-                    <input id="task-create-deadline" type="text" name="deadline">
+                    <input id="task-create-deadline" type="text" name="deadline" value="{{ optional($task)->deadline }}">
                 </div>
 
                 <div class="form-buttons">

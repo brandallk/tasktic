@@ -14,7 +14,7 @@
             <div class="inputs-wrapper">
                 <div class="first input">
                     <label for="link-edit-content">URL:</label>
-                    <input id="link-edit-content" type="text" name="content">
+                    <input id="link-edit-content" type="text" name="content" value="{{ optional($link)->link }}">
                 </div>
 
                 <div class="form-buttons">
