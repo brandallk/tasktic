@@ -102,17 +102,15 @@ class Category extends Model
      */
     public function updateCategory($name)
     {
-        $category = $this;
-
-        return DB::transaction(function () use ($category, $name) {
-            $category->name = $name;
-            $category->save();
+        return DB::transaction(function () use ($name) {
+            $this->name = $name;
+            $this->save();
 
             // Also update the corresponding ListElement name.
-            $list = $category->taskList;
-            ListElement::updateListElement($list, $name, $category->list_element_id);
+            $list = $this->taskList;
+            ListElement::updateListElement($list, $name, $this->list_element_id);
 
-            return $category;
+            return $this;
         });
     }
 
@@ -124,18 +122,16 @@ class Category extends Model
      */
     public function deleteCategory()
     {
-        $category = $this;
+        return DB::transaction(function () {
+            $list = $this->taskList;
+            $uniqueID = $this->list_element_id;
 
-        return DB::transaction(function () use ($category) {
-            $list = $category->taskList;
-            $uniqueID = $category->list_element_id;
-
-            foreach ($category->subcategories as $subcategory) {
+            foreach ($this->subcategories as $subcategory) {
                 $subcategory->deleteSubcategory();
             }
 
             // Note: important that the Category is deleted AFTER its child Subcategories are deleted
-            $category->delete();
+            $this->delete();
 
             // Also delete the corresponding ListELement.
             ListElement::deleteListElement($list, $uniqueID);
