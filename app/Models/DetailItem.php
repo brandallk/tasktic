@@ -33,17 +33,15 @@ class DetailItem extends Item
      */
     public function updateItem(Task $task, string $content)
     {
-        $item = $this;
-
-        return DB::transaction(function () use ($item, $task, $content) {
-            $item->detail = $content;
-            $item->save();
+        return DB::transaction(function () use ($task, $content) {
+            $this->detail = $content;
+            $this->save();
 
             // Also update the corresponding ListElement name.
             $list = $task->subcategory->category->taskList;
-            ListElement::updateListElement($list, $content, $item->list_element_id);
+            ListElement::updateListElement($list, $content, $this->list_element_id);
 
-            return $item;
+            return $this;
         });
     }
 }
