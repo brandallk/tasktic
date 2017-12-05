@@ -100,17 +100,15 @@ class Subcategory extends Model
      */
     public function updateSubcategory(string $name)
     {
-        $subcategory = $this;
-
-        return DB::transaction(function () use ($subcategory, $name) {
-            $subcategory->name = $name;
-            $subcategory->save();
+        return DB::transaction(function () use ($name) {
+            $this->name = $name;
+            $this->save();
 
             // Also update the corresponding ListElement name.
-            $list = $subcategory->category->taskList;
-            ListElement::updateListElement($list, $name, $subcategory->list_element_id);
+            $list = $this->category->taskList;
+            ListElement::updateListElement($list, $name, $this->list_element_id);
 
-            return $subcategory;
+            return $this;
         });
     }
 
@@ -122,18 +120,16 @@ class Subcategory extends Model
      */
     public function deleteSubcategory()
     {
-        $subcategory = $this;
+        return DB::transaction(function () {
+            $list = $this->category->taskList;
+            $uniqueID = $this->list_element_id;
 
-        return DB::transaction(function () use ($subcategory) {
-            $list = $subcategory->category->taskList;
-            $uniqueID = $subcategory->list_element_id;
-
-            foreach ($subcategory->tasks as $task) {
+            foreach ($this->tasks as $task) {
                 $task->deleteTask();
             }
 
             // Note: important that the Subcategory is deleted AFTER its child Tasks are deleted
-            $subcategory->delete();
+            $this->delete();
 
             // Also delete the corresponding ListELement.
             ListElement::deleteListElement($list, $uniqueID);
