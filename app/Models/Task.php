@@ -208,8 +208,6 @@ class Task extends Model
 
             } else {
 
-                $this->display_position = null; // Temporarily clear the display position
-                
                 $tasks = $this->subcategory->getTasksOrderedByDisplayPosition();
 
                 // Get the $tasks[i] index corresponding to the insert position:
