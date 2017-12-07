@@ -20,26 +20,26 @@ class SubcategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name'       => 'required|string',
             'categoryID' => 'required|integer'
         ]);
 
-        try {
+        $store = function($args) {
+            extract($args);
+
             $category = Category::find($request->categoryID);
-            $list = $category->taskList;
-            $name = $request->name;
+            $list     = $category->taskList;
+            $name     = $request->name;
 
             Subcategory::newSubcategory($category, $name);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $store,
+            $args = ['request' => $request]
+        );
     }
 
     /**
@@ -56,21 +56,21 @@ class SubcategoryController extends Controller
             'name' => 'required|string'
         ]);
 
-        try {
+        $update = function($args) {
+            extract($args);
+
             $list = $subcategory->category->taskList;
             $name = $request->name;
 
             $subcategory->updateSubcategory($name);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $update,
+            $args = ['request' => $request, 'subcategory' => $subcategory]
+        );
     }
 
     /**
@@ -82,19 +82,19 @@ class SubcategoryController extends Controller
      */
     public function destroy(Subcategory $subcategory)
     {
-        try {
+        $destroy = function($args) {
+            extract($args);
+
             $list = $subcategory->category->taskList;
 
             $subcategory->deleteSubcategory();
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $destroy,
+            $args = ['subcategory' => $subcategory]
+        );
     }
 }
