@@ -16,18 +16,17 @@ class ListController extends Controller
      */
     public function index()
     {
-        try {
-            $data = [
-                'lists' => Auth::user()->taskLists
-            ];
+        $index = function($args) {
+
+            $data = ['lists' => Auth::user()->taskLists];
 
             return view('list.index', $data);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $index,
+            $args = []
+        );
     }
 
     /**
@@ -41,16 +40,17 @@ class ListController extends Controller
     public function createListElement(Request $request, TaskList $list)
     {
         $request->validate([
+            'name'        => 'required|string',
+            'deadline'    => 'nullable|string',
             'elementType' => [
-                'required',                
-                // elementType must be 'category' or 'task'
-                'regex:/^category|task$/i'
-            ],
-            'name' => 'required|string',
-            'deadline' => 'nullable|string'
+                'required',
+                'regex:/^category|task$/i' // 'category' or 'task'
+            ]
         ]);
 
-        try {
+        $createListElement = function($args) {
+            extract($args);
+
             ListElementManager::newListElement(
                 $request->elementType,
                 $request->name,
@@ -58,15 +58,13 @@ class ListController extends Controller
                 $request->deadline
             );
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $createListElement,
+            $args = ['request' => $request, 'list' => $list]
+        );
     }
 
     /**
@@ -82,21 +80,21 @@ class ListController extends Controller
             'name' => 'required|string'
         ]);
 
-        try {
+        $store = function($args) {
+            extract($args);
+
             $user = Auth::user();
             $name = $request->name;
 
             $newList = TaskList::newTaskList($user, $name);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $newList->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $store,
+            $args = ['request' => $request]
+        );
     }
 
     /**
@@ -113,20 +111,20 @@ class ListController extends Controller
             'name' => 'required|string'
         ]);
 
-        try {
+        $update = function($args) {
+            extract($args);
+
             $name = $request->name;
 
             $updatedList = $list->updateTaskList($name);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $updatedList->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $update,
+            $args = ['request' => $request, 'list' => $list]
+        );
     }
 
     /**
@@ -138,28 +136,30 @@ class ListController extends Controller
      */
     public function show(TaskList $list)
     {
-        try {
+        $show = function($args) {
+            extract($args);
+
             // Update the TaskList's 'last_time_loaded' property
             $list->updateLastTimeLoaded();
 
             // Get the timezone offset from UTC, based on the User's stored timezone
-            $dtz = new \DateTimeZone(Auth::user()->timezone);
+            $dtz                  = new \DateTimeZone(Auth::user()->timezone);
             $secondsOffsetFromUTC = $dtz->getOffset(new \DateTime("now", $dtz));
-            $offsetMinutes = $secondsOffsetFromUTC/60;
+            $offsetMinutes        = $secondsOffsetFromUTC/60;
 
             $data = [
-                'user' => Auth::user(),
-                'list' => $list,
+                'user'          => Auth::user(),
+                'list'          => $list,
                 'offsetMinutes' => $offsetMinutes
             ];
 
             return view('list.show', $data);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $show,
+            $args = ['list' => $list]
+        );
     }
 
     /**
@@ -171,19 +171,21 @@ class ListController extends Controller
      */
     public function priorities(TaskList $list)
     {
-       try {
+        $priorities = function($args) {
+            extract($args);
+
             $data = [
-                'list' => $list,
+                'list'       => $list,
                 'priorities' => $list->priorities()
             ];
 
             return view('list.priorities.show', $data);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $priorities,
+            $args = ['list' => $list]
+        );
     }
 
     /**
@@ -197,18 +199,17 @@ class ListController extends Controller
      */
     public function destroy(TaskList $list)
     {
-        try {
+        $destroy = function($args) {
+            extract($args);
 
             $list->deleteTaskList();
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.index');
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $destroy,
+            $args = ['list' => $list]
+        );
     }
 }
