@@ -19,25 +19,25 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name'          => 'required|string',
             'currentListID' => 'required|integer'
         ]);
 
-        try {
+        $store = function($args) {
+            extract($args);
+
             $list = TaskList::find($request->currentListID);
             $name = $request->name;
 
             Category::newCategory($list, $name);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $store,
+            $args = ['request' => $request]
+        );
     }
 
     /**
@@ -54,21 +54,21 @@ class CategoryController extends Controller
             'name' => 'required|string'
         ]);
 
-        try {
+        $update = function($args) {
+            extract($args);
+
             $list = $category->taskList;
             $name = $request->name;
 
             $category->updateCategory($name);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $update,
+            $args = ['request' => $request , 'category' => $category]
+        );
     }
 
     /**
@@ -80,19 +80,20 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        try {
+
+        $destroy = function($args) {
+            extract($args);
+
             $list = $category->taskList;
 
             $category->deleteCategory();
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $destroy,
+            $args = ['category' => $category]
+        );
     }
 }
