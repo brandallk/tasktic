@@ -15,39 +15,37 @@ class HomeController extends Controller
      */
     public function showHome()
     {
-        try {
+        $showHome = function($args) {
+
             $user = Auth::user();
             $role = $user->role;
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();
-        }
+            if ($role == 'admin') {
 
-        if ($role == 'admin') {
-            return view('admin.dashboard');
+                return view('admin.dashboard');
 
-        } elseif ($role == 'visitor') {
-            try {
-                // Ensure the default list is named according to the current date
+            } elseif ($role == 'visitor') {
+
+                // Update default list name with current date
                 $defaultList = $user->getDefaultList();
                 $defaultList->resetNameByDate();
 
-                // Get the user's last-loaded list so it can be displayed
+                // Get user's last-loaded list
                 $currentList = $user->getCurrentList();
 
-                $routeParams = ['list' => $currentList->id];
-                return redirect()->route('lists.show', $routeParams);
+                return redirect()->route(
+                    'lists.show', ['list' => $currentList->id]
+                );
 
-            } catch (\Throwable $e) {
-                return redirect()->back();
-            } catch (\Exception $e) {
+            } else {
+
                 return redirect()->back();
             }
+        };
 
-        } else {
-            return redirect()->back();
-        }
+        return $this->tryOrCatch(
+            $showHome,
+            $args = []
+        );
     }
 }
