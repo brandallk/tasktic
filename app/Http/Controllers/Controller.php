@@ -24,24 +24,58 @@ class Controller extends BaseController
      * @param array $args  Associative array containing the calling controller-
      * method's arguments, so they can be passed to, and extracted by, the closure.
      *
-     * @return \Illuminate\Http\Response  Either the desired response or, in case
-     * a Throwable or Exception is thrown, a general error-message page
+     * @return mixed  Either \Illuminate\Http\Response (the desired response or a
+     * general error-message page) or void (because a Throwable is rethrown)
      */
     protected function tryOrCatch(Closure $trial, array $args)
     {
+        $appEnvironment = config('app.env');
+
         try {
 
             return $trial($args);
 
         } catch (Throwable $e) {
 
-            Log::error($e->__toString());
-            return view('errors.generalHttp');
+            if ($appEnvironment == 'production') {
+                $this->catchProduction($e);
+            } else {
+                $this->catchLocal($e);
+            }
 
         } catch (Exception $e) {
 
-            Log::error($e->__toString());
-            return view('errors.generalHttp');
+            if ($appEnvironment == 'production') {
+                $this->catchProduction($e);
+            } else {
+                $this->catchLocal($e);
+            }
         }
+    }
+
+    /**
+     * Respond to a thrown Throwable when in local development: Rethrow it.
+     *
+     * @param Throwable $e
+     *
+     * @return void
+     */
+    private function catchLocal($e)
+    {
+        throw $e;
+    }
+
+    /**
+     * Respond to a thrown Throwable when in production: Log it and return
+     * a general error-message page.
+     *
+     * @param Throwable $e
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function catchProduction($e)
+    {
+        Log::error($e->__toString());
+        return view('errors.generalHttp');
     }
 }

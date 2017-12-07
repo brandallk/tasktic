@@ -8,16 +8,6 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Show the application dashboard for an 'admin' user. Redirect a 'visitor' user
      * to his/her most recently-loaded (or default) list.
      *
