@@ -70,7 +70,8 @@ class UserRoutesTest extends TestCase
         $this->assertDatabaseHas('users', ['id' => $user->id, 'timezone' => 'America/Los_Angeles']);
         $this->assertEquals('America/Los_Angeles', $user->where('id', $user->id)->first()->timezone);
 
-        $response->assertStatus(302) // 302 is a redirect
-                 ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
+        $response
+            ->assertStatus(302) // 302 is a redirect
+            ->assertHeader('Location', "http://tasktic.dev/lists/{$list->id}");
     }
 }

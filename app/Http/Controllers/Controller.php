@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Closure;
 use Throwable;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -13,11 +15,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected function tryToDo(Closure $trialStatements)
+    protected function tryOrCatch(Closure $trial, array $args)
     {
         try {
-            
-            $trialStatements();
+
+            return $trial($args);
 
         } catch (Throwable $e) {
 

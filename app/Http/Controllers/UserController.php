@@ -8,6 +8,7 @@ use App\Models\TaskList;
 
 class UserController extends Controller
 {
+
     /**
      * Convert a timezone offset from UTC (as reported in minutes by JavaScript running
      * in the user's browser) to a timezone name and save it to the User instance.
@@ -19,15 +20,16 @@ class UserController extends Controller
      */
     public function storeTimezone(Request $request, User $user, TaskList $list)
     {
-        try{
+        $storeTimezone = function($args) {
+            extract($args);
+
             $user->setTimezone($request->tzOffsetMinutes);
-
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $storeTimezone,
+            $args = ['user' => $user, 'request' => $request, 'list' => $list]
+        );
     }
 }
