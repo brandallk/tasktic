@@ -21,28 +21,28 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
-            'deadline' => 'nullable|string',
+            'name'          => 'required|string',
+            'deadline'      => 'nullable|string',
             'subcategoryID' => 'required|integer'
         ]);
 
-        try {
+        $store = function($args) {
+            extract($args);
+
             $subcategory = Subcategory::find($request->subcategoryID);
-            $list = $subcategory->category->taskList;
-            $name = $request->name;
-            $deadline = $request->deadline;
+            $list        = $subcategory->category->taskList;
+            $name        = $request->name;
+            $deadline    = $request->deadline;
 
             Task::newTask($subcategory, $name, $deadline);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $store,
+            $args = ['request' => $request]
+        );
     }
 
     /**
@@ -56,26 +56,26 @@ class TaskController extends Controller
     public function updateDetails(Request $request, Task $task)
     {
         $request->validate([
-            'name' => 'nullable|string',
+            'name'     => 'nullable|string',
             'deadline' => 'nullable|string'
         ]);
 
-        try {
-            $list = $task->subcategory->category->taskList;
-            $name = $request->name;
+        $updateDetails = function($args) {
+            extract($args);
+
+            $list     = $task->subcategory->category->taskList;
+            $name     = $request->name;
             $deadline = $request->deadline;
 
             $task->updateDetails($name, $deadline);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $updateDetails,
+            $args = ['request' => $request, 'task' => $task]
+        );
     }
 
     /**
@@ -90,27 +90,26 @@ class TaskController extends Controller
     {
         $request->validate([
             'status' => [
-                'required',                
-                // status must be 'complete' or 'incomplete'
-                'regex:/^(in)?complete$/i'
+                'required',
+                'regex:/^(in)?complete$/i' // 'complete' or 'incomplete'
             ],
         ]);
 
-        try {
-            $list = $task->subcategory->category->taskList;
+        $updateStatus = function($args) {
+            extract($args);
+
+            $list   = $task->subcategory->category->taskList;
             $status = $request->status;
 
             $task->updateStatus($status);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $updateStatus,
+            $args = ['request' => $request, 'task' => $task]
+        );
     }
 
     /**
@@ -125,27 +124,26 @@ class TaskController extends Controller
     {
         $request->validate([
             'status' => [
-                'required',                
-                // status must be 'incomplete' or 'priority'
-                'regex:/^incomplete|priority$/i'
+                'required',
+                'regex:/^incomplete|priority$/i' // 'incomplete' or 'priority'
             ],
         ]);
 
-        try {
-            $list = $task->subcategory->category->taskList;
+        $updatePriority = function($args) {
+            extract($args);
+
+            $list   = $task->subcategory->category->taskList;
             $status = $request->status;
 
             $task->updateStatus($status);
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();            
-        }
+        return $this->tryOrCatch(
+            $updatePriority,
+            $args = ['request' => $request, 'task' => $task]
+        );
     }
 
     /**
@@ -159,24 +157,24 @@ class TaskController extends Controller
      */
     public function reposition(Request $request, Task $task)
     {
-        try {
+        $reposition = function($args) {
+            extract($args);
+
             $movedTask   = Task::find($request->draggedTaskID);
             $insertSite  = $task;
-            $insertAbove = ($request->insertAbove) ? true : false;
-            $insertBelow = ($request->insertBelow) ? true : false;
+            $insertAbove = $request->insertAbove ? true : false;
+            $insertBelow = $request->insertBelow ? true : false;
 
             $movedTask->changeDisplayPosition($insertSite, $insertAbove, $insertBelow);
-
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             $list = $task->subcategory->category->taskList;
-            return redirect()->route('lists.show', ['list' => $list->id]);
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();
-        }
+            return redirect()->route('lists.show', ['list' => $list->id]);
+        };
+
+        return $this->tryOrCatch(
+            $reposition,
+            $args = ['request' => $request, 'task' => $task]
+        );
     }
 
     /**
@@ -188,18 +186,19 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        try {
+        $destroy = function($args) {
+            extract($args);
+
             $list = $task->subcategory->category->taskList;
+
             $task->deleteTask();
 
-            // PRG pattern: After post request, return redirect to a get request
-            // so browser refresh will not resubmit the same post request.
             return redirect()->route('lists.show', ['list' => $list->id]);
+        };
 
-        } catch (\Throwable $e) {
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return redirect()->back();
-        }
+        return $this->tryOrCatch(
+            $destroy,
+            $args = ['task' => $task]
+        );
     }
 }

@@ -24,6 +24,7 @@ class UserController extends Controller
             extract($args);
 
             $user->setTimezone($request->tzOffsetMinutes);
+            
             return redirect()->route('lists.show', ['list' => $list->id]);
         };
 
