@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TaskList;
@@ -26,8 +27,7 @@ class TaskController extends Controller
             'subcategoryID' => 'required|integer'
         ]);
 
-        $store = function($args) {
-            extract($args);
+        try {
 
             $subcategory = Subcategory::find($request->subcategoryID);
             $list        = $subcategory->category->taskList;
@@ -37,12 +37,15 @@ class TaskController extends Controller
             Task::newTask($subcategory, $name, $deadline);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $store,
-            $args = ['request' => $request]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -60,8 +63,7 @@ class TaskController extends Controller
             'deadline' => 'nullable|string'
         ]);
 
-        $updateDetails = function($args) {
-            extract($args);
+        try {
 
             $list     = $task->subcategory->category->taskList;
             $name     = $request->name;
@@ -70,12 +72,15 @@ class TaskController extends Controller
             $task->updateDetails($name, $deadline);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $updateDetails,
-            $args = ['request' => $request, 'task' => $task]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -95,8 +100,7 @@ class TaskController extends Controller
             ],
         ]);
 
-        $updateStatus = function($args) {
-            extract($args);
+        try {
 
             $list   = $task->subcategory->category->taskList;
             $status = $request->status;
@@ -104,12 +108,15 @@ class TaskController extends Controller
             $task->updateStatus($status);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $updateStatus,
-            $args = ['request' => $request, 'task' => $task]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -129,8 +136,7 @@ class TaskController extends Controller
             ],
         ]);
 
-        $updatePriority = function($args) {
-            extract($args);
+        try {
 
             $list   = $task->subcategory->category->taskList;
             $status = $request->status;
@@ -138,12 +144,15 @@ class TaskController extends Controller
             $task->updateStatus($status);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $updatePriority,
-            $args = ['request' => $request, 'task' => $task]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -157,8 +166,7 @@ class TaskController extends Controller
      */
     public function reposition(Request $request, Task $task)
     {
-        $reposition = function($args) {
-            extract($args);
+        try {
 
             $movedTask   = Task::find($request->draggedTaskID);
             $insertSite  = $task;
@@ -169,12 +177,15 @@ class TaskController extends Controller
             $list = $task->subcategory->category->taskList;
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $reposition,
-            $args = ['request' => $request, 'task' => $task]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -186,19 +197,21 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $destroy = function($args) {
-            extract($args);
+        try {
 
             $list = $task->subcategory->category->taskList;
 
             $task->deleteTask();
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $destroy,
-            $args = ['task' => $task]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }

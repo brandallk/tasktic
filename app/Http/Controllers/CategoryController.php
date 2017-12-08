@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TaskList;
@@ -23,8 +24,7 @@ class CategoryController extends Controller
             'currentListID' => 'required|integer'
         ]);
 
-        $store = function($args) {
-            extract($args);
+        try {
 
             $list = TaskList::find($request->currentListID);
             $name = $request->name;
@@ -32,12 +32,15 @@ class CategoryController extends Controller
             Category::newCategory($list, $name);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $store,
-            $args = ['request' => $request]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -54,8 +57,7 @@ class CategoryController extends Controller
             'name' => 'required|string'
         ]);
 
-        $update = function($args) {
-            extract($args);
+        try {
 
             $list = $category->taskList;
             $name = $request->name;
@@ -63,12 +65,15 @@ class CategoryController extends Controller
             $category->updateCategory($name);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $update,
-            $args = ['request' => $request , 'category' => $category]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -80,20 +85,21 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-
-        $destroy = function($args) {
-            extract($args);
+        try {
 
             $list = $category->taskList;
 
             $category->deleteCategory();
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $destroy,
-            $args = ['category' => $category]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }

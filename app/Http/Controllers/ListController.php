@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TaskList;
@@ -16,17 +17,20 @@ class ListController extends Controller
      */
     public function index()
     {
-        $index = function($args) {
+        try {
 
             $data = ['lists' => Auth::user()->taskLists];
 
             return view('list.index', $data);
-        };
 
-        return $this->tryOrCatch(
-            $index,
-            $args = []
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -48,8 +52,7 @@ class ListController extends Controller
             ]
         ]);
 
-        $createListElement = function($args) {
-            extract($args);
+        try {
 
             ListElementManager::newListElement(
                 $request->elementType,
@@ -59,12 +62,15 @@ class ListController extends Controller
             );
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $createListElement,
-            $args = ['request' => $request, 'list' => $list]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -80,8 +86,7 @@ class ListController extends Controller
             'name' => 'required|string'
         ]);
 
-        $store = function($args) {
-            extract($args);
+        try {
 
             $user = Auth::user();
             $name = $request->name;
@@ -89,12 +94,15 @@ class ListController extends Controller
             $newList = TaskList::newTaskList($user, $name);
 
             return redirect()->route('lists.show', ['list' => $newList->id]);
-        };
 
-        return $this->tryOrCatch(
-            $store,
-            $args = ['request' => $request]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -111,20 +119,22 @@ class ListController extends Controller
             'name' => 'required|string'
         ]);
 
-        $update = function($args) {
-            extract($args);
+        try {
 
             $name = $request->name;
 
             $updatedList = $list->updateTaskList($name);
 
             return redirect()->route('lists.show', ['list' => $updatedList->id]);
-        };
 
-        return $this->tryOrCatch(
-            $update,
-            $args = ['request' => $request, 'list' => $list]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -136,8 +146,7 @@ class ListController extends Controller
      */
     public function show(TaskList $list)
     {
-        $show = function($args) {
-            extract($args);
+        try {
 
             // Update the TaskList's 'last_time_loaded' property
             $list->updateLastTimeLoaded();
@@ -154,12 +163,15 @@ class ListController extends Controller
             ];
 
             return view('list.show', $data);
-        };
 
-        return $this->tryOrCatch(
-            $show,
-            $args = ['list' => $list]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -171,8 +183,7 @@ class ListController extends Controller
      */
     public function priorities(TaskList $list)
     {
-        $priorities = function($args) {
-            extract($args);
+        try {
 
             $data = [
                 'list'       => $list,
@@ -180,12 +191,15 @@ class ListController extends Controller
             ];
 
             return view('list.priorities.show', $data);
-        };
 
-        return $this->tryOrCatch(
-            $priorities,
-            $args = ['list' => $list]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -199,17 +213,19 @@ class ListController extends Controller
      */
     public function destroy(TaskList $list)
     {
-        $destroy = function($args) {
-            extract($args);
+        try {
 
             $list->deleteTaskList();
 
             return redirect()->route('lists.index');
-        };
 
-        return $this->tryOrCatch(
-            $destroy,
-            $args = ['list' => $list]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TaskList;
@@ -24,8 +25,7 @@ class SubcategoryController extends Controller
             'categoryID' => 'required|integer'
         ]);
 
-        $store = function($args) {
-            extract($args);
+        try {
 
             $category = Category::find($request->categoryID);
             $list     = $category->taskList;
@@ -34,12 +34,15 @@ class SubcategoryController extends Controller
             Subcategory::newSubcategory($category, $name);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $store,
-            $args = ['request' => $request]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -56,8 +59,7 @@ class SubcategoryController extends Controller
             'name' => 'required|string'
         ]);
 
-        $update = function($args) {
-            extract($args);
+        try {
 
             $list = $subcategory->category->taskList;
             $name = $request->name;
@@ -65,12 +67,15 @@ class SubcategoryController extends Controller
             $subcategory->updateSubcategory($name);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $update,
-            $args = ['request' => $request, 'subcategory' => $subcategory]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -82,19 +87,21 @@ class SubcategoryController extends Controller
      */
     public function destroy(Subcategory $subcategory)
     {
-        $destroy = function($args) {
-            extract($args);
+        try {
 
             $list = $subcategory->category->taskList;
 
             $subcategory->deleteSubcategory();
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $destroy,
-            $args = ['subcategory' => $subcategory]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }

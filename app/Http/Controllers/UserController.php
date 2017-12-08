@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TaskList;
@@ -20,17 +21,19 @@ class UserController extends Controller
      */
     public function storeTimezone(Request $request, User $user, TaskList $list)
     {
-        $storeTimezone = function($args) {
-            extract($args);
+        try {
 
             $user->setTimezone($request->tzOffsetMinutes);
             
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $storeTimezone,
-            $args = ['user' => $user, 'request' => $request, 'list' => $list]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }

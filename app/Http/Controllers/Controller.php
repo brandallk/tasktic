@@ -16,66 +16,40 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * Wrap the given closure in a try/catch block. Define a shared way of
-     * handling Throwables & Exceptions that can be used by most controller
-     * methods.
+     * App environment config value, e.g. 'local' or 'production'
      *
-     * @param Closure $trial  Contains the calling controller-method's procedures.
-     * @param array $args  Associative array containing the calling controller-
-     * method's arguments, so they can be passed to, and extracted by, the closure.
-     *
-     * @return mixed  Either \Illuminate\Http\Response (the desired response or a
-     * general error-message page) or void (because a Throwable is rethrown)
+     * @var string
      */
-    protected function tryOrCatch(Closure $trial, array $args)
+    protected $appEnvironment;
+
+    public function __construct()
     {
-        $appEnvironment = config('app.env');
-
-        try {
-
-            return $trial($args);
-
-        } catch (Throwable $e) {
-
-            if ($appEnvironment == 'production') {
-                $this->catchProduction($e);
-            } else {
-                $this->catchLocal($e);
-            }
-
-        } catch (Exception $e) {
-
-            if ($appEnvironment == 'production') {
-                $this->catchProduction($e);
-            } else {
-                $this->catchLocal($e);
-            }
-        }
+        $this->appEnvironment = config('app.env');
     }
 
     /**
-     * Respond to a thrown Throwable when in local development: Rethrow it.
+     * Respond to a thrown Throwable in local development: Rethrow it.
      *
-     * @param Throwable $e
+     * @param Throwable $throwable
      *
      * @return void
      */
-    private function catchLocal($e)
+    protected function catchLocally($throwable)
     {
-        throw $e;
+        throw $throwable;
     }
 
     /**
-     * Respond to a thrown Throwable when in production: Log it and return
+     * Respond to a thrown Throwable in production: Log it and return
      * a general error-message page.
      *
-     * @param Throwable $e
+     * @param Throwable $throwable
      *
      * @return \Illuminate\Http\Response
      */
-    private function catchProduction($e)
+    protected function catchInProduction($throwable)
     {
-        Log::error($e->__toString());
-        return view('errors.generalHttp');
+        Log::error($throwable->__toString());
+        return view('errors.general');
     }
 }

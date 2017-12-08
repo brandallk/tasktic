@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,7 @@ class HomeController extends Controller
      */
     public function showHome()
     {
-        $showHome = function($args) {
+        try {
 
             $user = Auth::user();
             $role = $user->role;
@@ -41,11 +42,14 @@ class HomeController extends Controller
 
                 return redirect()->back();
             }
-        };
 
-        return $this->tryOrCatch(
-            $showHome,
-            $args = []
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }

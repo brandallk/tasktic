@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TaskList;
@@ -34,8 +35,7 @@ class ItemController extends Controller
             ]
         ]);
 
-        $store = function($args) {
-            extract($args);
+        try {
 
             $task    = Task::find($request->taskID);
             $list    = $task->subcategory->category->taskList;
@@ -45,12 +45,15 @@ class ItemController extends Controller
             ItemManager::newItem($type, $content, $task);
 
             return redirect()->route('lists.show', ['list' => $list->id]);
-        };
 
-        return $this->tryOrCatch(
-            $store,
-            $args = ['request' => $request]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -86,16 +89,18 @@ class ItemController extends Controller
             'content' => 'required|string'
         ]);
 
-        $updateDetail = function($args) {
-            extract($args);
+        try {
 
             return $this->update($request, $item);
-        };
 
-        return $this->tryOrCatch(
-            $updateDetail,
-            $args = ['request' => $request, 'item' => $item]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -112,16 +117,18 @@ class ItemController extends Controller
             'content' => 'required|url'
         ]);
 
-        $updateLink = function($args) {
-            extract($args);
+        try {
 
             return $this->update($request, $item);
-        };
 
-        return $this->tryOrCatch(
-            $updateLink,
-            $args = ['request' => $request, 'item' => $item]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -152,16 +159,18 @@ class ItemController extends Controller
      */
     public function destroyDeadline(DeadlineItem $item)
     {
-        $destroyDeadline = function($args) {
-            extract($args);
+        try {
 
             return $this->destroy($item);
-        };
 
-        return $this->tryOrCatch(
-            $destroyDeadline,
-            $args = ['item' => $item]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -173,16 +182,18 @@ class ItemController extends Controller
      */
     public function destroyDetail(DetailItem $item)
     {
-        $destroyDetail = function($args) {
-            extract($args);
+        try {
 
             return $this->destroy($item);
-        };
 
-        return $this->tryOrCatch(
-            $destroyDetail,
-            $args = ['item' => $item]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 
     /**
@@ -194,15 +205,17 @@ class ItemController extends Controller
      */
     public function destroyLink(LinkItem $item)
     {
-        $destroyLink = function($args) {
-            extract($args);
+        try {
 
             return $this->destroy($item);
-        };
 
-        return $this->tryOrCatch(
-            $destroyLink,
-            $args = ['item' => $item]
-        );
+        } catch (Throwable $e) {
+
+            if ($this->appEnvironment == 'production') {
+                return $this->catchInProduction($e);
+            } else {
+                return $this->catchLocally($e);
+            }
+        }
     }
 }
