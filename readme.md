@@ -1,32 +1,29 @@
 
-## About Clean-Slate-Laravel
+## About Tasktic
 
-Clean-Slate-Laravel is a modification of Laravel 5.5 that has been cleaned up and prepared for an ideal greenfield experience when starting a new Laravel project.
+Tasktic is a todo-list app. It is, however, not just a simple todo-list app. It offers sleek, responsive design and custom-built features for advanced usability.
 
-## Features
+As a registered Tasktic user, you get a private account and can create as many different todo-lists as you want. Your lists will be waiting for you the next time you log in. You manage your lists any way you want: delete them, rename them, create new ones.
 
-- Laravel's basic auth scaffold and routes are pre-installed. The routes are registered explicitly in routes/web.php for greater transparency. The User model is moved into a new app/Models/ directory; config and namespacing changes are in place to make this work.
-- The 'Welcome' page route is named and uses a WelcomeController method rather than a closure.
-- All the starter CSS and Bootstrap classes are stripped out of the Blade views in resources/views/, leaving only the bare placeholder content. Likewise, the starter styles in resources/assets/sass/ have been deleted. The sample Vue component loaded by resources/assets/js/app.js has been disabled.
-- The package.json scripts are modified to NOT use an alias for node_modules/cross-env/dist/bin/cross-env.js, which has been a pain-point for myself and others.
-- The webpack.mix.js file has been updated to implement version-hashing for cache-busting CSS and JS assets, and the default resources/views/layouts/app.blade.php layout template has been updated to use the versioned assets. An initial set of versioned assets is present, as the `npm run dev` script has already been run once.
-- Default timezone is set to mountain standard time.
+If you want to keep it simple, just use the default list that appears in your account when you first register. This list is special in a couple of ways: 1) Its name is and always will stay current with whatever the day's date is (even accounting for your local timezone anywhere in the world). 2) You can rename it or delete it -- but if you do, a new, empty default list named for the day's date will appear in your account. That way, you always have a convenient and fresh place to put your daily tasks without messing around with managing lists in your account.
 
-## How to Use Clean-Slate-Laravel for a Starter Project
+If you want to use your list to plan out something more sophisticated than a simple flat collection of tasks, you can create categories and subcategories and place tasks within a nested structure. All these structural items are fully editable: Rename them, delete them, create new ones. Build any structure you like.
 
-- Create a project database.
-- Create a local virtual host (if desired) with a custom local url for the project under development.
-- Create a project directory.
-(Note for Laragon users on Windows: The above steps can be done automatically via "Menu -> Quick create -> Laravel", which will also run a Composer install of Laravel. You will be asked to supply a project name. You will get a MySQL db named "project-name", an Nginx virtual host at http://project-name.dev, and a project directory at C:\laragon\www\project-name.)
-- Clone Clean-Slate-Laravel into the project directory:
-`git clone https://github.com/brandallk/clean-slate-laravel.git`
-(Note: If Laravel has already been installed, e.g. via a Laragon quick-create, erase everything from the project directory before running git clone.)
-- Copy the ".env.example" file and rename it ".env". Run `php artisan key:generate` (see [Laravel docs](https://laravel.com/docs/5.5/encryption#configuration)) to create a new secure APP_KEY. Change at minimum APP_NAME (=project-name) and APP_URL (=virtual-host-url if a virtual host was created). If you are not running Homestead, also update DB_DATABASE (=name-of-the-database), DB_USERNAME (=probably "root" for dev mode), and DB_PASSWORD (=probably blank for dev mode).
-- Review the "scripts" in the package.json file, which have been modified to deal with a persistent issue some users encounter with aliasing the cross-env.js file. (To change these back to defaults, see the original [repo](https://github.com/laravel/laravel/blob/master/package.json.).)
-- Run `npm install`
-- Run `git init`
-- Run `php artisan migrate`
-- Update the timezone config in config/app.php if you don't want to default to mountain standard time. (See [http://php.net/manual/en/timezones.php](http://php.net/manual/en/timezones.php).)
+The task items in your list have additional capabilities. You can drag-and-drop them into any order you wish. You can mark them as completed, and you can mark any of them as a priority. Priority tasks will be highlited. Additionally, you can always access a special view of priority tasks by clicking on the "Priorities" button at the top of the list.
 
-## License
-Clean-Slate-Laravel and the Laravel framework are open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+You can also add different kinds of details to a task if desired. These can include a deadline, link URLs, and any number of text details. Again, all these things are editable. If you add details like these to a task, a "carrot" icon will appear next to the task. You can click on this icon to expand the task and view its details, or to collapse it and hide everything but the task name.
+
+## How Tasktic was Created
+
+Tasktic is designed to be the todo-list app I wished I had but didn't. I built it so that I could start using it.
+
+I also built it to explore and demo skills using the features of specific web-development technologies. These include some of the following:
+
+On the backend,
+        PHP and the PHP MVC framework Laravel 5.5
+        Laravel's Eloquent ORM
+        PostgreSQL database
+        TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
+        Blade templates for the HTML views
+
+On the frontend, the style was hand-crafted (no Bootstrap!) using Sass with a responsive, mobile-first approach. The JavaScript was also custom-built using ES6 classes and modules in an OOP approach, bundling with Webpack</strong> via Laravel Mix.
