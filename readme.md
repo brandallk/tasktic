@@ -29,7 +29,7 @@ On the backend,
 
 On the frontend, the style was hand-crafted (no Bootstrap!) using Sass with a responsive, mobile-first approach. The JavaScript was also custom-built using ES6 classes and modules in an OOP approach, bundling with Webpack via Laravel Mix.
 
-To browse the app's core functionality, try the PHP unit tests in ./tests/Unit/ , the PHP model classes in ./app/Models/ , and the PHP controller classes in ./app/Http/Controllers . The front-end assets are located in ./resources/assets/js/ and ./resources/assets/sass .
+To browse the app's core functionality, try the PHP unit tests in [./tests/Unit/](https://github.com/brandallk/tasktic/tree/master/tests/Unit) , the PHP model classes in [./app/Models/](https://github.com/brandallk/tasktic/tree/master/app/Models) , and the PHP controller classes in [./app/Http/Controllers](https://github.com/brandallk/tasktic/tree/master/app/Http/Controllers) . The front-end assets are located in [./resources/assets/js/](https://github.com/brandallk/tasktic/tree/master/resources/assets/js) and [./resources/assets/sass](https://github.com/brandallk/tasktic/tree/master/resources/assets/sass) .
 
 This app was designed intentionally as a traditional, server-side web app. It is intended to serve as a basis for a future version that will be rebuilt as a more modern SPA, using front-end technology TBD.
 
