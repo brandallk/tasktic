@@ -1,7 +1,7 @@
 
 ## About Tasktic
 
-Tasktic is a todo-list app. It is, however, not just a simple todo-list app. It offers sleek, responsive design and custom-built features for advanced usability.
+Tasktic is a todo-list app. But it's a bit more sophisticated than a simple todo-list app. It offers mobile-first, responsive design and custom-built features for advanced usability.
 
 As a registered Tasktic user, you get a private account and can create as many different todo-lists as you want. Your lists will be waiting for you the next time you log in. You manage your lists any way you want: delete them, rename them, create new ones.
 
@@ -20,10 +20,14 @@ Tasktic is designed to be the todo-list app I wished I had but didn't. I built i
 I also built it to explore and demo skills using the features of specific web-development technologies. These include some of the following:
 
 On the backend,
-        PHP and the PHP MVC framework Laravel 5.5
-        Laravel's Eloquent ORM
-        PostgreSQL database
-        TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
-        Blade templates for the HTML views
+        * PHP and the PHP MVC framework Laravel 5.5
+        * Laravel's Eloquent ORM
+        * PostgreSQL database
+        * TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
+        * Blade templates for the HTML views
 
-On the frontend, the style was hand-crafted (no Bootstrap!) using Sass with a responsive, mobile-first approach. The JavaScript was also custom-built using ES6 classes and modules in an OOP approach, bundling with Webpack</strong> via Laravel Mix.
+On the frontend, the style was hand-crafted (no Bootstrap!) using Sass with a responsive, mobile-first approach. The JavaScript was also custom-built using ES6 classes and modules in an OOP approach, bundling with Webpack via Laravel Mix.
+
+## Current Status
+
+Tasktic is currently a work in progress. The core features are all built and working. Remaining work before launching the app includes: a few minor bug fixes, content for the 'about' and 'help' pages, an email contact form, CSS styles for the auth-system views (e.g. the login page) and 'about', 'help', and 'contact' pages, and probably some refactoring of the Blade views as well.
