@@ -1,7 +1,7 @@
 
 ## About Tasktic
 
-Tasktic is a todo-list app. But it's a bit more sophisticated than a simple todo-list app. It offers mobile-first, responsive design and custom-built features for advanced usability.
+Tasktic is a todo-list app created from scratch with a mobile-first, responsive design and a few custom-built features for advanced usability.
 
 As a registered Tasktic user, you get a private account and can create as many different todo-lists as you want. Your lists will be waiting for you the next time you log in. You manage your lists any way you want: delete them, rename them, create new ones.
 
@@ -15,18 +15,20 @@ You can also add different kinds of details to a task if desired. These can incl
 
 ## How Tasktic was Created
 
-Tasktic is designed to be the todo-list app I wished I had but didn't. I built it so that I could start using it.
+Tasktic is the todo-list app I wished I had but didn't. I built it so that I could start using it.
 
-I also built it to explore and demo skills using the features of specific web-development technologies. These include some of the following:
+I also built it to explore the features of specific web-development technologies. These include some of the following:
 
 On the backend,
-        * PHP and the PHP MVC framework Laravel 5.5
-        * Laravel's Eloquent ORM
-        * PostgreSQL database
-        * TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
-        * Blade templates for the HTML views
+..* PHP and the PHP MVC framework Laravel 5.5
+..* Laravel's Eloquent ORM
+..* PostgreSQL database
+..* TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
+..* Blade templates for the HTML views
 
 On the frontend, the style was hand-crafted (no Bootstrap!) using Sass with a responsive, mobile-first approach. The JavaScript was also custom-built using ES6 classes and modules in an OOP approach, bundling with Webpack via Laravel Mix.
+
+The app was designed intentionally as a traditional, server-side web app. It is intended to serve as a basis for a future version that will be rebuilt as a more modern SPA, using front-end technology TBD.
 
 ## Current Status
 
