@@ -60,7 +60,7 @@
     <div class="title clearfix">
         <h1>{{ $list->name }}</h1>
         <span class="priorities btn orange">
-            <a href="{{ route('lists.priorities', [$taskList->id]) }}">
+            <a href="{{ route('lists.priorities', [$list->id]) }}">
                 Priorities
             </a>
         </span>
