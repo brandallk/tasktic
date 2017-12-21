@@ -20,11 +20,12 @@ Tasktic is the todo-list app I wished I had but didn't. I built it so that I cou
 I also built it to explore the features of specific web-development technologies. These include some of the following:
 
 On the backend,
-..* PHP and the PHP MVC framework Laravel 5.5
-..* Laravel's Eloquent ORM
-..* PostgreSQL database
-..* TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
-..* Blade templates for the HTML views
+
+* PHP and the PHP MVC framework Laravel 5.5
+* Laravel's Eloquent ORM
+* PostgreSQL database
+* TDD using the PHPUnit testing framework (and extensions to it offered by Laravel)
+* Blade templates for the HTML views
 
 On the frontend, the style was hand-crafted (no Bootstrap!) using Sass with a responsive, mobile-first approach. The JavaScript was also custom-built using ES6 classes and modules in an OOP approach, bundling with Webpack via Laravel Mix.
 
